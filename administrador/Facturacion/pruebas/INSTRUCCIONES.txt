@@ -1,0 +1,13 @@
+1- remplaza ruta_kit/lib/cfdi32_multifacturas.php  por ruta_kit/lib/cfdi32_multifacturas.php
+2- copia el .CER y .KEY a  ruta_kit/pruebas/
+3- en los ejemplos o codigo remplaza.
+
+CSD_Pruebas_CFDI_LAN7008173R5.cer
+CSD_Pruebas_CFDI_LAN7008173R5.key
+
+RFC emisor de AAA010101AAA por LAN7008173R5
+Certificado de pruebas : ruta_kit/pruebas/aaa010101aaa.cer  por ruta_kit/pruebas/CSD_Pruebas_CFDI_LAN7008173R5.cer, lo mismo con el key
+
+Listo.
+
+

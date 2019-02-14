@@ -1,0 +1,113 @@
+<h3>Configuraci&oacuten de Facturaci&oacuten</h3>
+
+<ul class="nav nav-pills">
+    <li ng-click="selectConfig($index)" ng-class="{'active':c.selected}" ng-repeat="c in configs"><a>{{c.idConfig}}</a></li>
+    <li ng-class="{'active':nueva}" ng-click="nuevaConfig()"><a>Nueva <i class="fa fa-plus"></i></a></li>
+</ul>
+
+<div class="well">
+    <h4>Configuraci&oacuten archivos de facturaci&oacuten</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                    <input ng-click="triggerInputKey()" class="form-control" type="text" readonly ng-model="config.archivo_key" placeholder="Archivo .key" />
+                    <input id="inputKey" type="file" onchange="angular.element(this).scope().inputKey(this)" style="display:none;" />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-certificate"></i></span>
+                    <input ng-click="tiggerInputCer()" class="form-control" type="text" readonly ng-model="config.archivo_cer" placeholder="Archivo .cer" />
+                    <input id="inputCer" type="file" onchange="angular.element(this).scope().inputCer(this)" style="display:none;" />
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                    <input placeholder="contrasena" class="form-control" type="password" ng-model="config.password" />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <h4>Configuraci&oacuten Credenciales de PAC</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input placeholder="Usuario" class="form-control" ng-model="config.pac_usuario" />
+                </div>
+            </div>
+          
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                    <input placeholder="contrasena" type="password" class="form-control" ng-model="config.pac_password" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h4>Tipo de cambio y moneda</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                    <input class="form-control" type="text" placeholder="Moneda" ng-model="config.moneda" />
+                </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                    <input class="form-control" type="number" placeholder="Tipo de cambio" ng-model="config.tipoCambio" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="btn-group">
+            <button ng-click="saveConfig()" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+           <button ng-if="!nueva" ng-click="eliminarConfig()" class="btn btn-danger"><i class="fa fa-times"></i> Eliminar</button>
+        </div>
+        
+     </div>
+
+</div>
+
+<div class="well">
+    <h4>Datos Fiscales del Emisor</h4>
+    <div ng-include="'htms/formEmisor.htm'"></div>
+    
+        <button ng-click="actualizarEmisor()" class="btn btn-primary"><i class="fa fa-check"></i> Actualizar</button>
+    
+</div>
+<div class="well">
+    <h4>Lugares de expedici&oacuten</h4>
+    <ul class="nav nav-pills">
+        <li ng-click="selectLugar($index)" ng-class="{'active':l.selected}" ng-repeat="l in lugares"><a>{{l.idLugarExpedicion}}</a></li>
+        <li ng-class="{'active':nuevoLugar}" ng-click="nuevoLugarExp()"><a>Nueva <i class="fa fa-plus"></i></a></li>
+    </ul>
+    <div ng-include="'htms/formLugar.htm'"></div>
+    <button ng-click="submitLugar()" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Aceptar</button>
+    <button ng-click="eliminarLugar()" ng-if="!nuevoLugar" class="btn btn-danger"><i class="fa fa-times"></i> Eliminar</button>
+</div>
+
+<script>
+    var inputKey = null;
+    var inputCer = null;
+    $(document).ready(function () {
+        inputKey = $("#inputKey");
+        inputCer = $("#inputCer");
+
+    });
+
+</script>

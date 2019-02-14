@@ -1,0 +1,174 @@
+<h1>Cajas</h1>
+<ul class="nav nav-pills">
+    <li ng-click="setTab(1)" ng-class="{'active':tab==1}"><a>Cajas Actuales</a></li>
+    <li  ng-click="setTab(2)" ng-class="{'active':tab==2}"><a>Hisotrial de Cajas</a></li>
+
+</ul>
+<div ng-show="tab==1">
+<h4>Cajas Actuales</h4>
+<div class="well">
+<h4>Agregar nueva caja</h4>
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon addon-search"><i class="fa fa-pencil"></i> Nombre</span>
+<input class="form-control" type="text" name="nombreCaja" id="nombreCaja" ng-model="nueva.nombre" />
+</div>
+</div>
+<div class="btn-group">
+<button ng-click="agregarCaja()" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
+</div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered" datatable="ng">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Total Inicio</th>
+                <th>Total Fin</th>
+                <th>Usuario</th>
+                <th>Activa</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="c in cajas">
+                <td>{{c.nombre}}</td>
+                <td ng-if="c.fecha_inicio!=null">{{c.fecha_inicio}}</td>
+                <td ng-if="c.fecha_inicio==null">Caja Nueva</td>
+                <td ng-if="c.fecha_fin!=null">{{c.fecha_fin}}</td>
+                <td ng-if="c.fecha_fin==null">Caja Abierta</td>
+                
+                <td ng-if="c.total_inicio!=null">{{c.total_inicio | currency}}</td>
+                <td ng-if="c.total_inicio==null">$0.0</td>
+                
+                <td ng-if="c.total_fin!=null">{{c.total_fin | currency}}</td>
+                <td ng-if="c.total_fin==null">$0.0</td>
+
+                <td ng-if="c.usuario!=null">{{c.usuario}}</td>
+                <td ng-if="c.usuario==null">Caja Nueva</td>
+                
+                <td ng-if="c.idUsr==null">
+                        <i class="fa fa-square-o" aria-hidden="true"></i>
+                        
+                </td>
+                <td ng-if="c.idUsr!=null">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        
+                </td>
+                <td class="text-center">
+              <div class="btn-group">
+            <button ng-click="configCaja(c)" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+            <button ng-if="c.idUsr==null" ng-click="eliminarCaja(c)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+            
+              </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+</div>
+<div ng-show="tab==2">
+    <h4>Historial de Cajas del restaurante, aqui puedes ver el historial de cortes de caja</h4>
+    <div class="table-responsive">
+            <table class="table table-hover table-bordered" datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Total Inicio</th>
+                        <th>Total Fin</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in cajasHistorial">
+                        <td>{{c.nombre}}</td>
+                        <td>{{c.fecha_inicio}}</td>
+                        <td ng-if="c.fecha_fin!=null">{{c.fecha_fin}}</td>
+                        <td ng-if="c.fecha_fin==null">Caja Abierta</td>
+                        
+                        <td>{{c.total_inicio | currency}}</td>
+                        <td>{{c.total_fin | currency}}</td>
+                        <td>{{c.usuario}}</td>
+                        
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+</div>
+<div id="modalConfigCaja" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Modficar Caja</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+             <div class="col-xs-12">
+           <div class="form-group">
+             <div class="input-group">
+            <span class="input-group-addon addon-search"><i class="fa fa-pencil"></i> Nombre</span>
+            <input class="form-control" ng-model="mod.nombre"  />     
+        </div>
+
+           </div>
+             </div>
+
+              </div>
+              <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <div class="input-group">
+                   <span class="input-group-addon addon-search"><i class="fa fa-usd"></i> Total Inicio</span>
+                   <input type="number" class="form-control" ng-model="mod.total_inicio"  />     
+               </div>
+       
+                  </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                              <div class="input-group">
+                             <span class="input-group-addon addon-search"><i class="fa fa-usd"></i> Total Fin</span>
+                             <input type="number"  class="form-control" ng-model="mod.total_fin"  />     
+                         </div>
+                 
+                            </div>
+                              </div>
+       
+                     </div>
+                     
+                     <div class="row">
+                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                             <button ng-click="aceptarMod()" class="btn btn-primary"> <i class="fa fa-check"></i> Aceptar</button>
+                         </div>
+                     </div>
+                     
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <script>
+      var modalConfigCaja = null;
+      $(document).ready(function(){
+        modalConfigCaja= $("#modalConfigCaja");
+
+      });
+      </script>

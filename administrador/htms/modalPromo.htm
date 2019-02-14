@@ -1,0 +1,118 @@
+<!-- Modal -->
+<div id="modalPromo" ng-controller="ctrlPromoMod" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modificar promoción</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-xs-12">
+                  <div class="form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-lemon-o"></i> Platillo</span>
+                           <input class="form-control" type="text" readonly ng-model="promo.nombre_platillo">
+                        </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-battery-quarter"></i> Cantidad</span>
+                         <input class="form-control" type="number"  ng-model="promo.cantidad">
+                      </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-product-hunt"></i> Descuento</span>
+                         <input class="form-control" type="number"  ng-model="promo.descuento">
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i> Descripción</span>
+                         <textarea class="form-control" type="text"  ng-model="promo.descripcion"></textarea>
+                      </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i> Fecha Incio</span>
+                         <input class="form-control" type="date"  ng-model="promo.fecha_inicio">
+                      </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i> Fecha Fin</span>
+                         <input class="form-control" type="date"  ng-model="promo.fecha_fin">
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i> Frecuencia</span>
+                              <select class="form-control" ng-model="promo.frecuencia">
+                            <option value="{{f.idFrecuencia}}" ng-repeat="f in frecuencias">{{f.nombre}}</option>      
+                            </select> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa" ng-class="{'fa-check':promo.activo,'fa-times':!promo.activo}"></i> Activo</span>
+                                     <div class="check-container">
+                                            <label><input type="checkbox" ng-model="promo.activo"></label>
+                                            
+                                    </div>                                 
+                                </div>
+                            </div>
+                        </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-battery-half"></i> Cantidad de Promociones</span>
+                         <input class="form-control" type="number"  ng-model="promo.cantidad_promocion">
+                      </div>
+                </div>
+            </div>
+        </div>
+     
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="btn-group">
+                    <button ng-click="actualizarPromo()" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>

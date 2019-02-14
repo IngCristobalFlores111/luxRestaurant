@@ -1,0 +1,92 @@
+<h4>Datos del cliente</h4>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i> Nombre</span>
+                <input readonly ng-model="factura.cliente.nombre" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-qrcode"></i> RFC</span>
+                <input readonly ng-model="factura.cliente.RFC" type="text" class="form-control" />
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i> Email</span>
+                <input readonly ng-model="factura.cliente.email" type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> Calle</span>
+                <input readonly ng-model="factura.cliente.direccion" type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> No. Interior</span>
+                <input readonly ng-model="factura.cliente.noInt" type="text" class="form-control" />
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> No.Extrior</span>
+                <input readonly ng-model="factura.cliente.noExt" type="text" class="form-control" />
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-building"></i> Colonia</span>
+                <input readonly ng-model="factura.cliente.colonia" type="text" class="form-control" />
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i> C&oacutedigo Postal</span>
+                <input readonly ng-model="factura.cliente.codigoPostal" type="text" class="form-control" />
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i> Estado</span>
+                <input class="form-control" type="text" readonly ng-model="factura.cliente.estado" />
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map"></i> Municipio</span>
+                <input class="form-control" type="text" readonly ng-model="factura.cliente.municipio" />
+
+            </div>
+        </div>
+
+    </div>
+</div>

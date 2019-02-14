@@ -1,0 +1,341 @@
+﻿
+<?php
+session_start();
+
+include("../login/LoginVerificator.php");
+
+Verificar("administrador");
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="es-mx">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Luxline">
+    <meta name="author" content="luxlineSolutions">
+      
+    
+    <script src="js/moment.js"></script>
+    <title>Administrador LuxRestaurnat</title>
+    
+    <!--Morris dependencies-->
+    <script src="js/jquery.js"></script>
+
+    <link rel="stylesheet" href="ChartMorris/morris.css">
+    <script src="ChartMorris/raphael-min.js"></script>
+    <script src="ChartMorris/morris.min.js"></script>
+
+<!----->    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="parthenon.png"/>
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="js/lib/dataTables/media/DT_bootstrap.css">
+    <link rel="stylesheet" href="js/lib/dataTables/extras/TableTools/media/css/TableTools.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+</head>
+<body onload="toWelcome(this)">
+    
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav" id="nav">
+                <li class="sidebar-brand">
+                    <a style='cursor:pointer'  onclick="toWelcome(this)">
+                        Administrador  <img height="40" src="luxline1.png" />
+
+                    </a>
+                </li>
+                <li>
+                    <a style='cursor:pointer'  onclick="toEstadisticas(this)">Estadisticas</a>
+                </li>
+                <li>
+                    <a style="cursor:pointer" onclick="toInsumos(this)">Insumos</a>
+
+                </li>
+                <li>
+                    <a style="cursor:pointer" href="index-ng.html#!/recetas">Recetas</a>
+
+                </li>
+                <li>
+                    <a style='cursor:pointer' onclick="toEditor(this)">Platillos</a>
+                </li>
+                <li>
+
+                    <a style='cursor:pointer' onclick="toCuentas(this)">Cuentas</a>
+
+                </li>
+                <li>
+
+                    <a style='cursor:pointer' onclick="toTopSale(this)">Lo mas vendido</a>
+                </li>
+                <li>
+                    <a style='cursor:pointer' onclick="toUsers(this)">Usuarios</a>
+
+                    
+                </li>
+                <li>
+                    <a style='cursor:pointer' onclick="toFacturacion()">Facturacion Electronica</a>
+
+
+                </li>
+               
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row header-admin">
+                    <div class="col-lg-4">
+                        <a id="triggerConfirm" hidden></a>
+                        <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><label id="showHideIcon" class="glyphicon glyphicon-arrow-left"></label><p id="hidewhow"> Ocultar Menu</p> </a>
+                        
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="usr-container">
+                            <h5>
+                                <strong>Bienvenido <?php echo $_SESSION["nombre"]; ?></strong>
+                                <button class="btn btn-danger"><span class="glyphicon glyphicon-share-alt"></span>Salir</button>
+                                <button class="btn btn-primary"><span class="glyphicon glyphicon-info-sign"></span>Info</button>
+                            </h5>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                      
+                        <div id="contentPage">
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="cargarPlatillosNoTg()" data-dismiss="modal">&times;</button>
+                    <h4 id="ModalTittle" style="color:white;">Editar Platillo</h4>
+                    <span style="color:white;" class="glyphicon glyphicon-cutlery"></span>
+                    <br />
+                </div>
+                <div class="modal-body">
+                    <form role="form" method="post" action="PHP/upload.php" target="_blank" onsubmit="formsumb(); return checkdata()" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-tag"></span>Nombre</label>
+                            <input type="text" class="form-control" id="platilloNombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-usd"></span>Precio </label>
+                            <input type="text" class="form-control" style="width:68px" id="platilloPrecio" name="precio" required>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-usd"></span>Costo </label>
+                            <input type="text" class="form-control" style="width:68px" id="platilloCosto" name="costo" required>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-barcode"></span>  Descripcion</label>
+                            <textarea class="form-control" rows="4" id="platilloDesc" name="desc" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-list"></span>Categoria</label>
+                            <select style="width:150px" class="form-control" name="categoria" id="platilloCategoria">
+                                <option>platillo</option>
+                                <option>entrada</option>
+                                <option>gyro</option>
+                                <option>postres</option>
+                                <option>bebidas</option>
+                                <option>guarniciones</option>
+                                <option>menu_ninos</option>
+
+
+                            </select>
+
+
+                        </div>
+                        <div class="form-group">
+                            <label><span class="glyphicon glyphicon-exclamation-sign"></span>Activar/Desactivar producto</label>
+
+                            <div class="checkbox">
+                                <label><input name="activado" id="activado" type="checkbox" value="" checked>Activado</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="glyphicon glyphicon-picture"></label><label>Imagen</label>
+                            <br />
+                            <img src="" id="imgPlatillo" width="145" height="135" />
+                            <br />
+                            <label><span></span>Remplazar imagen</label>
+                            <input type="file" name="fileToUpload" accept="image/*" id="fileToUpload" >
+                        </div>
+                        <input type="hidden" value="" name="id" id="idHidden" />
+                        <input type="hidden" value="" name="op" id="opHidden" />
+                        <input type="hidden" value="" name="oldpath" id="oldpath" />
+
+
+                        <button type="submit" class="btn btn-default btn-success btn-block"><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 id="ModalTittle2" style="color:white;">Editar Usuario</h4>
+                    <span style="color:white;" class="glyphicon glyphicon-user"></span>
+                    <br />
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-sunglasses"></span> Nombre</label>
+                        <input type="text" class="form-control" id="nombreUsr">
+                    </div>
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-briefcase"></span> Tipo de Usuario</label>
+                        <select id="usrRol" class="form-control" style="width:150px">
+                            <option>mesero</option>
+                            <option>administrador</option>
+                            <option>chef</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-user"></span> Usuario</label>
+                        <input type="text" class="form-control" id="usrname">
+                    </div>
+                    <div class="form-group">
+                        <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Contraseña</label>
+                        <input type="text" class="form-control" id="passWrd" >
+                    </div>
+                    <button onclick="usrModalResult()" type="submit" class="btn btn-default btn-success btn-block"><span class="glyphicon glyphicon-ok"></span>Aceptar</button>
+                    <input  type="hidden" id="opModal" value=""/>
+                    <input type="hidden" id="idUser" value="" />
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+ 
+
+
+    <!-- /#wrapper -->
+
+  
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/confirm-bootstrap.js"></script>
+    <script src="js/mainJS.js" charset="utf-8"></script>
+    <script src="https://use.fontawesome.com/6715ea3b68.js"></script>
+    <script>
+        
+        function toFacturacion()
+        {
+            window.open("Facturacion/index.html");
+
+        }
+
+
+
+
+        $(document).ready(function () {
+           
+           
+        });
+
+      
+
+
+
+        var counter = 0;
+        //triggerConfirm
+        $('#triggerConfirm').confirmModal({
+            confirmTitle: 'Seguro que desea eliminar este platillo?',
+            confirmMessage: 'Se eliminara platillo de la base de datos',
+            confirmOk: 'Si',
+            confirmCancel: 'No',
+            confirmDirection: 'rtl',
+            confirmStyle: 'primary',
+            confirmCallback: defaultCallback,
+            confirmDismiss: true,
+            confirmAutoOpen: false
+        });
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+  
+        $("#showHideIcon").toggleClass('glyphicon-arrow-right');
+        if (counter % 2 == 0)
+        {
+            $("#hidewhow").text("Mostrar Menu");
+
+
+        }
+        else
+        {
+            $("#hidewhow").text("Ocultar Menu");
+
+
+        }
+        counter++;
+
+
+    });
+ 
+    </script>
+
+<footer>
+
+
+</footer>
+    <script src="js/lib/dataTables/media/js/jquery.dataTables.min.js"></script>
+    <!-- datatables column reorder -->
+    <script src="js/lib/dataTables/extras/ColReorder/media/js/ColReorder.min.js"></script>
+    <!-- datatable fixed columns -->
+    <script src="js/lib/dataTables/extras/FixedColumns/media/js/FixedColumns.min.js"></script>
+    <!-- datatables column toggle visibility -->
+    <script src="js/lib/dataTables/extras/ColVis/media/js/ColVis.min.js"></script>
+    <!-- datatable table tools -->
+    <script src="js/lib/dataTables/extras/TableTools/media/js/TableTools.min.js"></script>
+    <script src="js/lib/dataTables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+    <!-- datatable bootstrap style -->
+    <script src="js/lib/dataTables/media/DT_bootstrap.js"></script>
+
+</body>
+
+
+</html>

@@ -1,0 +1,23 @@
+<h1>Inventario</h1>
+<ul class="nav nav-pills">
+    <li ng-click="setTab(1)" ng-class="{'active':tab==1}"><a>Inventario</a></li>
+    <li ng-click="setTab(2)" ng-class="{'active':tab==2}"><a>Proveedores</a></li>
+    <li ng-click="setTab(3)" ng-class="{'active':tab==3}"><a>Almacenes</a></li>
+    <li ng-click="setTab(4)" ng-class="{'active':tab==4}"><a>Inventario Por Unidad</a></li>
+    
+</ul>
+
+<div class="tab-content">
+    <div id="inventario" ng-show="tab==1" ng-controller="ctrlInventario" ng-include="'htms/inventarios.htm'">
+        <h3>Inventario</h3>
+    </div>
+    <div id="proveedores" ng-show="tab==2" ng-controller="ctrlProveedores" ng-include="'htms/proveedores.htm'">
+        <h3>Proveedores</h3>
+    </div>
+    <div id="almacenes"  ng-show="tab==3" ng-controller="ctrlAlmacenes" ng-include="'htms/almacenes.htm'">      
+    </div>
+
+    <div id="inventarioUnidad"  ng-show="tab==4" ng-controller="ctrlInventarioUnidad" ng-include="'htms/inventarioUnidad.htm'">      
+    </div>
+
+</div>

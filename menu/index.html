@@ -1,0 +1,295 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include ("../administrador/PHP/new/functions.php");
+$sql =createMysqliConnection();
+$platillos = $sql->executeQuery("SELECT * FROM `tbplatillos` WHERE `activado` = 1");
+$categorias = $sql->executeQuery("SELECT * FROM `tbplatillos_categorias`");
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>BBQ Adiction</title>
+        <meta name="description" content="Menú LuxRestaurant" />
+        <meta name="keywords" content="Web,restaurant,web app,application,luxrestaurant,luxline"/>
+        <meta name="author" content="Luxline 2017" />
+        <link rel="shortcut icon" href="images/logo-small.png"> 
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/modalStyles.css" />
+		
+		<link href='https://fonts.googleapis.com/css?family=Raleway:300,500|Arvo:700' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script> 
+		<!--[if lte IE 8]><style>.support-note .note-ie{display:block;}</style><![endif]-->
+		<script src="https://use.fontawesome.com/c7b7716f6b.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+		<script src="js/controllers/ctrlRatings.js"></script>
+		<script src="js/services/ratingsService.js"></script>
+		<script src="js/app.js"></script>
+	</head>
+    <body ng-app="app" ng-controller="rootCtrl">
+        <div class="container">
+		
+		
+			<header>
+			
+				<h1>Menu BBQ Adiction</h1>
+			
+				
+				<div class="support-note"><!-- let's check browser support with modernizr -->
+					<span class="no-cssanimations">CSS animations are not supported in your browser</span>
+					<span class="no-csstransforms">CSS transforms are not supported in your browser</span>
+					<span class="no-csstransforms3d">CSS 3D transforms are not supported in your browser</span>
+					<span class="no-csstransitions">CSS transitions are not supported in your browser</span>
+					<span class="note-ie">Sorry, only modern browsers.</span>
+				</div>
+				
+			</header>
+			
+			<section class="main">
+
+				<div id="rm-container" class="rm-container">
+					
+
+
+					<div class="rm-wrapper">
+
+						<div class="rm-cover">
+
+							<div class="rm-front">
+								<div class="rm-content">
+
+									<div class="rm-logo"></div>
+									<h2>Restaurante BBQ Adiction</h2>
+									<h3>La mejor BBQ de Guadalajara</h3>
+
+									<a href="#" class="rm-button-open">Ver Menú</a>
+									
+									<button ng-click="abrirModal()" id="btnRating" class="btn-rating">Reseñar Menú</button>
+
+									<div class="rm-info">
+										<p>
+										<strong>BBQ Adiction</strong><br>
+										12 de Diciembre 3070.<br>
+										Guadalajara Jalisco<br>
+										<strong>Telefono</strong>(33) 33 - 30 - 00 - 81<br>
+										<strong>Sigenos en Facebook</strong> <a href="https://www.facebook.com/bbqaddiction/"><i class="fa fa-facebook"></i></a></p>
+									    <strong>Desarrollador por <a href="https://www.luxline.com.mx">LuxLine Soluciones Web</a></strong>
+									</div>
+
+								</div><!-- /rm-content -->
+							</div><!-- /rm-front -->
+
+							<div class="rm-back">
+								<div class="rm-content">	
+							 <?php
+							  $categoria1 = $categorias[5];
+							  $nombre_cat = $categoria1['nombre']; 
+							  echo '<h4>'.$nombre_cat.'</h4>';
+							  
+							  foreach($platillos as $p){
+								  if($p['idCategoria']==$categoria1['idCategoria']){
+							 ?>
+									<dl>
+											<dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+											<dd><?= $p['descripcion'] ?></dd>
+
+									
+									</dl>
+									<?php
+								}
+							}
+
+									?>
+
+									<?php
+									$categoria2 = $categorias[6];
+									$nombre_cat = $categoria2['nombre']; 
+									echo '<h4>'.$nombre_cat.'</h4>';
+									?>
+									<dl>
+										<?php
+                                          foreach($platillos as $p){
+
+											if($p['idCategoria']==$categoria2['idCategoria']){
+
+										?>
+										<dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+										<dd><?= $p['descripcion'] ?></dd>
+                                      <?php }}  ?>
+
+									</dl>
+								</div><!-- /rm-content -->
+								<div class="rm-overlay"></div>
+
+							</div><!-- /rm-back -->
+
+						</div><!-- /rm-cover -->
+
+						<div class="rm-middle">
+							<div class="rm-inner">
+								<div class="rm-content">
+										<?php
+										$categoria3 = $categorias[7];
+										$nombre_cat = $categoria3['nombre']; 
+										echo '<h4>'.$nombre_cat.'</h4>';
+										?>
+									<dl>
+											<?php
+											foreach($platillos as $p){
+  
+											  if($p['idCategoria']==$categoria3['idCategoria']){
+  
+										  ?>
+										  <dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+										  <dd><?= $p['descripcion'] ?></dd>
+
+										  <?php
+											  }}
+										  ?>
+									
+									</dl>
+									<?php
+									$categoria3 = $categorias[0];
+									$nombre_cat = $categoria3['nombre']; 
+									echo '<h4>'.$nombre_cat.'</h4>';
+									?>
+								<dl>
+										<?php
+										foreach($platillos as $p){
+
+										  if($p['idCategoria']==$categoria3['idCategoria']){
+
+									  ?>
+									  <dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+									  <dd><?= $p['descripcion'] ?></dd>
+
+									  <?php
+										  }}
+									  ?>
+								
+								</dl>
+								</div><!-- /rm-content -->
+								<div class="rm-overlay"></div>
+							</div><!-- /rm-inner -->
+						</div><!-- /rm-middle -->
+
+						<div class="rm-right">
+
+							<div class="rm-front">
+								
+							</div>
+
+							<div class="rm-back">
+								
+								<span class="rm-close">Cerrar</span>
+								
+								<div class="rm-content">
+										<?php
+										$categoria4 = $categorias[4];
+										$nombre_cat = $categoria4['nombre']; 
+										echo '<h4>'.$nombre_cat.'</h4>';
+										?>
+
+									<dl>
+											<?php
+											foreach($platillos as $p){
+  
+											  if($p['idCategoria']==$categoria4['idCategoria']){
+  
+										  ?>
+											<dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+											<dd><?= $p['descripcion'] ?></dd>
+
+											<?php
+											  }}
+											?>
+									</dl>
+
+
+									<?php
+									$categoria4 = $categorias[2];
+									$nombre_cat = $categoria4['nombre']; 
+									echo '<h4>'.$nombre_cat.'</h4>';
+									?>
+
+								<dl>
+										<?php
+										foreach($platillos as $p){
+
+										  if($p['idCategoria']==$categoria4['idCategoria']){
+
+									  ?>
+										<dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+										<dd><?= $p['descripcion'] ?></dd>
+
+										<?php
+										  }}
+										?>
+								</dl>
+
+								<?php
+								$categoria4 = $categorias[8];
+								$nombre_cat = $categoria4['nombre']; 
+								echo '<h4>'.$nombre_cat.'</h4>';
+								?>
+
+							<dl>
+									<?php
+									foreach($platillos as $p){
+
+									  if($p['idCategoria']==$categoria4['idCategoria']){
+
+								  ?>
+									<dt><a class="rm-viewdetails" data-price="<?= $p['precio'] ?>" data-thumb="../images/<?= $p['imagepath'] ?>"><?= $p['nombre']  ?> </a></dt>
+									<dd><?= $p['descripcion'] ?></dd>
+
+									<?php
+									  }}
+									?>
+							</dl>
+									<div class="rm-order" style="display:none">
+										<p><strong>Te gustaria llevarnos a tu evento?</strong> Llamanos con gusto te ayudamos a organizar tu evento<strong>3647 1680</strong></p>
+									</div>
+								</div><!-- /rm-content -->
+							</div><!-- /rm-back -->
+
+						</div><!-- /rm-right -->
+					</div><!-- /rm-wrapper -->
+
+				</div><!-- /rm-container -->
+
+			</section>
+			
+		</div>
+		
+<!-- The Modal -->
+<div id="modalRating" class="modal" ng-include="'views/modalRatings.htm'"  ng-controller="ctrlRatings">
+
+	
+	</div>
+	
+		
+
+
+
+		<!-- jQuery if needed -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+	 
+        <script type="text/javascript" src="js/menu.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				Menu.init();
+			
+			});
+		</script>
+	
+    </body>
+</html>

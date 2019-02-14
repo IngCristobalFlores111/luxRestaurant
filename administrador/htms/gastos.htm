@@ -1,0 +1,155 @@
+<h1>Mis Gatos</h1>
+<div class="well">
+<h4>Agregar Gasto</h4>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon addon-search"><i class="fa fa-lemon-o"></i> Nombre</span>
+<input class="form-control" ng-model="nuevo.nombre" />
+
+</div>
+
+</div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+        <div class="input-group">
+        <span class="input-group-addon addon-search"><i class="fa fa-bars"></i> Categoria</span>
+        <select class="form-control" ng-model="nuevo.idCategoriaGasto">
+        <option ng-repeat="c in categorias" value="{{c.id}}">{{c.nombre}}</option>
+        </select>
+        
+        </div>
+        
+        </div>
+        </div>
+
+
+</div>
+<div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="form-group">
+    <div class="input-group">
+    <span class="input-group-addon addon-search"><i class="fa fa-pencil"></i> Descripci&oacute;n</span>
+    <textarea class="form-control"ng-model="nuevo.descripcion"></textarea>
+    
+    </div>
+    
+    </div>
+    </div>
+    
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+            <div class="input-group">
+            <span class="input-group-addon addon-search"><i class="fa fa-money"></i> Total</span>
+            <input class="form-control" type="number" ng-model="nuevo.total" />
+            
+            
+            </div>
+            
+            </div>
+            </div>
+    
+    
+    </div>
+    <div class="row">
+<div class="col-xs-12">
+<div class="btn-group">
+<button ng-click="agregarGasto()" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar</button>
+<button ng-click="deshacerGasto()" class="btn btn-warning"><i class="fa fa-undo"></i> Deshacer</button>
+
+</div>
+
+</div>
+
+    </div>
+
+
+
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h4>Historial de Gastos</h4>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped" datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Categoria</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                        <th>Opciones</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="g in gastos">
+                        <td>{{g.nombre}}</td>
+                        <td>{{g.descripcion}}</td>
+                        <td>{{g.categoria}}</td>
+                        <td>{{g.total |currency}}</td>
+                        <td>{{g.fecha}}</td>
+                        <td>
+                        <div class="btn-group">
+                        <button ng-click="modGasto(g)" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button ng-click="eliminarGasto(g)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        
+                    </div>
+
+                        </td>
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        
+    </div>
+</div>
+
+<div class="row">
+<div class="col-xs-12">
+<h4>Historial de ganancias</h4>
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon addon-search"><i class="fa fa-calendar"></i></span>
+<div class="check-container">
+        <label class="radio-inline"><input ng-change="cambiarRangoGanancias()" ng-model="filtro.rango" value="0" type="radio" name="optradio">Por Día</label>
+        <label class="radio-inline"><input ng-change="cambiarRangoGanancias()" ng-model="filtro.rango" value="1" type="radio" name="optradio">Por Mes</label>
+</div>
+</div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped" datatable="ng">
+        <thead>
+            <tr>
+                <th>Total</th>
+                <th>Gastos</th>
+                <th>Ganancia</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="g in ganancias">
+                <td>{{g.total | currency}}</td>
+                <td>{{g.gastos | currency}}</td>
+                <td>{{g.gananciaTotal | currency}}</td>
+                <td>{{g.fecha}}</td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+</div>
+
+</div>

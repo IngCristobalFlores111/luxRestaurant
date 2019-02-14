@@ -1,0 +1,658 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sistema recetas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Sistema de recetas</h1>
+            <p>LuxRestaurant</p>
+            <p>Calcula el costo por platillo en base a la receta del mismo</p>
+            <p>Basado en el costo de cada ingrediente</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12 col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Seleccionar platillos</div>
+                    <div class="panel-body">
+
+                        <label for="platillo_buscar">Buscar Platillo</label>
+                        <input style="width:225px;" class="form-control" type="text" id="platillo_buscar" />
+                        <div style="padding-top:15px" class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-4">Nombre</th>
+                                        <th class="col-md-4">Categoria</th>
+                                        <th class="col-md-1">Precio</th>
+                                        <th class="col-md-1">Costo</th>
+                                        <th class="col-md-2">Imagen</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="platillos_table"></tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+<div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12 col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Ingredientes de platillo</div>
+                    <div class="panel-body">
+                        <div id="platillo_ingredientes_div" hidden>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>
+                                    <h4>Platillo Seleccionado</h4>
+                                        <button id="btn_actualizar_platillo" class="btn btn-default">Actualizar platillo</button>
+                                        </p>
+                                  <div class="table-responsive">
+                                      <table class="table table-bordered">
+                                          <thead><tr>
+                                              <th>Nombre</th>
+                                              <th>Categoria</th>
+                                              <th>Precio</th>
+                                              <th>Costo</th>
+                                              <th>Imagen</th>
+                                              </tr></thead>
+
+                                          <tbody id="table_selected_platillo">
+
+
+                                          </tbody>
+
+                                      </table>
+
+
+                                  </div>
+                                </div>
+                            </div>
+                            
+                            <h4>Agregar ingredientes</h4>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="buscar_ingrediente">Buscar</label>
+                                    <input class="form-control" id="buscar_ingrediente"  type="text"/>
+                                    <hr />
+                                    <p>Buscar ingredientes por platillo</p> <!--HERE -->
+                                    <select class="form-control" id="select_platillos_ing">
+                                        <option>A</option>
+                                        <option>B</option>
+                                    </select><br />
+                                    <p>
+                                        <button id="btn_buscar_platillo_ing" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>Buscar</button>
+                                            <button class="btn btn-default" id="btn_aceptar_ing_platillo">Aceptar</button>
+                                    </p>
+                                        <hr />
+
+
+                                    <button id="btn_ing_seleccionados" class="btn btn-block btn-primary">Agregar seleccionados</button>
+
+
+
+
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Unidad</th>
+                                                    <th>Costo</th>
+                                                    <th>Cantidad en Inventario</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody id="table_buscar_ingredientes">
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <h4>Ingredientes del platillo</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Costo</th>
+                                                    <th>Unidad</th>
+                                                    <th>Opciones</th>
+                                                    <th>Cantidad</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody id="table_ingredientes_platillo">
+
+                                                
+                                            </tbody>
+                                            
+
+
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button id="btn_calcular_costo" class="btn btn-default btn-block">Aceptar</button>
+                                </div>
+                                <div style="text-align:center" id="resultados_costo" class="col-lg-6">
+
+
+                                </div>
+
+                            </div>
+                            
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+    <!-- Modal  -->
+    <div class="modal fade" id="modal_actualizar_producto" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Actualizar</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="nombre_platillo_modal">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre_platillo_modal">
+                    </div>
+                    <div class="form-group">
+                        <label for="categorial_platillo_modal">Categoria:</label>
+                        <select id="categorgia_platillo_modal" class="form-control">
+                            <option>platillo</option>
+                            <option>entrada</option>
+                            <option>gyro</option>
+                            <option>postres</option>
+                            <option>bebidas</option>
+                            <option>guarniciones</option>
+                            <option>menu_ninos</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio_platillo_modal"><span class="glyphicon glyphicon-usd"></span>Precio</label>
+                        <input class="form-control" type="number" id="precio_platillo_modal" />
+                    </div>
+                    <div class="form-group">
+                        <label for="costo_platillo_modal"><span class="glyphicon glyphicon-usd"></span>Costo</label>
+                        <input class="form-control" type="number" id="costo_platillo_modal" />
+                    </div>
+
+
+                    <button  id="btn_actualizar_modal_platillo" type="submit" class="btn btn-default">Submit</button>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // global DOMS
+        var table_ingredientes_DOM = $("#table_ingredientes");
+        var ing_nombre_DOM = $("#ing_nombre");
+        var ing_cantidad_DOM = $("#ing_cantidad");
+        var ing_unidad_DOM = $("#ing_unidad");
+        var ing_costo_DOM = $("#ing_costo");
+        var platillos_table_DOM = $("#platillos_table");
+        var table_selected_platillo_DOM = $("#table_selected_platillo");
+        var table_ingredientes_platillo_DOM = $("#table_ingredientes_platillo");
+        var table_buscar_ingredientes_DOM = $("#table_buscar_ingredientes");
+        //
+
+
+
+        $("#btn_aceptar_ing_platillo").click(function () {
+            var id_platillo_selected = $("#select_platillos_ing").val();  // here2
+            table_buscar_ingredientes_DOM.load("PHP/buscar_ing_platillo.php", { idplatillo:id_platillo_selected });
+
+
+        });
+
+
+
+        $("#btn_buscar_platillo_ing").click(function () {
+
+
+            var query = prompt("Platillo a buscar");
+            cargar_select_platillos(query,g_platillo_selected);
+        });
+
+        $("#btn_actualizar_modal_platillo").click(function () {
+           
+            var idplatillo = localStorage.getItem("id_platillo_selected");
+
+            var nombre = $("#nombre_platillo_modal").val();
+            var categoria = $("#categorgia_platillo_modal").val();
+            var precio = $("#precio_platillo_modal").val();
+            var costo = $("#costo_platillo_modal").val();
+            precio = parseFloat(precio);
+            costo = parseFloat(costo);
+            if (nombre.trim() == '' && isNaN(precio) && isNaN(costo)) {
+                alert("Datos invalidos");
+            }
+            else {
+
+
+                $.post("PHP/actualizar_platillo_modal.php", { id: idplatillo, nombre: nombre, precio: precio, costo: costo, categoria: categoria }, function (data) {
+
+                    alert("Producto se ha actualizado");
+                    
+
+                });
+            }
+
+        });
+
+
+        function actualizarIngredientes( ingrediente)  //id de ing. if(ingrediente==null){mostrar_todo();}
+        {
+            var obj = null;
+            if (ingrediente != null)
+            {
+                $.post("PHP/load_ingredientes.php", { id_ing: ingrediente }, function (data) {
+                     obj = JSON.parse(data);
+                     obj = obj.result;
+                     var len = obj.length; var i = 0; var output = '';
+                     for (; i < len; i++) {
+                         var ingrediente = obj[i];
+                         var id_ingrediente = ingrediente.id_ingrediente;
+                         output += "<tr id='ing_" + id_ingrediente + "'>";
+                         output += "<td>" + ingrediente.nombre + "</td>";
+                         output += "<td>" + ingrediente.cantidad + "</td>";
+                         output += "<td>" + ingrediente.unidad + "</td>";
+                         output += "<td>" + ingrediente.costo + "</td></tr>";
+
+                     }
+                     table_ingredientes_DOM.html(output);
+
+                    
+
+
+
+
+
+                });
+
+
+
+            } else {
+                $.post("PHP/load_ingredientes.php", function (data) {
+                    obj = JSON.parse(data);
+                    obj = obj.result;
+                    var len = obj.length; var i = 0; var output = '';
+                    for (; i < len; i++) {
+                        var ingrediente = obj[i];
+                        var id_ingrediente = ingrediente.id_ingrediente;
+                        output += "<tr id='ing_" + id_ingrediente + "'>";
+                        output += "<td>" + ingrediente.nombre + "</td>";
+                        output += "<td>" + ingrediente.cantidad + "</td>";
+                        output += "<td>" + ingrediente.unidad + "</td>";
+                        output += "<td>" + ingrediente.costo + "</td></tr>";
+
+                    }
+                    table_ingredientes_DOM.html(output);
+
+
+                });
+
+
+
+            }
+
+
+
+        }
+
+
+        function clearIngredientesForm()
+        {
+            ing_nombre_DOM.val('');
+            ing_cantidad_DOM.val('');
+            ing_unidad_DOM.val('');
+            ing_costo_DOM.val('');
+        }
+
+
+
+        function cargarPlatillo(idPlatillo)
+        {
+
+
+
+        }
+
+
+
+        $("#platillo_buscar").on("input", function () {
+
+
+            platillos_table_DOM.load("PHP/buscar_platillos.php", { nombre_platillo: $(this).val() });
+
+
+        });
+
+        var platillo_ingredientes_div_DOM = $("#platillo_ingredientes_div");
+        var g_platillo_selected = 0;
+        $(document).on("click", "#platillos_table tr", function () {  // click en elemento de tabla platillos 
+            $("#platillos_table tr").removeClass("success");
+              
+            $(this).toggleClass("success");  // establecer como seleccionado 
+            
+            id_platillo = $(this).attr("id").replace("plat_", '');
+           
+            table_selected_platillo_DOM.html("<tr id='" + id_platillo + "'>" + $(this).html() + "</tr>");
+            obtener_ingredientes(id_platillo);
+            platillo_ingredientes_div_DOM.show();
+            g_platillo_selected = id_platillo;
+            cargar_select_platillos(null, id_platillo);
+
+            
+
+
+        });
+
+        function obtener_ingredientes(idplatillo)
+        {
+
+            $.post("PHP/obtener_ingredientes.php", { id_platillo: idplatillo }, function (data) {
+
+                try {
+                    var obj = JSON.parse(data).result;
+                    
+                    //table_ingredientes_platillo_DOM
+                    var len = obj.length; var i = 0;
+                    var output = '';
+                    for (; i < len; i++) {
+                        var idIngrediente = obj[i].id_ingrediente;
+                        var ing = obj[i];
+
+                        output += "<tr id='ing_" + idIngrediente + "'>";
+                        output += "<td>" + ing.nombre + "</td>";
+                        output += "<td class='costo_find'>" + ing.costo + "</td>";
+                        output += "<td>" + ing.unidad + "</td>";
+                        output += "<td><button onclick='eliminar_ingrediente_receta("+idplatillo+","+idIngrediente+")' class='btn btn-danger'>Eliminar</button></td>";
+                        output += "<td><input placeholder='Cantidad' value='"+ing.cantidad+"' class='form-control' style='width:150px;' type='number' id='cantidad_ing_" + idIngrediente + "'  /></td>";
+                        
+                        output+="</tr>";
+
+                    }
+                    table_ingredientes_platillo_DOM.html(output);
+                } catch (err) { table_ingredientes_platillo_DOM.html("No se han agregado ingredientes al platillo"); }
+
+            });
+
+
+
+        }
+
+        $(document).on('click', '#table_ingredientes_platillo tr', function () {
+
+
+
+        });
+
+
+        $("#buscar_ingrediente").on("input", function () {
+
+
+            var idPlatillo = $("#table_selected_platillo tr").attr("id");
+
+            table_buscar_ingredientes_DOM.load("PHP/buscar_ingrediente.php", { ingrediente: $(this).val(), idplatillo:idPlatillo });
+           
+
+        });
+
+        $(document).on("click", "#table_buscar_ingredientes tr", function () {
+          //  $("#table_buscar_ingredientes tr").removeClass("success");
+            if (!$(this).find(".NoHay").is(".NoHay"))
+                $(this).toggleClass("success");
+            
+        });
+
+
+        $("#btn_ing_seleccionados").click(function () {
+            var seleccionados_dom = $("#table_buscar_ingredientes .success");
+            // 
+            var idPlatillo = $("#table_selected_platillo tr").attr("id");
+            var ids_ingredientes = [];
+            seleccionados_dom.each(function (i, element) {
+                ids_ingredientes.push($(element).attr("id").replace("ing_buscar_", ''));
+
+
+            });
+
+            $.post("PHP/crear_receta.php", { ingredientes: ids_ingredientes.join(":"), idplatillo: idPlatillo }, function (data) {
+                table_buscar_ingredientes_DOM.empty();
+                obtener_ingredientes(idPlatillo); //
+                setTimeout(function () { $(this).trigger("click"); }, 100);  // hechizo����
+
+            });
+
+
+
+
+
+
+        });
+
+        var tmp_cantidades = [];
+        var tmp_ingredientes = [];
+        function eliminar_ingrediente_receta(idplatillo,idingrediente)
+        {
+            $.post("PHP/eliminar_receta.php", { id_platillo: idplatillo, id_ingrediente: idingrediente }, function (data) {
+                obtener_ingredientes(idplatillo);
+            });
+        }
+
+
+        $("#btn_calcular_costo").click(function () {
+            var cantidad_txts = $("#table_ingredientes_platillo tr input[type=number]");
+            var cantidades = [];
+           
+            cantidad_txts.each(function (i, element) {
+                cantidades.push($(element).val());
+                tmp_ingredientes.push($(element).attr("id").replace("cantidad_ing_", ''));
+
+            });
+            var costos = [];
+            var costos_doms = $("#table_ingredientes_platillo .costo_find");
+            costos_doms.each(function (i, element) {
+                costos.push($(element).html());
+            });
+
+            var len = cantidades.length; var i = 0;
+            var costo = 0;
+            for(;i<len;i++)
+            {
+                costo += parseFloat(cantidades[i]) * parseFloat(costos[i]);
+
+
+            }
+            if (isNaN(costo)) { alert("introduce todas las cantidades"); }
+            else {
+                tmp_cantidades = cantidades;
+
+                $("#resultados_costo").html("<h3>Costo:$"+costo+"</h3><button onclick='asignar_nuevo_costo_platillo("+costo+")' class='btn btn-block btn-success'>Actualizar platillo</button>");
+
+            }
+
+            
+
+
+
+
+
+
+
+        });
+
+        function asignar_nuevo_costo_platillo(costo)
+        {
+
+            var idPlatillo = $("#table_selected_platillo tr").attr("id");
+            $.post("PHP/asignar_costo_platillo.php", { idplatillo: idPlatillo, costo: costo, cantidades: tmp_cantidades.join(":"), ids_ingredientes:tmp_ingredientes.join(":") }, function (data) {
+
+                var dom_costo = $("#table_selected_platillo td");
+                var dom_costo2 = $(dom_costo[3]).html("$" + costo);
+                var plat_dom = $("#platillo_buscar");
+                plat_dom.val("");
+                plat_dom.trigger("input");
+                
+                
+            });
+
+        }
+
+        // actualizar platillo boton 
+
+      
+        $("#btn_actualizar_platillo").click(function () {
+
+            var id_platillo = $("#table_selected_platillo tr").attr("id");
+            localStorage.setItem("id_platillo_selected", id_platillo);
+            $.post("PHP/get_info_platillo_modal.php", { idplatillo: id_platillo }, function (jSon) {
+                    
+                jSon = JSON.parse(jSon);
+                jSon = jSon.result;
+               
+                
+                $("#nombre_platillo_modal").val(jSon[0].nombre);
+                $("#categorgia_platillo_modal").val(jSon[0].categoria);
+                $("#precio_platillo_modal").val(jSon[0].precio);
+                $("#costo_platillo_modal").val(jSon[0].costo);
+
+                $("#modal_actualizar_producto").modal();
+
+
+            });
+
+
+
+            
+
+
+        });
+      
+
+        function cargar_select_platillos(query, idPlatillo) // if(query==null)mostrar_todos();
+        {
+            if(query==null)
+            {           
+
+                
+                $("#select_platillos_ing").load("PHP/platillos_select.php", { idplatillo: idPlatillo }, function (data) {
+
+                });
+
+            }
+            else
+            {
+                $("#select_platillos_ing").load("PHP/platillos_select.php", { idplatillo: idPlatillo, query: query }, function (data) {
+
+                });
+
+            }
+
+
+        }
+
+        $(document).ready(function () {
+
+            // cargar ingredientes..
+
+
+
+
+
+
+            actualizarIngredientes(null);
+            $("#agregar_btn").click(function () {
+
+                $.post("PHP/agregar_ingrediente.php", { nombre: ing_nombre_DOM.val(), cantidad: ing_cantidad_DOM.val(), unidad: ing_unidad_DOM.val(), costo: ing_costo_DOM.val() }, function (data) {
+
+                    actualizarIngredientes(null);
+                    clearIngredientesForm();
+
+
+                });
+
+
+
+            });
+
+            $("#btn_deshacer").click(function () {
+
+                clearIngredientesForm();
+
+            });
+
+
+        });
+
+
+       
+
+    </script>
+  
+
+
+
+</body>
+</html>

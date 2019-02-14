@@ -1,0 +1,397 @@
+﻿<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Cobrar Cuenta</h4>
+        </div>
+        <div class="modal-body">
+            <div class="first-option-container" ng-if="show.firstStep">
+                <h3 class="header-restaurant">Elige Una Opci&oacute;n</h3>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button ng-click="abrirDividirCuentas()" class="btn btn-primary btn-block"><i class="fa fa-columns" aria-hidden="true"></i> Dividir Cuentas</button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button ng-click="abrirPorMonto()" class="btn btn-primary btn-block"><i class="fa fa-usd" aria-hidden="true"></i> Por monto</button>
+
+                    </div>
+                </div>
+                <div class="row" style="margin-top:11px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button ng-click="abrirPagarTodo()" class="btn btn-primary btn-block"><i class="fa fa-money"></i> Pagar Todo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cuentas-wraper" ng-if="show.cuentas&&!show.secondStep">
+                <div class="row"><div class="col-xs-12">
+                    <button ng-click="regresarPaso1()" class="btn btn-block btn-primary"><i class="fa fa-undo"></i> Regresar</button>
+                    </div></div>
+                <div class="row" style="margin-top:11px;">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span ng-click="agregarCuenta()" class="input-group-addon add-on-style1"><i class="fa fa-plus"></i></span>
+                                <p class="static-control">Agrega Una cuenta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav nav-pills nav-justified cuentas">
+                    <li ng-click="activarCuenta($index)" ng-class="{'active-cuenta':c.active}" ng-repeat="c in cuentas"><a >{{c.id}}</a></li>
+                    
+                </ul>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <h4 class="header-restaurant">Platillos en Pedido</h4>
+                        <ul class="list-group">
+                            <li ng-click="agregarAcuenta($index)" class="list-group-item cuenta-platillo" ng-repeat="p in platillos">{{p.nombre}}<label class="label label-info">x{{p.cantidad}}</label><span class="badge">{{p.precio | currency}}</span>  </li>
+                            
+                        </ul>
+                        <label ng-if="cuentas[indexCuenta].subtotal>0&&platillos.length==0" class="header-restaurant">Ya puedes cobrar =)</label>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <h4>Platillos en cuenta {{cuentas[indexCuenta].id}}</h4>
+                        <ul class="list-group">
+                            <li ng-click="regresarPlatillo($index)" class="list-group-item cuenta-platillo" ng-repeat="p in cuentas[indexCuenta].platillos">{{p.nombre}}<label class="label label-info">x{{p.cantidad}}</label><span class="badge">{{p.precio*p.cantidad | currency}}</span>  </li>
+
+                        </ul>
+                        <div class="table-responsive">
+                        <table class="table table-striped table-bordered" ng-if="cuentas[indexCuenta].subtotal>0">
+                           <thead>
+                               <tr>
+                                   <th>Subtotal</th>
+                                   <th>IVA</th>
+                                   <th ng-if="cuentas[indexCuenta].descuento>0">Descuento</th>
+                                   <th>Total</th>
+                               </tr>
+                           </thead>
+                            <tbody>
+                                <tr style="background:transparent">
+                                    <td>{{cuentas[indexCuenta].subtotal | currency}}</td>
+                                    <td>{{cuentas[indexCuenta].iva | currency}}</td>
+                                    <td ng-if="cuentas[indexCuenta].descuento>0">{{cuentas[indexCuenta].descuento | currency }}</td>
+                                    
+                                    <td>{{cuentas[indexCuenta].total | currency}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="row" ng-if="cuentas[indexCuenta].subtotal>0&&platillos.length==0">
+                    <div class="col-xs-12">
+                        <button ng-click="abrirPago()" class="btn btn-primary btn-block"><i class="fa fa-usd"></i> Pagar</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="second-step-wraper" ng-if="show.secondStep">
+            <div class="row" ng-if="show.secondStep&&cuentas.length>0" style="margin-bottom:11px">
+                <div class="col-xs-12">
+                    <button ng-click="regresarAcuentas()" class="btn btn-primary btn-block">Regresar a paso anterior <i class="fa fa-undo"></i></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-pills nav-justified cuentas">
+                        <li ng-click="selectCuentaPagar($index)" ng-class="{'active-cuenta':c.active}" ng-repeat="c in cuentas"><a>{{c.id}}</a></li>
+
+                    </ul>
+
+                </div>
+            </div>
+
+                <div class="row" ng-if="cuentas.length>0">
+                    <div class="col-xs-12">
+                        <table class="table table-bordered table-striped" style="margin-top:11px;">
+                            <thead>
+                                <tr>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background:transparent">
+                                    <td>{{cuentas[indexCuenta].subtotal |currency}}</td>
+                                    <td>{{cuentas[indexCuenta].iva|currency}}</td>
+                                    <td>{{cuentas[indexCuenta].total|currency}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <h4 class="header-restaurant">Pago <i class="fa fa-usd"></i></h4>
+
+                <div class="row" ng-if="cuentas.length>0">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Monto Recibido</span>
+                                <input ng-change="obtenerCambio()" ng-model="pago.recibido" type="number" class="form-control" placeholder="Recibido" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> Cambio</span>
+                                <input ng-model="pago.cambio" class="form-control" placeholder="cambio" type="number" readonly />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row" ng-if="cuentas.length>0">
+                 <div class="col-xs-12">
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> M&eacute;todo de Pago</span>
+                                   <select class="form-control"  ng-model="pago.metodo_pago">
+                                  <option value="{{m.id}}" ng-repeat="m in metodosPago">
+                                      {{m.nombre}}
+                                  </option>
+
+                                   </select>
+                                </div>
+    
+                            </div>
+                 </div>
+
+                </div>
+                <div class="row" ng-if="cuentas.length>0">
+                    <div class="col-xs-12">
+                        <button ng-click="pagarCuenta()" class="btn btn-block btn-primary"><i class="fa fa-usd"></i> Pagar</button>
+                    </div>
+                 
+                </div>
+                <div class="row" ng-if="cuentas.length==0">
+                    <div class="col-xs-12">
+                        <button ng-click="terminar()" class="btn btn-block btn-success"><i class="fa fa-check"></i>Terminar y cerrar mesa</button>
+                    </div>
+                    
+                  <div class="col-xs-12">
+                    <button ng-click="goFacturar()" class="btn btn-block btn-primary"><i class="fa fa-file"></i> Facturar</button>
+                  </div>
+                  <div class="btn-group" style="padding:15px;">
+                      <button ng-click="abrirTicket(c)" ng-repeat="c in cuentasPagadas" class="btn btn-success"><i class="fa fa-print"></i> Ticket cuenta {{c}}</button>
+                  </div>
+                 
+                
+                </div>
+
+                </div>
+            <div class="por-monto-wraper" ng-if="show.montos">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button ng-click="regresarPaso1()" class="btn btn-primary btn-block"><i class="fa fa-undo"></i> Regresar</button>
+                    </div>
+                </div>
+                <h4 class="header-restaurant">Por montos <i class="fa fa-money"></i></h4>
+                <h4 class="header-restaurant">Total a Pagar: {{totalPagar|currency}}</h4>
+                <h4 class="header-restaurant" ng-if="descuento>0">Descuento: {{descuento | currency}}</h4>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label class="header-restaurant">Introduce El monto recibido y el monto del pago</label>
+                        <div class="btn-group">
+                            <button ng-click="agregarMonto()" class="btn btn-primary"><i class="fa fa-plus"></i>Agregar Cuenta</button>
+                             <button ng-click="cuentasIguales()" class="btn btn-primary"><i class="fa fa-medium" aria-hidden="true"></i> Cuentas Iguales</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:11px;">
+                    <div class="col-xs-12">
+                        <div class="form-group" ng-if="montos.length>0">
+                            <div class="row" ng-repeat="m in montos" style="margin-bottom:11px;">
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-top:5px;">
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Recibido</span>
+                                        <input type="number" ng-change="montoRecibido($index)" ng-model="m.recibido" placeholder="Recibido" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-top:5px;">
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Monto a Pagar</span>
+                                        <input type="number" ng-change="montoPago($index)" ng-model="m.monto" placeholder="Monto" class="form-control" />
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="margin-top:5px;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Cambio</span>
+                                        <input type="number" ng-model="m.cambio" placeholder="Cambio" class="form-control" readonly />
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+              
+            </div>
+            <div class="row" ng-if="pagoCubierto">
+                <div class="col-xs-12">
+                    <button ng-click="abrirPaso2Montos()" class="btn btn-primary btn-block"><i class="fa fa-usd"></i> Pagar</button>
+                </div>
+            </div>
+            <div class="pago-montos-wraper" ng-if="show.secondStepMontos">
+               <button ng-click="regresarAmontos()" class="btn btn-block btn-primary"><i class="fa fa-undo"></i> Regresar</button>
+                <div class="row">
+                   <div class="col-xs-12">
+                       <ul class="nav nav-pills cuentas">
+                           <li ng-click="activarMonto($index)" ng-class="{'active-cuenta':m.active}" ng-repeat="m in montos"><a>{{m.id}}</a></li>
+
+                       </ul>
+                   </div>
+               </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4 class="header-restaurant">Cuenta {{montos[indexMonto].id}}</h4>
+
+                    </div>
+                </div>
+                <div class="row" ng-if="montos.length>0">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead><tr>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background:transparent">
+                                        <td>{{(montos[indexMonto].monto/1.16) | currency}}</td>
+                                        <td>{{(montos[indexMonto].monto)-(montos[indexMonto].monto/1.16) | currency}}</td>
+                                        <td>{{montos[indexMonto].monto | currency}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="row" ng-if="montos.length>0">
+                        <div class="col-xs-12">
+                               <div class="form-group">
+                                       <div class="input-group">
+                                           <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> M&eacute;todo de Pago</span>
+                                          <select class="form-control"  ng-model="pago.metodo_pago">
+                                         <option value="{{m.id}}" ng-repeat="m in metodosPago">
+                                             {{m.nombre}}
+                                         </option>
+       
+                                          </select>
+                                       </div>
+           
+                                   </div>
+                        </div>
+       
+                       </div>
+                <div class="row" ng-if="montos.length>0">
+                    <div class="col-xs-12">
+                        <button ng-click="pagarCuentaMonto()" class="btn btn-block btn-primary"><i class="fa fa-usd"></i> Pagar Cuenta {{montos[indexMonto].id}}</button>
+                    </div>
+
+                </div>
+                <div class="row" ng-if="montos.length==0">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+                    <button ng-click="goFacturar()" class="btn btn-block btn-primary"><i class="fa fa-file"></i> Facturar</button>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <button ng-click="terminar()" class="btn btn-block btn-success"><i class="fa fa-check"></i> Terminar</button>
+                  </div>
+                  </div>
+                  <div class="row" ng-if="montos.length==0">
+                        <div class="col-xs-12">
+                            <div class="btn-group" style="padding:15px;">
+                                <button ng-click="abrirTicket(c)" class="btn btn-success" ng-repeat="c in cuentas_monto"><i class="fa fa-print"></i>Ticket Cuenta {{c}}</button>
+                            </div>
+                        </div>                                
+                  </div>
+               
+
+            </div>
+            <div class="pago-todo" ng-if="show.pagarTodo">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button ng-click="regresarPaso1()" class="btn btn-primary btn-block"><i class="fa fa-undo"></i> Regresar</button>
+                    </div>
+                </div>
+                <h4 class="header-restaurant">Pagar todo de una vez</h4>
+                <h4 class="header-restaurant">Total a pagar: {{totalPagar | currency}}</h4>
+                <h4 class="header-restaurant" ng-if="descuento>0">Descuento por Promoción: {{descuento | currency }}</h4>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Recibido</span>
+                                <input ng-change="pagarTodoRecibido()" type="number" class="form-control" ng-model="pagarTodo.recibido" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> Cambio</span>
+                                <input readonly type="number" class="form-control" ng-model="pagarTodo.cambio" />
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row" ng-if="totalPagar<=pagarTodo.recibido">
+                        <div class="col-xs-12">
+                               <div class="form-group">
+                                       <div class="input-group">
+                                           <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> M&eacute;todo de Pago</span>
+                                          <select class="form-control"  ng-model="pago.metodo_pago">
+                                         <option value="{{m.id}}" ng-repeat="m in metodosPago">
+                                             {{m.nombre}}
+                                         </option>
+       
+                                          </select>
+                                       </div>
+           
+                                   </div>
+                        </div>
+       
+                       </div>
+                <div class="row" ng-if="totalPagar<=pagarTodo.recibido">
+                    <div class="col-xs-12" ng-if="!todoPagado">
+                        <button ng-click="pagarTodo()" class="btn btn-block btn-primary"><i class="fa fa-usd"></i> Pagar</button>
+                    </div>
+                    <div class="col-xs-12"  ng-if="todoPagado">
+                        <button ng-click="terminar()" class="btn btn-block btn-danger"><i class="fa fa-toggle-off"></i> Terminar y Cerrar Mesa</button>
+                      <button ng-click="goFacturar()" class="btn btn-block btn-primary"><i class="fa fa-usd"></i> Facturar</button>
+                      <button  ng-if="show.pagarTodo"  ng-click="imprimirTicketTodo()" class="btn btn-block btn-primary"><i class="fa fa-print"></i> Imprimir ticket</button>
+                      
+                    </div>
+                  
+
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>

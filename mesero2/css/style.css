@@ -1,0 +1,494 @@
+﻿
+.mesas-tickets li{
+overflow: hidden;
+background: transparent;
+cursor: pointer;
+
+}
+.mesas-tickets li.mesa-activa{
+    background-color: #2ecc71 !important;
+
+}
+.mesas-tickets li.mesa-desactivada{
+    background-color: #e74c3c !important;
+    
+}
+@media only screen and (max-width: 500px) {
+  .block-adjust {
+    display:block !important;
+  }
+}
+.label-promo{
+    font-size: 14px;
+    padding: 5px;
+}
+.promo{
+    background: transparent !important;
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+  font-family: 'Dosis',sans-serif;
+  font-weight: bold;
+}
+.addon-search {
+  background-color: #3498db !important;
+  color: white !important;
+}
+
+.check-container {
+  background-color: white;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #34495e;
+}
+.active-li {
+  background-color: #3498db !important;
+  color: white !important;
+}
+tbody tr td {
+  background-color: #ecf0f1 !important;
+}
+th {
+  background-color: #e74c3c;
+  color:white !important;
+}
+.sidebar-nav {
+    font-family: 'Dosis',sans-serif;
+    font-weight: bolder !important;
+    letter-spacing: 1px;
+}
+
+label {
+    font-family: 'Dosis',sans-serif;
+    font-size: 16px;
+}
+
+th {
+    font-family: 'Dosis',sans-serif;
+    font-size: 17px;
+}
+
+.input-group {
+    font-family: 'Dosis',sans-serif;
+    font-weight: bolder !important;
+}
+
+.input-group-addon {
+    font-weight: bolder !important;
+    letter-spacing: 1px;
+}
+
+footer{
+        box-sizing: border-box;
+    width: 100%;
+}
+.footer-container{
+background-color:#e74c3c;
+color:#ecf0f1;
+text-align:center;
+}
+@media only screen and (max-width: 480px) {
+ .label-cantidad-platillo{
+    display:block !important;
+    line-height: 1 !important;
+}
+}
+.modal-img-container{
+margin: 0 auto;
+    overflow: hidden;
+    display: block;
+    text-align: center;
+
+}
+.modal-img-container img{
+    max-height:350px;
+}
+.modal{
+    overflow:auto !important;
+}
+.cuenta-platillo{
+    background:transparent;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.cuentas{
+
+}
+.cuentas li a{
+   color:white !important;
+
+}
+.cuentas li:hover{
+    background-color:#e74c3c !important;
+
+}
+
+
+.cuentas li.active-cuenta{
+        background-color:#e74c3c !important;
+
+}
+
+.static-control{
+        border: solid white thin;
+    margin: 0;
+    padding-left: 11px;
+    padding-bottom: 11px;
+}
+.platillos{
+
+        max-height: 400px;
+    overflow-y: auto;
+}
+.label-cantidad-platillo{
+       font-size: inherit;
+       line-height: 2;
+}
+.platillo{
+    color: white;
+    font-weight: bold;
+    border: solid #ecf0f1 thin;
+    padding-top: 0;
+}
+.nombre-platillo{
+        margin-top: 11px !important;
+}
+.media-left img{
+        width: 80px;
+    height: 80px;
+}
+
+.platillos-container{
+
+    overflow:hidden;
+
+}
+.header-restaurant{
+font-weight: bold;
+    color: white;
+    padding: 11px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.mesa-info{
+        border: solid #ecf0f1 2px;
+    margin-top: 11px;
+        background-color: #e74c3c;
+}
+.filtro-bebidas-activo{
+    background-color:#e74c3c !important;
+}
+
+.add-on-style1{
+        background-color: #2980b9;
+    color: white;
+
+}
+/*NUevos estilos para version angular modifcado por cristobal 26 de junio de 2017*/
+.modal-content{
+
+    background-color: #3498db;
+    color: white;
+    border-radius: 0;
+    border: none;
+}
+.show-container{
+    height:222px !important;
+}
+
+.pending-element{
+        background-color: #2980b9;
+    color: white;
+    font-weight: bold;
+    overflow:hidden;
+}
+
+html,body {
+    height:100%;
+     overflow:auto;
+
+background: -moz-linear-gradient(top, #1e5799 57%, #7db9e8 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(57%,#1e5799), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #1e5799 57%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #1e5799 57%,#7db9e8 100%); /* Opera 11.10+ */
+background: linear-gradient(to bottom, #1e5799 57%,#7db9e8 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 );
+   
+}
+
+.Boton_Parthenon{
+    background-color:#204d79; 
+    border-color:white; 
+    border-width:thin; 
+    color:white; 
+    font-weight:bolder;
+}
+
+.Boton_AgregarPedido{
+    background-color:#20aa79; 
+    border-color:white; 
+    border-width:thin; 
+    color:white; 
+    font-weight:bolder;
+}
+
+.xsmall{
+    font-size:x-small;
+}
+
+.topmargin{
+    margin-top:10px;
+}
+
+.Black_Font{
+    color:#000000;
+    font-weight:bolder;
+}
+
+.Contenedor_Parthenon{
+    background-color:#204d79; 
+    border-color:#204d79; 
+    border-width:medium; 
+    color:black; 
+    font-weight:bolder;
+}
+
+.Fill {
+    width:100%;
+    height:100%;
+}
+
+.Fill_Container{
+    width:100%;
+    height:auto;
+}
+
+.Light_Padding{
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+.mesa{
+    position:absolute; 
+    width:100px; 
+    height:100px; 
+    left:100px; 
+    top:100px;
+}
+
+.ModalContainer{
+    width:100%; 
+    height:auto;
+}
+
+.Numero_Mesa{
+    font-weight:bolder;
+    font-size:x-large;
+    color:white;
+}
+
+.Numero_Pedido{
+    font-weight:bolder;
+    font-size:medium;
+    color:white;
+}
+
+.NavBar_Right{
+    float:right; 
+    width:10vw;
+}
+
+.TopPadding{
+    padding-top:10px;
+}
+
+.WhiteFrame{
+    margin-top:10px;
+    margin-bottom:10px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color:transparent;
+    border:solid;
+    border-width:medium;
+    border-color:white;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+
+.Fit_Container{
+    width:100%; 
+    height:auto;
+}
+
+.NavBar_Button{
+    background-color:transparent; 
+    color:white;
+}
+
+.NavBar_Button:hover{
+    color:blue;
+}
+
+
+/*Actualizaciones Enero 2016*/
+.Bfont{
+    text-transform: uppercase;
+    font-family: 'Josefin Slab','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.activada
+{
+    /*
+    background-color:rgba(150,198,53,0.9);
+    */
+    background-color:#2ecc71;
+    border:double;
+    border-color:white;
+}
+.desactivada{
+ /*   background-color:rgba(255,97,44,0.9); */
+ background-color:#e74c3c;
+    border:double;
+    border-color:white;
+}
+
+.filler{
+    width:100%;
+    height:auto;
+}
+
+.mesa_left_container{
+    float:left; 
+    width:50%;
+    height:auto;
+    text-align:center;
+    font-size:18px;
+    color:white;
+}
+.mesa_right_container{
+    float:right;
+    width:50%;
+    height:auto;
+    text-align:center;
+    color:white;
+    
+}
+
+.mesa_style{
+    padding:10px 10px 10px 10px; 
+    border-radius:10px 10px;
+    margin-bottom:11px;
+}
+
+#MesasContainer{
+    float:left; 
+    width:50%;
+    height:80%;
+    overflow-y:auto;
+    background-color:transparent;
+    background-size: 350px 350px;
+    background-position-x:center;
+    background-position-y:center;
+    background-repeat: no-repeat;
+    margin-bottom:0px;
+}
+
+#PendingContainer{
+    float:left; 
+    width:50%;
+    background-color:transparent;
+}
+
+.show-all{
+    width:100% !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+@media only screen and (max-width: 500px) {
+  #MesasContainer{
+    float:left; 
+    width:100%;
+    height:80%;
+    overflow-y:scroll;
+    background-color:transparent;
+    background-size: 350px 350px;
+    background-position-x:center;
+    background-position-y:center;
+    background-repeat: no-repeat;
+    margin-bottom:0px;
+}
+
+#PendingContainer{
+    float:left; 
+    width:100%;
+    background-color:transparent;
+}
+
+
+}
+
+.HeaderInfo{
+    color:white;
+    font-weight:bolder;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+.Pending_Container{
+    margin: 10px 10px 10px 10px;
+    min-height:222px; 
+    max-height:225px;
+    overflow-y:auto; 
+    overflow-x:hidden; 
+    background-color:transparent; 
+    margin-top:10px; 
+    border:solid; 
+    border-width:thin; 
+    border-color:white; 
+    border-bottom-left-radius:10px; 
+    border-top-left-radius:10px;
+}
+
+.Translucid{
+    background-color:transparent;
+    border:none;
+}
+
+
+.ContainerAdjust
+{
+    width:100%; 
+    height:auto;
+}
+
+.PendingFrame{
+    background-color:#b7dee8;
+    margin-right:10px;
+    width:100%;
+    height:100%;
+}
+
+.Align_Center{
+    text-align:center;
+}
+
+.Align_Right{
+    text-align:right;
+}
+
+.btn_fs_sm{
+    font-size:18px;
+}

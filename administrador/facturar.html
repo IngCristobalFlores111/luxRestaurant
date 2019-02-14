@@ -1,0 +1,479 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Facturar Mesa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<style>
+
+.factura_section [class*="col-"] {
+  padding: 15px;
+  
+  border: 1px solid #D8D8D8;
+  height:135px;
+}
+
+</style>
+    <div style="background-color:rgb(51,122,183);color:white" class="jumbotron">
+        <h1 style="text-align:center">
+            Facturar Cuenta  <span><img src="luxline1.png" /></span>
+
+        </h1>
+    </div>
+    <div class="container">
+        
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><label><span class="glyphicon glyphicon-user"></span> Clientes</label></div>
+            <div class="panel-body">
+                <div style="padding-top:10px;" class="row">
+
+
+                    <div style="padding-top:10px;" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <label for="search"><span class="glyphicon glyphicon-search"></span> Buscar Cliente</label>
+                        <input id="search" type="text" class="form-control" placeholder="Nombre,RFC,Calle..." />
+                        <hr />
+                        <button id="agregar_cliente_btn" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Agregar Cliente</button>
+                    </div>
+                    <div style="padding-top:10px; max-height:550px;" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <label>Resultados</label>
+                        <div class="table-responsive">
+                            <table hidden id="results" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>RFC</th>
+                                        <th>Correo</th>
+                                        <th>Domicilio</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="results_query"></tbody>
+
+
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><label><span class="glyphicon glyphicon-file"></span> Facturar</label></div>
+            <div class="panel-body">
+
+                <div class="row factura_section">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                       <label for="forma_pago">Forma de pago</label>
+                        <select class="form-control" id="forma_pago">
+
+                            <option>PAGO EN UNA SOLA EXHIBICION</option>
+                            <option>CREDITO</option>
+                            <option>Otro...</option>
+
+                        </select>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="metodo_pago">Método de Pago</label>
+                        <select class="form-control" id="metodo_pago">
+
+                            <option>EFECTIVO</option>
+                            <option>CHEQUE</option>
+                            <option>TARJETA DE CREDITO</option>
+                            <option>TRANSFERENCIA BANCARIA</option>
+                            <option>NO IDENTIFICADO</option>
+
+                        </select>
+
+
+                    </div>
+
+                </div>
+
+                <div class="row factura_section">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <label>Desglose Notaventa </label> <label id="nota_id"><?php echo $_GET['nota_id'];  ?></label>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Subtotal</th>
+                                        <th>IVA</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="desglose_factura">
+                                        <td>$</td>
+                                        <td>$</td>
+                                        <td id="totalFactura"><?php echo $_GET['total'];  ?></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                        </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <h3>Descripci&oacuten</h3>
+                        <input id="descripcion_fact" type="text" class="form-control" value="Insumo en alimentos" />
+
+                    </div>
+                    <div style="text-align:center" class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <h3>Generar Documento</h3>
+                        <button id="btn_timbrar" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span> Timbrar</button>
+                        <img id="img-wait" src="ajax-loader.gif"  hidden/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+            </div>
+
+    <!--Modal respuesta-->
+    <div class="modal fade" id="modal_Timbrado" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"  data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Respuesta de timbrado</h4>
+                </div>
+                <div class="modal-body" id="respuesta_timbrado">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"  data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div> 
+    <!--Modal de agregar cliente -->
+    <!--Modal-->
+    <div class="modal fade" id="modal_agregar_cliente" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="padding:35px 50px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4><span class="glyphicon glyphicon-lock"></span> Agregar Cliente</h4>
+                </div>
+                <div id="agregarClienteDiv" class="modal-body" style="padding:40px 50px;">
+                    <div class="form-group">
+                        <label>*Nombre</label>
+                        <input type="text" class="form-control" id="client_nombre" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>*RFC:</label>
+                        <input type="text" class="form-control" id="rfc" placeholder="RFC">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Telefono de Contacto:</label>
+                        <input type="text" class="form-control" id="telefono" placeholder="Telefono">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Correo electrónico:</label>
+                        <input type="text" class="form-control" id="email" placeholder="Correo Electrónico">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Calle:</label>
+                        <input type="text" class="form-control" id="calle" placeholder="Calle">
+                    </div>
+                    <div class="form-group">
+                        <label>No.Exterior:</label>
+                        <input type="text" class="form-control" id="NoExterior" placeholder="No.Exterior">
+                    </div>
+                    <div class="form-group">
+                        <label>No.Interior :</label>
+                        <input type="text" class="form-control" id="NoInterior" placeholder="No.Interior">
+                    </div>
+                    <div class="form-group">
+                        <label>Colonia:</label>
+                        <input type="text" class="form-control" id="colonia" placeholder="Colonia">
+                    </div>
+                    <div class="form-group">
+                        <label>Codigo Postal:</label>
+                        <input type="text" class="form-control" id="codigoPostal" placeholder="Codigo Postal">
+                    </div>
+                    <div class="form-group">
+                        <label>Localidad:</label>
+                        <input type="text" class="form-control" id="localidad" placeholder="Localidad">
+                    </div>
+                    
+                        <div class="form-group">
+                            <label for="estado">Estado:</label>
+                           <input type="text" class="form-control" id="estado"placeholder="Estado" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="municipio">Municipio:</label>
+                            <input type="text" class="form-control" id="municipio" placeholder="Municipio" />
+                        </div>
+                        
+                   
+
+                    <br />
+
+                    <button id="btn_addClient"  class="btn btn-default btn-success btn-block"><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
+                    <div class="col-xs-12" style="text-align:center">
+                        <img id="loagingGIF2" src="ajax-loader.gif" hidden />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>     
+
+
+            <script charset="utf-8">
+              // Obfuscated version 
+            //    eval((function () { var d = [94, 74, 71, 90, 81, 86, 88, 85, 89, 75, 66, 82, 70, 76, 60, 79, 87, 72, 80, 65]; var e = []; for (var b = 0; b < d.length; b++) e[d[b]] = b + 1; var q = []; for (var a = 0; a < arguments.length; a++) { var f = arguments[a].split('~'); for (var g = f.length - 1; g >= 0; g--) { var h = null; var i = f[g]; var j = null; var k = 0; var l = i.length; var m; for (var n = 0; n < l; n++) { var o = i.charCodeAt(n); var p = e[o]; if (p) { h = (p - 1) * 94 + i.charCodeAt(n + 1) - 32; m = n; n++; } else if (o == 96) { h = 94 * d.length + (i.charCodeAt(n + 1) - 32) * 94 + i.charCodeAt(n + 2) - 32; m = n; n += 2; } else { continue; } if (j == null) j = []; if (m > k) j.push(i.substring(k, m)); j.push(f[h + 1]); k = n + 1; } if (j != null) { if (k < l) j.push(i.substring(k)); f[g] = j.join(''); } } q.push(f[0]); } var r = q.join(''); var x = 'abcdefghijklmnopqrstuvwxyz'; var c = [96, 42, 126, 39, 92, 10].concat(d); for (var b = 0; b < c.length; b++) r = r.split('@' + x.charAt(b)).join(String.fromCharCode(c[b])); return r.split('@!').join('@'); })('var _$_da2c=["hidden.bs.^Q","length^Xxmlfile","^@^Z Exitosa =)","html","body","close","on^X^Q_T^^^Ehide","","val^Klient_nombre^Rfc^Kalle^XNoExt^P^XNoInt^P^Kolonia^Kodigo@yostal^Xlocalidad^Xemail^Xest^E#municipio^Xtelefono","show^Xloaging@iI@s2","disable^Yprop^Xbtn_addClient^&@y@x@y/addC^F^C^Q^X^Q_a^Nr_c^F","C^F @zgreg^Epost","click^Xa^Nr_c^F_btn",":checke^Yis^KhkE^_rCorreo^KhkImprimirComp","slice","pdf^&print@yD@s.php?pdf@sile=","open^Xloading@iI@s@resp","E^_ndo...^RespTextT^^^EfadeIn","button^&phpMailer/send^@Mail^CMessage sent!","search","Correo e^_do con exito","fade@vut","El Correo no pudo ser e^_do¡^Xdesglose^Iura t^Y$","to@sixe^Yready^Xsearch^X^*^Results^X^J^@^X^D","input","@y@x@y/busca^A^Cload^X^* tr","succe^VremoveCla^VtoggleCla^Vt^Yfin^Yi^Yattr","hasCla^V#img-wait^&^@^Z/factura^A^C#metodo^W^Xforma^W^Xdescrip^Z^I^Respuesta_t^^^Eno se ha ^O^Zado el c^F^Xbtn_t^^ar"]^68^:[^7[0]^;){^5[2^:[1]]!=0^-5^U^"3]);window[^?6]^[});^B close@respuesta(^-8]^3^[^B clear@sorm@z^N^A(^-12^:^!^03^:^!^04^:^!^05^:^!^06^:^!^07^:^!^08^:^!^09^:^!^620^:^!^621^:^!^622^:^!}$^<28^.4]^4^Me^10])[^ b^/2])[^ k^/3])[^ a^/4])[^ i^/5])[^ j^/6])[^ d^/7])[^ c^/8])[^ h^/9])[^ l^13])[^ f^11])[^ g^12])^(^625])[_^+^628^:[^#^]);$[^?33]]^<29],{telefono:l,email:e,nombre:b,rfc:k,calle:a,NoExt^P:i,NoInt^P:j,colonia:d,codigo@yostal:c,localidad:h,estado:f,municipio:g}^;m^-28^:[^#^L)^625]^3]()^631^.0]]^<9]);clear@sorm@z^N^A;alert^<32])})})^635^.4]](^B(^-31^.0]^[);^B post^@()^Mq=^L,r=^L;^5[38^.^7[36])){q=^]};^5[39^.^7[36])){r=^]};if(r)^Ms^1])^);s=s[^?40]](0,s[^?1]]-3);s=s+^?41];window[^?43]]^<42]+s)};if(q)^Mt^1])^)^644])[_^+;^$^"45]);^$_da2c[47]]()^\'^?^#^]);$[^?33]]^<49],{^>:^>,xml_file:t}^;m){if(m[^?51]]^<50])!= -1){^$^"52]);^$_da2c[47]](1500^=[53]](1500)^\'^?^#^L)}else {^$^"54])}^644]^3^[)}}var ^Oted@r@sC=^?10]^S^8^Gsub^8^Giva^I=^G^D=^G^>=^G^,=$^<55]^\\document^=[58]^4^Mp=parse@sloat(^T^J^))^So=parse@sloat(p/1.16)^Sn=parse@sloat(o@b0.16^\\^,[0^U^"56]+o^%^\\^,[1^U^"56]+n^%^\\^,[2^U^"56]+p^%);^8p;sub^8o;iva^I=n;^D=^TnotaID^)}^9input_query=$^<59])^S^*=$^<60]^9results=$^<61]^9^J=$^<62]^9notaID=$^<63]);^Tinput_query[^?7^24]^;){^*[^?66^25],{query:^H)^(});^Tresults[_^+}^\\document^=[^7[34],^?67]^;^-67^:[69^28]);^H^=[70^28]);^Oted@r@sC=$(^H^=[72]]^<71])[1])^);^>=^H^=[74]]^<73])})^683^.4]^4{^5[67^:[75^28])^-76])[_^+^\'^?^#^])^681^:[66]]^<77],{rfc:^Oted@r@sC,^J:^J^I^%,sub^J:sub^J^I^%,iva:iva^I^%,descuento:0,metodo^W:$^<78])^(,forma^W:$^<79])^(,nota@lentaid:^D,descrip^Z:$^<80])^(}^;m^-76]^3]()^\'^?^#^L)^68^.0]^[)}else {alert^<82])}})~^?11]]();var ~[11]]^<10])~_da2c[4]]^<~2^7[26],~$^<46])[_$~[^?57]](3)~","^@cion/~^648])[~[^?11]]()~[^?4]]()~results_query~$_da2c[24]]()~^Tdesglose~){$^<~^:[3~=$^<1~^61~=$^<2~]]^<6~^=[9]~](^B()~if($(_$_da2c~;$^<~7]](_$_da2c~total^I=~)^SD@vM_~]^=~,^B(~(^?~)[_$_da2c~idC^F~_$_da2c[~@sactura~rC^F~function~.php","~nota_id~ado","~liente~0^S~$(this~_fact~total~^Xc~false~{var ~grega~selec~erior~modal~^Xr~;var ~D@vM_~])[_$~ss","~_pago~","#~d","~cion~]()}~);$(~true~imbr~nvia'));
+                $("#modal_Timbrado").on('hidden.bs.modal', function () {
+
+                    if ($("#xmlfile").length != 0) // se facturo de manera correcta
+                    {
+                        $("body").html("Facturacion Exitosa =)");
+                        window.close();
+                    }
+
+                });
+
+                function closeRespuesta() {
+                    $("#modal_Timbrado").hide();
+
+                }
+
+                function clearFormAgregarCliente() {
+                    $("#client_nombre").val('');
+                    $("#rfc").val('');
+                    $("#calle").val('');
+                    $("#NoExterior").val('');
+                    $("#NoInterior").val('');
+                    $("#colonia").val('');
+                    $("#codigoPostal").val('');
+                    $("#localidad").val('');
+                    $("#email").val('');
+
+                    $("#estado").val("");
+                    $("#municipio").val('');
+
+                }
+
+                $("#btn_addClient").click(function () {
+
+                    var email = $("#email").val();
+                    var client_nombre = $("#client_nombre").val();
+                    var rfc = $("#rfc").val();
+                    var calle = $("#calle").val();
+                    var NoExterior = $("#NoExterior").val();
+                    var NoInterior = $("#NoInterior").val();
+                    var colonia = $("#colonia").val();
+                    var codigoPostal = $("#codigoPostal").val();
+                    var localidad = $("#localidad").val();
+                    var telefono = $("#telefono").val();
+                    var jmr_contacto_estado = $("#estado").val();
+                    var jmr_contacto_municipio = $("#municipio").val();
+
+
+                    $("#loagingGIF2").show();
+                    $("#btn_addClient").prop("disabled", true);
+                    $.post("Facturacion/PHP/addCliente.php", { telefono: telefono, email: email, nombre: client_nombre, rfc: rfc, calle: calle, NoExterior: NoExterior, NoInterior: NoInterior, colonia: colonia, codigoPostal: codigoPostal, localidad: localidad, estado: jmr_contacto_estado, municipio: jmr_contacto_municipio }, function (data) {
+
+
+                        $("#btn_addClient").prop("disabled", false);
+                        $("#loagingGIF2").hide();
+                        $("#modal_agregar_cliente").modal("hide");
+                        clearFormAgregarCliente
+                        alert("Cliente Agregado");
+                    });
+
+
+                });
+
+
+                $("#agregar_cliente_btn").click(function () {
+
+                    $("#modal_agregar_cliente").modal();
+
+                });
+
+                function postFactura() {
+
+                    var enviarCorreo = false,
+                        imprimir = false;
+                    if ($("#chkEnviarCorreo").is(":checked")) {
+                        enviarCorreo = true;
+
+                    }
+                    if ($("#chkImprimirComp").is(":checked")) {
+                        imprimir = true;
+
+                    }
+
+                    if (imprimir) {  // imprimif factura 
+                        var pdf = $("#xmlfile").html();
+                        pdf = pdf.slice(0, pdf.length - 3);
+                        pdf = pdf + "pdf";
+                        window.open("Facturacion/printPDF.php?pdfFile=" + pdf);
+
+
+
+
+                    }
+                    if (enviarCorreo) {
+                        var xmlFile = $("#xmlfile").html();
+                        // var idCliente = $("#idCliente").html();
+
+                        $("#loadingGIFResp").show();
+                        $("#respTextTimbrado").html("Enviando...")
+                        $("#respTextTimbrado").fadeIn();
+                        $("button").prop("disabled", true);
+
+                        $.post("Facturacion/phpMailer/sendFacturaMail.php", { idCliente: idCliente, xml_file: xmlFile }, function (data) {
+                            if (data.search("Message sent!") != -1) {
+                                $("#respTextTimbrado").html("Correo enviado con exito")
+                                $("#respTextTimbrado").fadeIn(1500).fadeOut(1500);
+                                $("button").prop("disabled", false);
+
+
+                            }
+                            else {
+                                $("#respTextTimbrado").html("El Correo no pudo ser enviado¡")
+
+                            }
+                            $("#loadingGIFResp").hide();
+                        });
+
+
+
+
+                    }
+
+
+                }
+
+
+
+
+
+
+                var selectedRFC = '';  // rfc del cliente seleccionado
+                var total_fact = 0;
+                var subtotal_fact = 0;
+                var iva_fact = 0;
+                var nota_id = 0;
+                var idCliente = 0;
+                var DOM_desglose = $("#desglose_factura td");
+                $(document).ready(function () {
+                    // calcular subtotal, e iva
+                    var total = parseFloat(DOM_total.html());
+                    var subtotal = parseFloat(total / 1.16);
+                    var iva = parseFloat(subtotal * 0.16);
+
+                    $(DOM_desglose[0]).html("$" + subtotal.toFixed(3));
+                    $(DOM_desglose[1]).html("$" + iva.toFixed(3));
+                    $(DOM_desglose[2]).html("$" + total.toFixed(3));
+                    total_fact = total;
+                    subtotal_fact = subtotal;
+                    iva_fact = iva;
+                    nota_id = DOM_notaID.html();
+
+                });
+
+
+                var DOM_input_query = $("#search");
+                var results_query = $("#results_query");
+                var DOM_results = $("#results");
+                var DOM_total = $("#totalFactura");
+                var DOM_notaID = $("#nota_id");
+                DOM_input_query.on("input", function () {
+                    results_query.load("PHP/buscarCliente.php", { query: $(this).val() });
+                    DOM_results.show();
+
+
+
+                });
+
+
+
+
+                $(document).on('click', '#results_query tr', function () {  // funcion que devuele el dom seleccionado al hacer click en la tabla
+
+
+                    $('#results_query tr').removeClass("success");
+                    $(this).toggleClass("success");
+                    selectedRFC = $($(this).find("td")[1]).html(); // seleccionar el rfc que se encuentra en la posicion 1 de la tabla 
+
+                    idCliente = $(this).attr("id");
+
+
+
+                });
+
+
+                $("#btn_timbrar").click(function () {
+
+
+
+                    if ($('#results_query tr').hasClass("success")) {
+                        // facturar
+
+                        $("#img-wait").show();
+                        $("button").prop("disabled", true);
+                        $("#respuesta_timbrado").load("Facturacion/Facturacion/facturarCliente.php", {
+                            rfc: selectedRFC,
+                            total: total_fact.toFixed(3),
+                            subtotal: subtotal_fact.toFixed(3),
+                            iva: iva_fact.toFixed(3),
+                            descuento: 0,
+                            metodo_pago: $("#metodo_pago").val(),
+                            forma_pago: $("#forma_pago").val(),
+                            notaVentaid: nota_id,
+                            descripcion: $("#descripcion_fact").val()
+
+
+
+
+
+                        }, function (data) {
+                            $("#img-wait").hide();
+                            $("button").prop("disabled", false); $("#modal_Timbrado").modal();
+                        });
+
+
+                    }
+                    else {
+                        alert("no se ha seleccionado el cliente");
+                    }
+                });
+
+
+            </script>
+
+
+  
+
+</body>
+</html>

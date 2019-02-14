@@ -1,0 +1,45 @@
+<div id="modalUsrSetting" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Hola {{usr.nombre}}</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <div class="input-group">
+                      <span class="input-group-addon add-on-style1"><i class="fa fa-male" aria-hidden="true"></i> <i class="fa fa-female" aria-hidden="true"></i> Nombre</span>
+                      <input ng-model="usr.usr" placeholder="Usuario" type="text" class="form-control" />
+                  </div>
+
+              </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon add-on-style1"><i class="fa fa-user-circle" aria-hidden="true"></i> Usuario</span>
+                        <input ng-model="usr.nombre" placeholder="Nombre" type="text" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon add-on-style1"><i class="fa fa-key" aria-hidden="true"></i> Contrase&ntilde;a</span>
+                        <input ng-model="usr.pass" placeholder="Password" type="password" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="btn-group">
+                    <button ng-click="updateUsr()" role="button" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+                    <button role="button" type="button" data-dismiss="modal" class="btn btn-default"><i class="fa fa-times"></i> Cancelar</button>               
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,168 @@
+<div class="row">
+    <div class="col-lg-6">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Productos Caducados</h3>
+                <div id="plot_top_productos_caducados">
+
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive">
+
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="color:white;background-color:rgb(51,122,183)">
+                                <th>Nombre</th>
+                                <th>Costo</th>
+                                <th>Cantidad</th>
+                                <th>Fecha de caducaci&oacuten</th>
+                                <th>D&iacuteas Caducados</th>
+                                <th>En almacen</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="table_ingredientes_caducados"></tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Productos a punto de caducar</h3>
+                <div id="a_caducar_plot">
+
+                </div>
+
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="color:white;background-color:rgb(51,122,183)">
+                                <th>Nombre</th>
+                                <th>Costo</th>
+                                <th>Cantidad</th>
+                                <th>Fecha de caducaci&oacuten</th>
+                                <th>D&iacuteas faltantes</th>
+                                <th>En almacen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_ingredientes_a_caducar">
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+    </div>
+
+</div>
+<script>
+
+    $.post("PHP/getCaducar.php", function (data) {
+
+        var obj = JSON.parse(data);
+        var jSon = obj.plots;
+        var len = jSon.length; var i = 0;
+        var plot_data = [];
+        for (; i < len; i++)
+        {
+            plot_data.push({
+                label: jSon[i].nombre,
+                value: parseInt(jSon[i].dias_caducados)
+            });
+
+
+        }
+
+        var jSon2 = obj.table;
+        len = jSon2.length; i = 0;
+        var output_table = '';
+        for (; i < len; i++)
+        {
+            var ingrediente = jSon2[i];
+            output_table += "<tr>";
+            output_table += "<td>"+ingrediente.nombre+"</td>";
+            output_table += "<td>" + ingrediente.costo + "</td>";
+            output_table += "<td>" + ingrediente.cantidad + "</td>";
+            output_table += "<td>" + ingrediente.fecha_caducidad + "</td>";
+            output_table += "<td>" + ingrediente.dias_caducados + "</td>";
+            output_table += "<td>" + ingrediente.enAlmacen + "</td>";
+
+
+
+            output_table += "</tr>";
+
+        }
+
+        $("#table_ingredientes_caducados").html(output_table);
+
+
+        var jSon3 = obj.table_a_caducar;
+        len = jSon3.length; i = 0;
+        output_table = '';
+        var plot_por_caducar = [];
+        for (; i < len; i++)
+        {
+            var ingrediente = jSon3[i];
+            output_table += "<tr>";
+            output_table += "<td>" + ingrediente.nombre + "</td>";
+            output_table += "<td>" + ingrediente.costo + "</td>";
+            output_table += "<td>" + ingrediente.cantidad + "</td>";
+            output_table += "<td>" + ingrediente.fecha_caducidad + "</td>";
+            output_table += "<td>" + ingrediente.dias_para_caducar + "</td>";
+            output_table += "<td>" + ingrediente.enAlmacen + "</td>";
+           
+
+            output_table += "</tr>";
+
+            plot_por_caducar.push({
+                label: ingrediente.nombre,
+                value: parseInt(ingrediente.dias_para_caducar)
+            });
+
+        }
+        $("#table_ingredientes_a_caducar").html(output_table);
+
+
+
+        Morris.Donut({
+            element: 'a_caducar_plot',
+            data: plot_por_caducar,
+            resize: true
+        });
+
+
+
+        Morris.Donut({
+            element: 'plot_top_productos_caducados',
+            data: plot_data,
+            resize: true
+        });
+    });
+
+
+
+    
+
+
+</script>

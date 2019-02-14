@@ -1,0 +1,162 @@
+﻿
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="mesa-info">
+                <h3 class="header-restaurant">{{mesa.nombre}} , {{mesa.comensales}} Comensales</h3>
+                <label class="header-restaurant">Fecha de llegada: {{mesa.fecha_llegada | date: 'medium'}} </label>
+            </div>
+        </div>
+        
+        <div ng-if="platillosMesa.length>0" style="margin-top:11px;" class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <button  ng-click="pagarCuenta()" class="btn-lg btn btn-success btn-block"><i class="fa fa-money"></i> Pagar Cuenta</button>
+        </div>
+        <div style="margin-top:11px;" class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <a href="index.html" class="btn btn-lg btn-primary btn-block"><i class="fa fa-backward"></i> Regresar</a>
+        </div>
+        <div style="margin-top:11px;"  ng-if="platillosMesa.length==0" class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+
+                <button ng-click="terminar()" class="btn-block btn-lg btn btn-danger">Cerrar mesa <i class="fa fa-power-off"></i></button>
+         
+        </div>
+        </div>
+  
+    <div class="row" ng-if="mesa.ocupado==0">
+        <div class="col-xs-12">
+            <h2 class="header-restaurant">Abre la mesa para comenzar</h2>
+        </div>
+    </div>
+
+    <div class="row" ng-if="mesa.ocupado==1">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="platillos-container">
+                <h4 style="margin-bottom:11px;" class="header-restaurant">Pedir Platillos
+                     <button ng-click="hideShow(0)" class="btn btn-primary pull-right"><i ng-class="{'fa-eye':show.platillos,'fa-eye-slash':!show.platillos}" class="fa"></i></button>
+                     <button class="btn btn-warning pull-right" ng-click="mostrarPromos()"><i class="fa fa-product-hunt" aria-hidden="true"></i> Promociones</button>
+                    </h4>
+
+                <div class="form-group"  ng-show="show.platillos">
+                    <div class="input-group">
+                        <span class="input-group-addon add-on-style1"><i class="fa fa-search"></i></span>
+                        <input ng-model="q" class="form-control" type="text" placeholder="Busca un platillo por nombre,precio,descripcion..." />
+                    </div>
+
+                </div>
+
+
+                <div class="platillos"  ng-show="show.platillos">
+                    <div class="platillo" ng-repeat="p in platillos |filter:q">
+                        <div class="media">
+                            <div class="media-left">
+                                <img style="cursor:pointer" ng-click="abrirModal(p,0)" ng-src="../images/{{p.imagepath}}" class="media-object img-responsive img-thumbnail">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading nombre-platillo">{{p.nombre}} <label class="label label-info block-adjust">{{p.precio|currency}}</label></h4>
+                                <p>{{p.descripcion}}</p>
+                                <div class="row visible-lg visible-md visible-sm" ng-if="p.abierto" style="margin-bottom:5px;">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon add-on-style1"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            <input class="form-control" placeholder="Cantidad que piden" type="number" ng-model="p.cantidad" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon add-on-style1"><i class="fa fa-cutlery" aria-hidden="true"></i></span>
+                                            <input class="form-control" type="text" placeholder="Comentario" ng-model="p.comentarios" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row visible-lg visible-md visible-sm" ng-if="p.abierto" style="margin-bottom:5px;">
+                                    <div class="col-xs-12">
+                                        <button ng-click="agregarPlatillo(p)" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <button ng-click="openPlatillo(p)" class="btn btn-success btn-lg"><i class="fa" ng-class="{'fa-undo':p.abierto,'fa-plus':!p.abierto}" aria-hidden="true"></i></button>
+                            </div>
+                          <div class="row visible-xs" ng-if="p.abierto" style="margin-bottom:5px;">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                <input class="form-control" placeholder="Cantidad que piden" type="number" ng-model="p.cantidad" />
+                              </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <div class="input-group">
+                                <span class="input-group-addon add-on-style1"><i class="fa fa-cutlery" aria-hidden="true"></i></span>
+                                <input class="form-control" type="text" placeholder="Comentario" ng-model="p.comentarios" />
+                              </div>
+                            </div>
+
+
+                          </div>
+                          <div class="row visible-xs" ng-if="p.abierto" style="margin-bottom:5px;">
+                            <div class="col-xs-12">
+                              <button ng-click="agregarPlatillo(p)" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Aceptar</button>
+                            </div>
+                          </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" >
+            <h4 style="margin-bottom:11px;" class="header-restaurant">Platillos Pedidos <button  ng-click="hideShow(1)" class="btn btn-primary pull-right"><i ng-class="{'fa-eye':show.pedidos,'fa-eye-slash':!show.pedidos}" class="fa"></i></button></h4>
+            <div class="platillos-container" ng-show="show.pedidos">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon add-on-style1"><i class="fa fa-search"></i></span>
+                        <input ng-model="q2" class="form-control" type="text" placeholder="Busca un platillo,comentario..." />
+                    </div>
+
+                </div>
+
+
+                <div class="platillos">
+                    <div ng-if="p.cantidad>0" class="platillo" ng-repeat="p in platillosMesa|filter:q2 track by $index">
+                        <div class="media">
+                            <div class="media-left">
+                                <img style="cursor:pointer;"  ng-click="abrirModal(p,1)" ng-src="../images/{{p.imagepath}}" class="media-object img-responsive img-thumbnail">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading nombre-platillo">{{p.nombre}} 
+                                <label class="label label-info label-cantidad-platillo">x{{p.cantidad}}</label>
+                                <label class="label label-success label-cantidad-platillo">Servido:x{{p.cantidad_servido}}</label>
+                                </h4>
+                                <p>{{p.comentarios}} </p>
+                            </div>
+                            <div class="media-right">
+                                <button ng-click="restarPlatillo(p)" class="btn btn-lg btn-warning"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'views/modalPlatilloDetalle.htm'"></div>
+    <div class="modal fade" id="modalCobrar" role="dialog" ng-controller="ctrlCobrar" ng-include="'views/modalCobrar.htm'">
+    
+</div>
+<div class="modal fade" id="modalFacturar" role="dialog" ng-controller="ctrlFacturar" ng-include="'views/modalFacturar.htm'">
+
+</div>
+<div ng-controller="ctrlPromos" ng-include="'views/modalPromos.htm'">
+</div>

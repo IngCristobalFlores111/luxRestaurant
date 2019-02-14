@@ -1,0 +1,148 @@
+<h1>Reseñas de los usuarios</h1>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <h4>Los Mejores puntuados</h4>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Platillo</th>
+                        <th>Estrellas</th>
+                        <th>Ultimo Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="r in top5Mas">
+                        <td>{{r.platillo}}</td>
+                        <td class="stars-td">
+                            <i ng-repeat="e in starsArray(r.stars)" class="fa fa-star"></i>
+                        </td>      
+                        <td>{{r.comentario}}</td>             
+                    
+                    </tr>
+                    <tr ng-if="top5Mas.length==0">
+                            <td colspan="3" >No se han generado reseñas hasta el momento</td>
+    
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <h4>Los Peores puntuados</h4>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Platillo</th>
+                        <th>Estrellas</th>
+                        <th>Ultimo Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="r in top5Menos">
+                        <td>{{r.platillo}}</td>
+                        <td class="stars-td">
+                            <i ng-repeat="e in starsArray(r.stars)" class="fa fa-star"></i>
+                        </td>      
+                        <td>{{r.comentario}}</td>             
+                    
+                    </tr>
+                    <tr ng-if="top5Menos.length==0">
+                        <td colspan="3" >No se han generado reseñas hasta el momento</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+<div class="well">
+    <h4>Buscar reseñas</h4>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i> Fecha Inicio</span>
+                    <input type="date" class="form-control" ng-model="filtros.fechaInicio"  />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i> Fecha Fin</span>
+                    <input type="date" class="form-control" ng-model="filtros.fechaFin"  />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-smile-o"></i> Estrellas
+                            <input type="checkbox" ng-model="filtros.porRating" />
+                            </span>
+                           <div class="stars-wraper">
+                            <div class="stars-rating-wraper" star-rating ng-model="filtros.rating" max="5" on-rating-select="ratingPlatillo(rating)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+        </div>    
+        <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-cutlery" aria-hidden="true"></i> Platillo</span>
+                            <ui-select  theme="bootstrap" sortable="true"  ng-model="filtros.platillo" tagging>
+                                <ui-select-match placeholder="Seleccionar un platillo...">{{$select.selected.nombre}}</ui-select-match>
+                                
+                                <ui-select-choices repeat="p in platillos | filter:$select.search" >
+                                    
+                                    {{p.nombre}}
+
+                                </ui-select-choices>
+                            </ui-select>   
+                        </div>
+                    </div> 
+    </div>
+</div>
+<div class="btn-group">
+    <button ng-click="buscarRating()" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+</div>
+ 
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        
+        <div class="table-responsive">
+            <table datatable="ng"  class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Platillo</th>
+                        <th>Comentario</th>
+                        <th>Estrellas</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="r in ratings">
+                        <td>{{r.platillo}}</td>
+                        <td>{{r.comentario}}</td>
+                        <td class="stars-td">
+                            <i ng-repeat="e in starsArray(r.stars)" class="fa fa-star"></i>
+                        </td>
+                        <td>{{toDate(r.fecha) | date:'medium'}}</td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>

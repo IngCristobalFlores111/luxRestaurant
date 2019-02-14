@@ -1,0 +1,71 @@
+
+<div class="form-group">
+    <div class="row">
+  
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> Calle</span>
+                <input  ng-model="lugar.direccion" type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> No. Interior</span>
+                <input ng-model="lugar.noInt" type="text" class="form-control" />
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i> No.Extrior</span>
+                <input ng-model="lugar.noExt" type="text" class="form-control" />
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-building"></i> Colonia</span>
+                <input  ng-model="lugar.colonia" type="text" class="form-control" />
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i> C&oacutedigo Postal</span>
+                <input ng-model="lugar.codigoPostal" type="text" class="form-control" />
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i> Estado</span>
+               <select ng-change="cargarMunis2()" class="form-control" ng-model="lugar.estado">
+                   <option ng-repeat="e in estados" value="{{e.id}}">{{e.nombre}}</option>
+
+               </select>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map"></i> Municipio</span>
+                <select  class="form-control" ng-model="lugar.municipio">
+                    <option ng-repeat="m in municipios2" value="{{m.id}}">{{m.nombre}}</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>

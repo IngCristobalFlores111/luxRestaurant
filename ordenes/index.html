@@ -1,0 +1,52 @@
+﻿<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include("LoginVerificator.php");
+
+?>
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <title>Pedidos Restaurante</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="author" content="LuxLine 2017" />
+    <meta name="description" content="Aplicaciones integral de control de restaurante interfaz de chef" />
+     <script
+     src="https://code.jquery.com/jquery-3.2.1.min.js"
+     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+     crossorigin="anonymous"></script>
+     <script>
+        if (typeof jQuery == 'undefined') {
+            document.write(unescape("%3Cscript src='JS/jquery.js' type='text/javascript'%3E%3C/script%3E"));
+        }
+        </script>
+    <link rel="stylesheet"   href="CSS/bootstrap.min.css">
+    <link rel="stylesheet"  href="CSS/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+
+    <script src="JS/bootstrap.min.js" charset="utf-8"></script>
+    <script src="https://use.fontawesome.com/8e34bbf9b4.js"></script>  
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+    <script src="JS/bootbox.min.js" charset="utf-8"></script>
+    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush|Dosis|Indie+Flower|Lobster|Fjalla+One|Open+Sans+Condensed:300|Roboto|Sansita" rel="stylesheet">
+     <link href="CSS/stylemesero.css" rel="stylesheet" />
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+<script src="JS/controllers/ordenar.js"></script>
+<script src="JS/controllers/ctrlPedidos.js"></script>
+<script src="JS/controllers/ctrlCobrar.js"></script>
+     <script src="JS/app.js"></script>
+</head>
+<body ng-app="app" ng-cloak>
+    <div class="gradiente"></div><!-- /gradiente -->
+    <div ng-view></div>
+    
+
+
+
+</body>
+</html>

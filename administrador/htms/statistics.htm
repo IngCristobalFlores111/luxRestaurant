@@ -1,0 +1,246 @@
+﻿<script src="js/mainJS.js"></script>
+<link rel="stylesheet" href="ChartMorris/morris.css">
+<script src="ChartMorris/raphael-min.js"></script>
+<script src="ChartMorris/morris.min.js"></script>
+
+<div class="well" style="margin-top:11px;">
+    <h4><span class="glyphicon glyphicon-usd"></span> Obtener total de ventas por fecha </h4>
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-calendar" aria-hidden="true"></i> Desde</span>
+                <input class="form-control" type="date" id="dateGetter1" />
+
+              </div>
+
+            </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon addon-search"><i class="fa fa-calendar" aria-hidden="true"></i> Hasta</span>
+              <input class="form-control" type="date" id="dateGetter2" />
+
+            </div>
+
+          </div>
+            
+            <div class="form-group">
+
+                <button class="btn btn-primary" onclick="getTotalByDate()"> <i class="fa fa-check"></i>Aceptar</button><br /><div id="results" class="container"> </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class='well' style="text-align:center;background-color: #337AB7;color:white"><h4><span class="glyphicon glyphicon-stats"></span> Obtener graficas</h4></div>
+
+<div  class="well">
+    <div class="row">
+        <div class="col-md-12">
+          
+                <h4 style="text-align:center;"><span class="glyphicon glyphicon-filter"></span>Filtros</h4>
+            
+            
+
+        </div>
+
+    </div>
+    <hr />
+<div class="row">
+   
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-lemon-o"></i> Por platillo</span>
+          <div class="check-container">
+            <input type="checkbox" id="chPlatillo" onchange="showPlatillosList()" />
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Rango</span>
+            <select class="form-control" style="color:black;" id='filterSelect' onchange='changeInputs(this)'>
+              <option value="dia">Por dia</option>
+              <option value="mes">Por mes</option>
+            </select>
+          </div>
+
+        </div>
+      
+    </div>
+
+</div>
+    <hr />
+<div style="padding-top:15px;" class="row">
+
+
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Desde</span>
+          <input class="form-control" style="color:black;" type="date" id="dateFrom" />
+        </div>
+
+      </div>
+
+        
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Desde</span>
+          <input class="form-control" style="color:black;" type="date" id="dateTo" />
+        </div>
+
+      </div>
+    </div>
+   
+
+</div>
+<div class="row">
+  <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+
+<div class="form-group" id="platillosSelect">
+
+  <div class="input-group">
+    <span class="input-group-addon addon-search"><i class="fa fa-cutlery" aria-hidden="true"></i> Platillos</span>
+    <select class="form-control" id="selectPlatillo"></select>
+
+  </div>
+</div>
+
+  </div>
+ 
+
+</div>
+    <hr />
+<div style="padding-top:22px;" class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <button id="calculete_btn" class="btn btn-success btn-block" onclick="PlotResult()"><span class="glyphicon glyphicon-triangle-right"></span>Graficar</button>
+    
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <button id="repeat_button" onclick="cleanForm()" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-repeat"></span>Deshacer</button>
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <button onclick="exportarExcel()" class="btn btn-success btn-block"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excel</button>
+            
+    </div>
+</div>
+</div>
+<div  id="whole_data_thing" hidden>
+    <div style="padding-top:15px;" class="row" id="content">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label ><span class="glyphicon glyphicon-signal"></span> Grafica</label>
+                </div>
+                <div style="text-align:center" class="panel-body">
+
+                    <div id='canvasCont'> </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div  style="text-align:center" class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Datos</label>
+                </div>
+                <div id="data_header" style="text-align:center" class="panel-body">
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Total vendido</label>
+                </div>
+                <div id="total_vendido" class="panel-body">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Promedio por dia</label>
+                </div>
+                <div id="promedio_dia" class="panel-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Graficas Finales-->
+    <div class="row">
+ 
+        <div id="panel_graph2" class="col-xs-12">
+            <div class="panel panel-primary">
+                <div id="dheader2" class="panel-heading">
+                    Top 5 Platillos
+                </div>
+                <div style="text-align:center" class="panel-body">
+                    <div id="donut2"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script> 
+    //LOADING donuts
+    // VARIABLES DOM DE GRAFICAS ADICIONALES
+    var DOM_donut1 = $("#donut1");
+    var DOM_donut2 = $("#donut2");
+    var DOM_donut3 = $("#donut3");
+
+    var DOM_header1 = $("#dheader1");
+    var DOM_header2 = $("#dheader2");
+    var DOM_promedio_vendido = $("#promedio_vendido");
+    var DOM_total_vendido = $("#total_vendido");
+    var DOM_panel1 = $("#panel_graph1");
+    var DOM_panel2 = $("#panel_graph2");
+    var DOM_results_header = $("#data_header");
+    var DOM_top_platillos = $("#top_platillosDIV");
+    var DOM_whole_data_thing = $("#whole_data_thing");
+    var domDate1Ventas = $("#dateGetter1");
+    var domDate2Ventas = $("#dateGetter2");
+    var result_ventas = $("#results");
+    var graficaDateFrom = $("#dateFrom");
+    var graficaDateTo = $("#dateTo");
+    var chckPlatillo = $("#chPlatillo");
+    var selectPlatillo = $("#selectPlatillo");
+    var canvas = $("#canvasCont");
+    var domPromedioDia = $("#promedio_dia");
+    showPlatillosList();
+</script>
+
+
+    
+
+
+
+

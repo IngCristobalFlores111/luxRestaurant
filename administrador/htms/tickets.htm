@@ -1,0 +1,201 @@
+<h1>Tickets</h1>
+<div class="well">
+    <h4>Encontrar Tickets</h4>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+            <div class="input-group"><span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i> Fecha Inicio</span>
+             <input class="form-control" type="date" ng-model="ticket.fechaInicio">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group"><span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i> Fecha Fin</span>
+                 <input  class="form-control"  type="date" ng-model="ticket.fechaFin">
+                </div>
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i> Usuario</span>
+                            <select ng-model="ticket.usr" class="form-control">
+                                <option value="todos">Todos</option>
+                                <option value="{{u.id}}" ng-repeat="u in users">{{u.nombre}} <small>{{u.rol}}</small></option>
+                            </select>
+                            
+                        </div>
+                    </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i> Método de Pago</span>
+                            <select ng-model="ticket.metodoPago" class="form-control">
+                                <option value="todos">Todos</option>
+                                <option value="{{m.id}}" ng-repeat="m in metodosPago">{{m.nombre}}</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+        </div>
+        <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i> Método de Pago</span>
+                            <ui-select multiple ng-model="ticket.platillos" theme="bootstrap" ng-disabled="disabled" close-on-select="false" title="Selecciona algun platillo para filtrar">
+                                    <ui-select-match placeholder="Selecciona un platillos...">{{$item.nombre}}</ui-select-match>
+                                    <ui-select-choices repeat="p in platillos | propsFilter: {nombre: $select.search}">
+                                        <div ng-bind-html="p.nombre | highlight: $select.search"></div>
+                                        <small>
+                                            {{p.descripcion | limitTo:50}} 
+                                            <span class="badge">{{p.precio | currency}}</span> 
+                                        </small>
+                                    </ui-select-choices>
+                                </ui-select>
+                        </div>
+                </div>
+
+                            
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="form-group">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i> Monto</span>
+                  <input ng-model="ticket.monto" type="number" class="form-control" />
+              </div>
+          </div>
+        </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-truck" aria-hidden="true"></i> Solo para llevar</span>
+                            <div class="check-container">
+                                    <label><input ng-model="ticket.llevar" type="checkbox"></label>
+                                    
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-ticket" aria-hidden="true"></i> Numero de Ticket</span>
+                        <input ng-model="ticket.idCuenta" type="number" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="btn-group">
+                    <button ng-click="buscarCuentas()" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+                    <button ng-click="exportarExcel()" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excell</button>
+                </div>
+            </div>
+        </div>
+            </div>
+
+</div>
+<div class="row">
+    <div class="col-xs-12">
+
+        
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Metodo de Pago</th>
+                        <th>Usuario</th>
+                        <th>Para llevar</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in cuentas">
+                        <td>{{c.fecha}}</td>
+                        <td>{{c.total | currency}}</td>
+                        <td>{{c.metodoPago}}</td>
+                        <td>{{c.usuario}}</td>
+                        <td ng-if="c.llevar=='SI'">
+                            <i class="fa fa-truck" aria-hidden="true"></i> Para llevar
+                        </td>
+                        <td ng-if="c.llevar=='NO'">
+                                <i class="fa fa-home" aria-hidden="true"></i> En restaurante
+                            </td>
+                            <td style="text-align:center"><div class="btn-group">
+                            <button ng-click="mostrarDetalles(c)" class="btn btn-primary"><i class="fa fa-book"></i></button>    
+                            </div></td>
+                     
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+<!-- Modal tickets -->
+<div id="modalTickets" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Detalles de cuenta</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-xs-12">
+                      <h4>Total: {{detalles.total | currency}}</h4>
+                      <h4>Descuento {{detalles.descuento | currency }}</h4>
+                      <h4>Fecha : {{detalles.fecha}}</h4>
+                      <h4>Usuario: {{detalles.usuario}}</h4>
+                      <div class="table-responsive">
+                          <table class="table table-hover table-bordered table-striped">
+                              <thead>
+                                  <tr>
+                                      <th>Platillo</th>
+                                      <th>Precio</th>
+                                      <th>Cantidad</th>
+                                      <th>Importe</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="p in detalles.platillos">
+                                      <td>{{p.nombre}}</td>
+                                      <td>{{p.precio | currency}}</td>
+                                      <td>{{p.cantidad}}</td>
+                                      <td>{{p.importe | currency}}</td>
+                                      
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      
+                  </div>
+              </div>
+              <div class="btn-group">
+                  <button ng-click="imprimirTicket()" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <script>
+      var modalTickets = null;
+      $(document).ready(function(){
+          modalTickets = $("#modalTickets");
+      });
+
+      </script>

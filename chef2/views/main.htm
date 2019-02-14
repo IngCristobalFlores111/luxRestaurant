@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <h1 id="headerDate" class="header-chef"><label class='glyphicon glyphicon-list'></label> Pedidos</h1>
+        <h3 class="header-chef">{{tiempo |date: 'medium'}}</h3>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <h4 class="header-chef">&iexcl;Hola {{usr.nombre}}!</h4>
+        <label class="header-chef">Duraci&oacute;n de Sesi&oacute;n Actual:{{usr.tiempo}}</label><br />
+        <div class="btn-group">
+            <button  ng-click="abrirConfig()" class="btn btn-primary"><i class="fa fa-wrench"></i> Configuraci&oacute;n</button>
+            <button ng-click="logOut()" class="btn btn-warning"><i class="fa fa-power-off"></i> Cerrar Sesi&oacute;n</button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-top:11px;margin-bottom:11px">
+        <div class="col-sm-4" ng-repeat="c in categorias">
+        <button ng-click="filtrarCategoria(c)" ng-style="c.style" role="button" type="button" class="btn btn-block btnHeader">{{c.nombre}}</button>
+        </div>
+       
+    </div>
+    <div class="row" style="margin-top:11px;">
+        <div class="col-lg-6 col-md-6 col-xs-12 col-xs-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon add-on-style1"><i class="fa fa-search"></i></span>
+                     <input ng-change="filterQ()"  class="form-control" ng-model="q" type="text" placeholder="Buscar Platillo,comentario,mesa..." />
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row" style="margin-top:22px;margin-left:-50px;margin-right:-50px;" ng-repeat="row in rows">
+        <div class="col-lg-4 co-md-4 col-sm-4 col-xs-12" ng-repeat="p in row">
+            <div class="media pedido" >
+                <div class="media-left">
+                    <img ng-click="abrirModal(p)"  ng-src="../images/{{p.imagepath}}" class="media-object" style="width:80px;height:80px;cursor:pointer">
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{p.nombre}}</h4>
+                    <label class="label label-info">{{p.mesa}}</label>
+                    <p>{{p.comentarios}}</p>
+                    <small class="time-indicator"><i class="fa fa-clock-o"></i> {{p.tiempo}}</small><br />
+
+                </div>
+                <div class="media-right">
+                    <button ng-click="despachar(p)" class="pedido-number">x{{p.cantidad-p.cantidad_terminado}}</button>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+ 
+
+
+
+
+
+</div>
+
+<div ng-include="'views/modalPlatilloDetalle.htm'"></div>
+<div ng-include="'views/modalUsrSettings.htm'"></div>

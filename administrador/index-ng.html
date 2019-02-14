@@ -1,0 +1,251 @@
+﻿<?php
+include("LoginVerificator.php");
+?>
+
+<!DOCTYPE html>
+<html lang="es-mx">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Luxline">
+    <meta name="author" content="luxlineSolutions">
+    <title>Administrador LuxRestaurnat</title>
+    
+    <!--Morris dependencies-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    
+    <!----->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush|Dosis|Indie+Flower|Lobster|Fjalla+One|Open+Sans+Condensed:300|Roboto|Sansita" rel="stylesheet">
+
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="parthenon.png" />
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <link rel="stylesheet" href="vendor/datatables/media/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="vendor/datatables-colreorder/css/dataTables.colReorder.css">
+    <link rel="stylesheet" href="vendor/datatables-colvis/css/dataTables.colVis.css">
+    <link rel="stylesheet" href="vendor/datatables-tabletools/css/dataTables.tableTools.css">
+    <link rel="stylesheet" href="vendor/datatables-responsive/css/responsive.dataTables.css">
+    <link rel="stylesheet" href="vendor/datatables-scroller/css/dataTables.scroller.css">
+    <link rel="stylesheet" href="vendor/datatables-fixedcolumns/css/fixedColumns.dataTables.css">
+    <link rel="stylesheet" href="vendor/datatables-fixedheader/css/fixedHeader.dataTables.css">
+    <link rel="stylesheet" href="vendor/datatables-buttons/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="vendor/datatables-select/css/select.dataTables.css">
+
+    <link rel="stylesheet" href="dist/plugins/bootstrap/datatables.bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/angular-datatables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css" />
+
+</head>
+<body ng-app="app">
+
+    <div id="wrapper" style="margin-top: -25px;">
+        <!-- Sidebar -->
+        <div ng-controller="ctrlNavBar" ng-include="'htms/nav.htm'"></div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row header-admin">
+                    <div class="col-lg-4">
+                        <a id="triggerConfirm" hidden></a>
+                        <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><label id="showHideIcon" class="glyphicon glyphicon-arrow-left"></label><p id="hidewhow"> Ocultar Menu</p> </a>
+
+                    </div>
+                    <div class="col-lg-8">
+                    <ul class="nav navbar-right top-nav" style="font-size:20px;">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown"><?= $_SESSION['usr']['nombre'] ?> <i class="fa fa-user"></i></a>
+                            <ul class="dropdown-menu" style="font-size:20px;">
+                                <li id="logOutBtn"><a ><i class="fa fa-power-off"></i> Cerrar Sesión</a></li>
+                                
+                            </ul>
+                        </li>
+                    </ul>
+
+                    </div>
+                </div>
+                
+                <div id="contentPage" ng-view></div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+
+    
+
+
+
+    <!-- /#wrapper -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/6715ea3b68.js"></script>
+    <script>
+        Array.prototype.myJoin = function (seperator, start, end) {
+            if (!start) start = 0;
+            if (!end) end = this.length - 1;
+            end++;
+            return this.slice(start, end).join(seperator);
+        };
+ 
+        $(document).ready(function () {
+            $("#logOutBtn").click(function () {
+                $.ajax({
+                    url: "logOut.php",
+                    type: "POST"
+                }).done(function (data) {
+                    location.href = "../login/Session.html";
+                });
+
+            });
+
+        });
+
+
+
+
+
+        var counter = 0;
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+
+        $("#showHideIcon").toggleClass('glyphicon-arrow-right');
+        if (counter % 2 == 0)
+        {
+            $("#hidewhow").text("Mostrar Menu");
+
+
+        }
+        else
+        {
+            $("#hidewhow").text("Ocultar Menu");
+
+
+        }
+        counter++;
+
+
+    });
+
+    </script>
+
+    <footer></footer>
+  
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.4/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.js"></script>
+    <script src="vendor/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="vendor/datatables-colreorder/js/dataTables.colReorder.js"></script>
+    <script src="vendor/datatables-colvis/js/dataTables.colVis.js"></script>
+    <script src="vendor/datatables-tabletools/js/dataTables.tableTools.js"></script>
+    <script src="vendor/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script src="vendor/datatables-scroller/js/dataTables.scroller.js"></script>
+    <script src="vendor/datatables-columnfilter/js/dataTables.columnFilter.js"></script>
+    <script src="vendor/datatables-light-columnfilter/dist/dataTables.lightColumnFilter.min.js"></script>
+    <script src="vendor/datatables-fixedcolumns/js/dataTables.fixedColumns.js"></script>
+    <script src="vendor/datatables-fixedheader/js/dataTables.fixedHeader.js"></script>
+
+    <script src="src/angular-datatables.js"></script>
+    <script src="src/angular-datatables.util.js"></script>
+    <script src="src/angular-datatables.options.js"></script>
+    <script src="src/angular-datatables.instances.js"></script>
+    <script src="src/angular-datatables.factory.js"></script>
+    <script src="src/angular-datatables.renderer.js"></script>
+    <script src="src/angular-datatables.directive.js"></script>
+    <script src="src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
+    <script src="src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
+    <script src="src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js"></script>
+    <script src="src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+    <script src="src/plugins/colvis/angular-datatables.colvis.js"></script>
+    <script src="src/plugins/colreorder/angular-datatables.colreorder.js"></script>
+    <script src="src/plugins/tabletools/angular-datatables.tabletools.js"></script>
+    <script src="src/plugins/scroller/angular-datatables.scroller.js"></script>
+    <script src="src/plugins/columnfilter/angular-datatables.columnfilter.js"></script>
+    <script src="src/plugins/light-columnfilter/angular-datatables.light-columnfilter.js"></script>
+    <script src="src/plugins/fixedcolumns/angular-datatables.fixedcolumns.js"></script>
+    <script src="src/plugins/fixedheader/angular-datatables.fixedheader.js"></script>
+    <script src="src/plugins/buttons/angular-datatables.buttons.js"></script>
+    <script src="src/plugins/select/angular-datatables.select.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+    
+    <script src="js/angular-datatables.buttons.min.js"></script>
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-morris/1.3.0/angular-morris.min.js"></script>
+    
+
+    <script charset="utf-8" src="js/controllers/ctrlRecetas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlInsumos.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlPlatillos.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlUsuarios.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlAlmacenes.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlProveedores.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlInventario.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlTopSale.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlCategorias.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlFactruacion.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlFacturas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlClientes.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlConfigFacturas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlProdcutosFacturas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlGenerarFactura.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlFacturaDetalle.js"></script>
+  <script charset="utf-8" src="js/controllers/ctrlUsuario.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlEnvioCorreos.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlContactos.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlInventarioUnidad.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlInsumosCompuestos.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlCrudCompuesto.js"></script> 
+    <script charset="utf-8" src="js/controllers/ctrlCajas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlSessiones.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlProductividad.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlStatistics.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlRatings.js"></script>
+    
+    <script src="js/controllers/ctrlPromoMod.js"></script>
+    <script src="js/controllers/ctrlPromo.js"></script>
+    <script src="js/services/promoService.js"></script>
+    <script src="js/services/excelExportService.js"></script>
+    <script src="js/services/ratingsService.js"></script>
+    
+    <script src="js/controllers/ctrlGastosCategorias.js"></script>
+    <script charset="utf-8" src="js/services/usersService.js"></script>
+    <script charset="utf-8" src="js/services/pagosService.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlGastos.js"></script>
+    <script charset="utf-8" src="js/services/gastosService.js"></script>
+    <script charset="utf-8" src="js/services/ticketsService.js"></script>
+    <script charset="utf-8" src="js/services/plotService.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlTickets.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlGraficas.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlNavBar.js"></script>
+    <script charset="utf-8" src="js/controllers/ctrlPagos.js"></script>
+    <script charset="utf-8" src="js/directives/starRatingDir.js"></script>
+    
+    <script charset="utf-8" src="js/app.js"></script>
+ 
+</body>
+
+
+</html>

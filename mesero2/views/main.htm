@@ -1,0 +1,107 @@
+﻿
+<div ng-include="'views/weolcomebar.htm'" ng-controller="welcomeCtrl"></div>
+
+<div ng-include="'views/nav.htm'" ng-controller="ctrlNav"></div>
+<div ng-include="'views/modalCaja.htm'" ng-controller="ctrlCaja"></div>
+
+<div id="MesasContainer" ng-controller="ctrlMesas" ng-show="$parent.show.mesas" ng-class="{'show-all':$parent.show.mesas && !$parent.show.pedidos}">
+    <div class="container-fluid">
+
+
+        <div class="row" style="margin-bottom:10px;color:white;">
+            <div ng-click="abrirMesa($index)" class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="text-align:center;" ng-repeat="m in mesas">
+                <div ng-class="{'activada':m.ocupado==1 ,'desactivada':m.ocupado==0}" class="filler mesa_style" id="mesa_1">
+                    <div style="float:right;">
+                        <i class="fa fa-users" id="Comensales_1"> {{m.comensales}}</i>
+                    </div>
+                    <div class="filler" style="padding-bottom:10px;">
+                        <p class="Bfont" style="float:left;">{{m.nombre}}</p>
+                    </div>
+                    <div class="filler" style="overflow:auto;">
+                        <div class="Bfont mesa_left_container"><i class="fa fa-cutlery"></i> <span id="Pedidos_1">{{m.cantidad_terminado - m.cantidad_servido}}</span></div>
+                        <div  class="Bfont mesa_right_container"><i ng-class="{'fa-hand-o-left':(m.cantidad_terminado!=0&&m.cantidad_servido<m.cantidad_terminado),'fa-thumbs-o-up':(m.cantidad_servido==m.cantidad_terminado)}" class="fa fa-2x" id="Manita_1"></i></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="PendingContainer" ng-controller="ctrlPending" ng-show="$parent.show.pedidos" ng-class="{'show-all':$parent.show.pedidos && !$parent.show.mesas}">
+  
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h4 class="header-restaurant">&iexcl;Hola {{usr.nombre}}!</h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h4 class="header-restaurant">{{fecha|date:'medium'}}</h4>
+        </div>
+
+    </div>
+
+    <div style="background-color:transparent;">
+        <div class="form-group" >
+            <div class="row" style="margin-left: -8px;">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon add-on-style1"><i class="fa fa-search"></i></span>
+                        <input ng-model="q" class="form-control" type="text" placeholder="Filtrar por platillo,mesa,comentarios" />
+                    </div>
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button ng-class="{'filtro-bebidas-activo':soloBebidas}" ng-click="filtarBebidas()" class="btn btn-primary btn-block"><i class="fa fa-glass"></i> Filtrar Bebidas</button>
+                   
+                </div>
+            </div>
+        </div>
+      
+       
+
+        <div style="float:right; padding-right:60px;" ng-click="toggleContainer('cocina')">
+            <i ng-class="{'fa-angle-double-up':show.enCocina,'fa-angle-double-down':!show.enCocina}" style="color:white;" class="fa fa-2x" id="ToggleEnCocina"></i>
+        </div>
+        <div style="text-align:left; padding-left:40px; padding-top:10px;">
+            <p class="Bfont" style="font-family:'Dosis',sans-serif;color:white; font-size:16px !important;"> En Cocina <i class="fa fa-cutlery" aria-hidden="true"></i> </p>
+        </div>
+        <div ng-show="show.enCocina"  id="Pendings_InProcess" class="Pending_Container" style="width:95%;">
+            <ul class="list-group" >
+                <li ng-if="p.cantidad!=p.cantidad_terminado" ng-repeat="p in platillos | filter:q | filter: {idCategoria:(soloBebidas)?3:undefined}" class="list-group-item pending-element">
+                   {{p.nombre}} <small>{{p.comentarios}}</small> 
+                       <small><i class="fa fa-clock-o"></i> {{p.tiempo}}</small>        
+                    <span class="badge">{{p.cantidad-p.cantidad_terminado}}</span>
+                           
+                    <label class="label label-info">{{p.mesa}}</label>
+                    <button ng-click="moreInfoLlevar(p.idpedido,p.id)" ng-if="p.mesa==null" style="background:transparent;border:none;"><i class="fa fa-info" aria-hidden="true"></i></button>
+                </li>
+
+            </ul>
+        </div>
+
+        <div style="float:right; padding-right:60px;" ng-click="toggleContainer('porServir')">
+            <i style="color:white;" class="fa fa-2x" ng-class="{'fa-angle-double-up':show.paraServir,'fa-angle-double-down':!show.paraServir}" id="TogglePorServir"></i>
+        </div>
+        <div style="text-align:left; padding-left:40px;">
+            <p class="Bfont" style="font-family:'Dosis',sans-serif;color:white; font-size:16px !important;"> Para servir <i class="fa fa-check" aria-hidden="false"></i> </p>
+        </div>
+        <div ng-show="show.paraServir" id="Pending_Ready" class="Pending_Container" style="width:95%;">
+            <ul class="list-group" >
+                <li ng-click="servirPlatillo($index)" ng-if="p.cantidad_terminado!=p.cantidad_servido" ng-repeat="p in platillos  | filter:q | filter: {idCategoria:(soloBebidas)?3:undefined}" class="list-group-item pending-element">
+                {{p.nombre}} <small>{{p.comentarios}}</small>
+                    <small><i class="fa fa-clock-o"></i> {{p.tiempo}}</small>
+
+                     <span class="badge">{{p.cantidad_terminado - p.cantidad_servido}}</span>
+                <label class="label label-info">{{p.mesa}}</label>
+                <button ng-click="moreInfoLlevar(p.idpedido,p.id)" ng-if="p.mesa==null" style="background:transparent;border:none;"><i class="fa fa-info" aria-hidden="true"></i></button>
+                
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+

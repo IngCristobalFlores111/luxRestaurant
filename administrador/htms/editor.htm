@@ -1,0 +1,168 @@
+﻿
+<h1>Editor de productos</h1>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="input-group">
+            <span  class="input-group-addon addon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input placeholder="Busca un platillo..." ng-model="qPlatillo" class="form-control" />
+
+        </div>
+
+
+      </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="btn-group">
+        <button ng-click="abrirModalPlatillo()" class="btn btn-primary" ><span class='glyphicon glyphicon-plus'></span> Agregar Platillo</button> 
+        <button ng-click="exportarExcel()" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excel</button>
+    </div>
+    </div>
+</div>
+<div style="padding-top:12px;" class="row">
+   <div class="col-xs-12">
+       <div class="table-responsive">
+           <table class="table table-bordered table-striped table-hover" datatable="ng">
+               <thead>
+                   <tr>
+                       <th class="col-xs-1">Id <i class="fa fa-id-badge" aria-hidden="true"></i></th>
+                       <th class="col-xs-2">Imagen <i class="fa fa-picture-o" aria-hidden="true"></i></th>
+                       <th class="col-xs-2">Nombre <i class="fa fa-cutlery" aria-hidden="true"></i></th>
+                       <th class="col-xs-2">Categoria <i class="fa fa-list" aria-hidden="true"></i></th>
+                       <th class="col-xs-1">Precio <i class="fa fa-money" aria-hidden="true"></i></th>
+                       <th class="col-xs-1">Costo <i class="fa fa-money" aria-hidden="true"></i></th>
+                       <th class="col-xs-3">Opciones <i class="fa fa-cog" aria-hidden="true"></i></th>
+                   </tr>
+
+               </thead>
+               <tbody>
+                   <tr ng-repeat="p in platillos | filter:qPlatillo as results track by $index ">
+                       <td>{{p.id}}</td>
+                       <td><img style="width:64px;height:64px;" class="img-responsive img-thumbnail" ng-src="../images/{{p.img}}" /></td>
+                       <td>{{p.nombre}}</td>
+                       <td>{{p.categoria}}</td>
+                       <td>{{p.precio | currency}}</td>
+                       <td>{{p.costo | currency}}</td>
+                       <td style="text-align:center;">
+                           <div class="btn-group">
+                               <button ng-click="modificarPlatillo(p)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                               <button ng-click="eliminarPlatillo(p)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                           </div>
+
+                       </td>
+
+                   </tr>
+
+               </tbody>
+
+
+           </table>
+           
+
+       </div>
+
+   </div>
+
+
+</div>
+<div class="modal fade" id="modalPlatillo" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><i class="fa fa-lemon-o" aria-hidden="true"></i> {{modalHeader}}</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="platilloNombre"><i class="fa fa-cutlery" aria-hidden="true"></i> Nombre</label>
+                        <input ng-model="platillo.nombre" type="text" class="form-control" id="platilloNombre" placeholder="Nombre del platillo">
+                    </div>
+                    <div class="form-group">
+                        <label for="platilloCategorias"><i class="fa fa-list" aria-hidden="true"></i> Categoria</label>
+                        <select id="platilloCategorias" class="form-control" ng-model="platillo.idCategoria">
+                            <option ng-repeat="c in categorias" value="{{c.id}}">{{c.nombre}}</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="platilloDesc"><i class="fa fa-bookmark" aria-hidden="true"></i> Descripci&oacuten</label>
+                        <textarea ng-model="platillo.descripcion" id="platilloDesc" class="form-control" rows="3" placeholder="Descripcion del platillo"></textarea>
+                    </div>
+                    <div class="form-group" ng-if="accion==1">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button style="white-space:inherit" class="btn btn-block btn-success" ng-click="setCostoInsumos()"><i class="fa fa-magic" aria-hidden="true"></i> Establecer costo de insumos</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:11px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i> Precio</span>
+                                <input type="number" class="form-control" ng-model="platillo.precio" />
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i> Costo</span>
+                                    <input type="number" class="form-control" ng-model="platillo.costo" />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                   
+                     <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                            <input ng-click="triggerInput()" placeholder="Elige una imagen para el platillo" type="text" class="form-control" readonly ng-model="platillo.nombreArchivo" />
+                            <input id="imgFile" onchange="angular.element(this).scope().inputImg(this)"  type="file" style="display:none"/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label><input type="checkbox" ng-model="platillo.activado">Platillo activo</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" ng-model="platillo.preparado" >Platillo Preparado</label>
+
+                        </div>
+                        <p>*Si un platillo es preparado quiere decir que pasa por cocina</p>
+
+                    </div>
+                    <div class="form-group" style="text-align:center;">
+                        <img ng-if="platillo.img!=''" style="max-height:350px;" class="img-responsive img-thumbnail" ng-src="../images/{{platillo.img}}" />
+
+                    </div>
+                  
+                   
+                    <button ng-click="submitPlatillo()" class="btn btn-success btn-block"><i class="fa fa-check" aria-hidden="true"></i> Aceptar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var modalPlatillo = null;
+    var inputFile = null;
+    $(document).ready(function () {
+        modalPlatillo = $("#modalPlatillo");
+        inputFile = $("#imgFile");
+    });
+</script> 
+
+

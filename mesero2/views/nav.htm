@@ -1,0 +1,28 @@
+﻿<nav class="navbar navbar-inverse" style="width:100%;" id="Mesas_NavBar">
+    <div class="container Fit_Container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm3 col-xs-4" style="text-align:center;">
+                <button ng-click="showHide()" class="btn btn-block NavBar_Button">
+                    <i class="fa fa-angle-double-left fa-2x visible-lg" style="color:white;" id="Toggle"></i>
+                    <i class="fa fa-angle-double-up fa-2x hidden-lg" style="color:white;" id="ToggleMobile"></i>
+                </button>
+               
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm3 col-xs-4">
+                <button ng-click="agregarMesa()" class="btn btn-block NavBar_Button"><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm3 col-xs-4">
+                <button ng-click="quitarMesa()" class="btn btn-block  NavBar_Button"><i class="fa fa-minus"></i></button>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm3 col-xs-12">
+                <div class="btn-group" style="padding-top:8px;">
+                    <button ng-click="$parent.abrirConfig()" class="btn btn-primary"><i class="fa fa-cogs"></i> Configuraci&oacute;n</button>
+                    <button ng-click="$parent.logOut()" class="btn btn-warning"><i class="fa fa-power-off"></i> Cerrar Sesi&oacute;n</button>
+                    <button ng-click="$parent.abrirCaja()" class="btn btn-success"><i class="fa fa-money"></i> Caja &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </button>
+                    <button ng-click="$parent.abrirTickets()" class="btn btn-primary"><i class="fa fa-ticket"></i> Tickets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

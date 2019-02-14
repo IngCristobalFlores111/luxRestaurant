@@ -1,0 +1,158 @@
+﻿<div class='row'>
+    <div class='col-lg-6 col-md-6 col-sm-12 col-xs-12'>
+
+
+        <h4>TOP 5 Productos mas vendidos  <span class='glyphicon glyphicon-thumbs-up'></span></h4>
+        <div class="table-responsive">
+            <table class='table table-hover table-bordered table-striped'>
+                <thead>
+                    <tr>
+                      <th>Platillo</th>
+                      <th>Cantidad</th>
+                      <th>Total</th>
+                      <th>Gastos</th>
+                      <th>Ganancias</th>    
+                </tr>
+            </thead>
+            <tbody>
+                   <tr ng-repeat="p in topMas">
+                      <td>{{p.platillo}}</td>
+                      <td>{{p.cantidad_vendido}}</td>
+                      <td>{{p.total | currency}}</td>
+                      <td>{{p.gastos | currency}}</td>
+                      <td>{{p.ganancia | currency}}</td>
+                      
+
+                   </tr>
+                   <tr ng-if="topMas.length==0">
+                       <td colspan="5">No se han generado ventas hasta el momento</td>
+                   </tr>
+
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <div class='col-lg-6 col-md-6 col-sm-12 col-xs-12'>
+        
+        <h4>TOP 5 Productos menos vendidos  <span class='glyphicon glyphicon-thumbs-down'></span></h4>
+        <div class="table-responsive">
+
+                <table class='table table-hover table-bordered table-striped'>
+                        <thead>
+                            <tr>
+                              <th>Platillo</th>
+                              <th>Cantidad</th>
+                              <th>Total</th>
+                              <th>Gastos</th>
+                              <th>Ganancias</th>    
+                        </tr>
+                    </thead>
+                    <tbody>
+                           <tr ng-repeat="p in topMenos">
+                              <td>{{p.platillo}}</td>
+                              <td>{{p.cantidad_vendido}}</td>
+                              <td>{{p.total | currency }}</td>
+                              <td>{{p.gastos | currency }}</td>
+                              <td>{{p.ganancia | currency }}</td>
+                              
+        
+                           </tr>
+                           <tr ng-if="topMenos.length==0">
+                            <td colspan="5">No se han generado ventas hasta el momento</td>
+                        </tr>
+        
+                    </tbody>
+                    </table>
+
+        </div>
+        </div>
+        </div>
+
+<div class="row">
+            <div class='col-lg-4 col-md-4 col-sm-4 col-xs-12'>
+                <label for="txtSearchPlati"><span class='glyphicon glyphicon-search'></span> Buscar platillo </label>
+                <input ng-model="qPlatillo"  class="form-control" id='txtSearchPlati' type='text' />
+            </div>
+            <div style="padding-top:23px;" class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <button ng-click="buscarPlatillo()" class='btn-block btn btn-primary'>Aceptar</button>
+
+            </div>
+            <div class="col-lg-5">
+
+            </div>
+
+
+    
+
+</div>
+<div class="row" ng-if="ventasQplatillo.length>0">
+  <div class="col-xs-12">
+    
+    <div class="table-responsive">
+            <table datatable="ng" class='table table-hover table-bordered table-striped'>
+            <thead>
+                <tr>
+                    <th>Platillo</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Gastos</th>
+                    <th>Ganancias</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="p in ventasQplatillo">
+                    <td>{{p.nombre}}</td>
+                    <td>{{p.precio | currency}}</td>
+                    <td>{{p.cantidad}}</td>
+                    <td>{{p.total | currency}}</td>
+                    <td>{{p.gastos | currency}}</td>
+                    <td>{{p.ganancias | currency }}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+  </div>
+    
+
+</div>
+<div class="row">
+
+    <div class="col-xs-12">
+        <ul class='nav nav-tabs' role="tablist">
+            <li ng-click="setCategoria(c)" ng-class="{'active':c.active}" ng-repeat="c in categorias"><a>{{c.nombre}}</a></li>
+
+        </ul>
+        <h4 id='tableHeader'>{{categoria}} <span class='glyphicon glyphicon-th-list'></span></h4>
+        <div class="table-responsive">
+            <table class='table table-striped table-hover table-bordered' datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Producto <i class="fa fa-cutlery" aria-hidden="true"></i></th>
+                        <th>Categoria <i class="fa fa-list-alt" aria-hidden="true"></i></th>
+                        <th>Cantidad <i class="fa fa-pie-chart" aria-hidden="true"></i></th>
+                        <th>Total vendido <i class="fa fa-dollar" aria-hidden="true"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in platillos | filter:{'idCategoria':filterCategoria}">
+                        <td>{{p.nombre}}</td>
+                        <td>{{p.categoria}}</td>
+                        <td>{{p.cantidad}}</td>
+                        <td>{{p.total | currency}}</td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+    </div>
+  
+</div>

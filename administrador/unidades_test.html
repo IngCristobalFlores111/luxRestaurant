@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sistema de unidades</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <h3>Unidades</h3>
+            <div class="col-lg-6">
+
+                <label for="unidad_nombre">Nombre</label>
+                <input id="unidad_nombre" class="form-control" type="text" /><br />
+                <button id="agregar_unidad_btn" class="btn btn-success">Agregar</button>
+ 
+            </div>
+            <div class="col-lg-6">
+                <label>Tabla de unidades agregadas</label>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-1">ID</th>
+                                <th class="col-xs-3">Nombre</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody id="unidades_table"></tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <h3>Agregar Multiplos/Submultiplos de unidades</h3>
+            <div class="col-lg-3">
+                <label for="unidades_select">Unidades</label>
+                <select id="unidades_select" class="form-control">
+
+                </select>
+
+            </div>
+            <div class="col-lg-3">
+                <label for="multiplo_nombre">Nombre:</label>
+                <input class="form-control" type="text" id="multiplo_nombre" />
+            </div>
+            <div class="col-lg-3">
+                <label for="multiplo_nombre">Equivalencia:</label>
+                <input class="form-control" type="text" id="multiplo_mul" />
+                <p>*cuanto equivale este mutliplo o submultiplo a la unidad, por ejemplo</p>
+                <p>1 kg = 1000 gramos</p>
+            </div>
+            <div style="padding-top:22px;" class="col-lg-3">
+                <button id="agregar_mul_btn" class="btn btn-success btn-block">Agregar</button>
+
+            </div>
+
+        </div>
+        <div class="row">
+            
+            <div class="col-lg-6">
+                <label>Tabla de multiplos agregados</label>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Unidad base</th>
+                                <th>Nombre</th>
+                                <th>Equivalencia</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="mutliplos_table">
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                
+
+            </div>
+            <div class="col-lg-6">
+                <label>Conversiones</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="unidad_base_select">De:</label>
+                        <select class="form-control" id="unidad_base_select">
+
+
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="unidad_multiplo_select">A:</label>
+                        <select class="form-control" id="unidad_multiplo_select">
+
+                        </select>
+                    </div>
+
+                </div>
+                <div style="padding-top:11px;" class="row">
+                    <div class="col-lg-6">
+                        <input class="form-control" type="number" id="from_number" />
+
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="number" id="to_number" />
+
+                    </div>
+                </div>
+                
+                <br />
+                <button id="btn_calcular_from_to" class="btn btn-default">Calcular</button>
+
+            </div>
+
+        </div>
+
+
+       
+        </div>
+    
+
+        
+    <script>
+        var table_unidades_DOM = $("#unidades_table");
+        var unidad_nombre_DOM = $("#unidad_nombre");
+        var mutliplos_table_DOM = $("#mutliplos_table");
+        var unidades_select_DOM = $("#unidades_select");
+        var unidad_base_select_DOM = $("#unidad_base_select");
+        var unidad_multiplo_select_DOM = $("#unidad_multiplo_select");
+        var result_calcular_DOM = $("#result_calcular");
+        var to_number_DOM = $("#to_number");
+        function update_mutliplos_table(multiplo)
+        {
+            if (multiplo == null)
+                mutliplos_table_DOM.load("PHP/get_mutliplos_table.php");
+            else {
+                mutliplos_table_DOM.load("PHP/get_mutliplos_table.php", { query: unidad });
+
+            }
+        }
+
+
+        
+        function update_unidadades_table(unidad)
+        {
+
+            if(unidad==null)
+                table_unidades_DOM.load("PHP/get_unidades_table.php", function (data) {  });
+            else {
+                table_unidades_DOM.load("PHP/get_unidades_table.php", { query:unidad });
+
+            }
+
+        }
+        function update_select_unidades(unidad)
+        {
+            if (unidad == null) {
+                unidades_select_DOM.load("PHP/get_unidades_table.php", { s: "set" });
+                            unidad_base_select_DOM.load("PHP/get_unidades_table.php", { s: "set" });
+
+
+            }
+            else {
+                unidades_select_DOM.load("PHP/get_unidades_table.php", { query: unidad, s: "set" });
+                unidad_base_select_DOM.load("PHP/get_unidades_table.php", { query: unidad, s: "set" });
+
+            }
+
+        }
+
+
+        function actualizar_multiplos_select(nombre_unidad_base)
+        {
+            unidad_multiplo_select_DOM.load("PHP/mutliplos_select_calcular.php", { nombre_base: nombre_unidad_base });
+            
+        }
+
+        unidad_base_select_DOM.on("change", function () {
+            actualizar_multiplos_select($(this).val());
+            
+        });
+
+
+
+        $("#btn_calcular_from_to").click(function () {
+            
+            var from_number = $("#from_number").val();
+      
+            var mul = unidad_multiplo_select_DOM.val();
+            from_number = parseFloat(from_number);
+            mul = parseFloat(mul);
+            var result = from_number * mul;
+          
+            to_number_DOM.val(result.toFixed(3));
+
+
+
+        });
+
+
+        $(document).ready(function () {
+
+            update_unidadades_table(null);
+            update_select_unidades(null);
+            update_mutliplos_table(null);
+        });
+
+
+
+        $("#agregar_mul_btn").click(function () {
+            $.post("PHP/agregar_multiplos.php", { nombre_unidad_base: $("#unidades_select").val(), nombre: $("#multiplo_nombre").val(), multiplicador: $("#multiplo_mul").val() }, function (data) {
+
+                update_mutliplos_table(null);
+
+            });
+
+
+        });
+
+        $("#agregar_unidad_btn").click(function () {
+            var nombre_agregar = unidad_nombre_DOM.val();
+            $.post("PHP/agregar_unidades.php", { nombre: nombre_agregar }, function (data) {
+                if (data.trim() == '') {
+                    update_unidadades_table(null);
+                } else {
+                    alert(data);
+                }
+
+
+            });
+           
+
+        });
+     
+
+    </script>
+
+
+
+
+</body>
+</html>

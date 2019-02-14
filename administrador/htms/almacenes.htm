@@ -1,0 +1,57 @@
+﻿    <h3>Almacenes</h3>
+        <div class="well">
+            <div class="row">
+                <h4>{{headerAlmacen}}</h4>
+                <div class="form-group">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-th" aria-hidden="true"></i></span>
+                      <input ng-model="almacen.nombre" type="text" class="form-control" placeholder="Nombre del Almacen" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <button ng-click="agregarAlmacen()" class="btn btn-primary"><i class="fa" ng-class="{'fa-plus':almacenAccion==0,'fa-cog':almacenAccion==1}" aria-hidden="true"></i> {{(almacenAccion==0)?'Agregar Nuevo':'Editar'}}</button>
+                  </div>
+                    
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" datatable="ng">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-2">Id <i class="fa fa-id-badge" aria-hidden="true"></i></th>
+                                <th class="col-xs-6">Nombre <i class="fa fa-cutlery" aria-hidden="true"></i></th>
+                                <th class="col-xs-2">Cantidad de productos <i class="fa fa-battery-three-quarters" aria-hidden="true"></i></th>
+                                <th class="col-xs-2">Opciones <i class="fa fa-cogs" aria-hidden="true"></i></th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="a in almacenes">
+                                <td>{{a.id}}</td>
+                                <td>{{a.nombre}}</td>
+                                <td ng-if="a.cantidad!=null">{{a.cantidad}}</td>
+                                <td ng-if="a.cantidad==null">0</td>
+                                <td style="text-align:center"><div class="btn-group">
+                                    <button ng-click="modificarAlmacen($index)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                                    <button ng-if="a.cantidad==0||a.cantidad==null" ng-click="eliminarAlmacen($index)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+            </div>
+
+        </div>

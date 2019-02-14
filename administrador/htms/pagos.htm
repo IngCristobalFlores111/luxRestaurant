@@ -1,0 +1,136 @@
+<h2>Pagos o Entradas al Restaurante</h2>   
+<div class="well">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Fecha Inicio</span>
+                            <input class="form-control" type="date" ng-model="filtros2.fechaInicio" />
+                        </div>
+                    </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Fecha Fin</span>
+                            <input class="form-control" type="date" ng-model="filtros2.fechaFin" />
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+        <div class="btn-group">
+            <button ng-click="filtarTablaDias()" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+            <button ng-click="exportarExcel()" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excel</button>
+            </div>
+</div> 
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped" datatable="ng"  dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-usd"></i> Total</th>
+                        <th><i class="fa fa-calendar" aria-hidden="true"></i> Fecha</th>
+                        <th><i class="fa fa-money"></i> Método de Pago</th>
+                        <th><i class="fa fa-book"></i> Detalles </th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in cuentasPorDia">
+                        <td>{{c.total | currency}}</td>
+                        <td>{{getDate(c.fecha) | date:'mediumDate'}}</td>
+                        <td>{{c.metodoPago}}</td>
+                        <td class="text-center">
+                            <div class="btn btn-group">
+                            <button ng-click="detalles(c)" class="btn btn-warning"><i class="fa fa-book"></i></button>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+<h4>Obtener totales en un rango de fechas</h4>
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon addon-search">
+<i class="fa fa-calendar"></i> Desde
+</span>
+<input type="date" ng-model="filtros.inicio" class="form-control" />
+</div>
+</div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+                <div class="input-group">
+                <span class="input-group-addon addon-search">
+                <i class="fa fa-calendar"></i> Hasta
+                </span>
+                <input type="date" ng-model="filtros.fin" class="form-control" />
+                </div>
+                </div> 
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    
+    <div class="form-group">
+            <div class="input-group">
+            <span class="input-group-addon addon-search">
+            <i class="fa fa-money"></i> M&eacute;todo de Pago
+            </span>
+            <select class="form-control" ng-model="filtros.metodoPago">
+            <option ng-repeat="m in metodosPago" value="{{m.id}}">{{m.nombre}}</option>
+            </select>
+
+        </div>
+            </div> 
+    
+        </div> 
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="btn-group">
+            <button ng-click="buscarCuentas()" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+            </div>    
+    </div> 
+</div> 
+<div class="table-responsive" ng-show="cuentasSearch.length>0">
+    <table class="table table-hover table-bordered table-striped" datatable="ng">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Metodo de Pago</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="m in cuentasSearch">
+                <td>{{getDate(m.fecha) | date:'medium'}}</td>
+                <td>{{m.total | currency}}</td>
+                <td>{{m.metodoPago}}</td>
+                <td>{{m.usuario}}</td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+    </div>
+</div>

@@ -1,0 +1,185 @@
+<div class="container-fluid" >
+    <h1 class="color-white">Ordenar para llevar</h1>
+    <h4 class="color-white">Ir a Pedidos para llevar <a style="color:#e74c3c" href="#!/pedidos"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a></h4>
+    <div class="row">
+        
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <h4 class="color-white">Buscar Cliente  <button class="btn btn-success" ng-click="triggerModalCliente()"><i class="fa fa-plus" aria-hidden="true"></i></button> </h4>   
+        <div class="form-group">
+            <div class="input-group">
+           <span class="input-group input-group-addon add-on-style1"><i class="fa fa-search" aria-hidden="true"></i> Buscar</span>
+           <input class="form-control" ng-model="busqueda.q" />   
+         </div>
+         </div>
+         
+         <ul class="list-group list-clientes">
+             <li ng-show="clienteSelected==null" ng-click="selectCliente(c)"   class="list-group-item" ng-repeat="c in clientes | filter:busqueda.q ">
+                 {{c.nombre}} <span class="badge">{{c.domicilio}}</span>  </li>
+            <li ng-click="deselect()" ng-if="clienteSelected!=null" class="cliente-selected list-group-item">{{clienteSelected.nombre}}   <span class="badge">{{clienteSelected.domicilio}}</span></li>
+         </ul>
+         
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <h4 class="color-white">Buscar Platillos</h4>
+             <div class="form-group">
+                     <div class="input-group">
+                    <span class="input-group input-group-addon add-on-style1"><i class="fa fa-search" aria-hidden="true"></i> Buscar</span>
+                    <input class="form-control" ng-model="busqueda.qPlatillo" />   
+                  </div>
+                  </div>   
+                  
+                  <div class="platillos"  >
+                         <div class="platillo" ng-repeat="p in platillos |filter:busqueda.qPlatillo">
+                             <div class="media">
+                                 <div class="media-left">
+                                     <img style="cursor:pointer" ng-click="abrirModal(p,0)" ng-src="../images/{{p.imagepath}}" class="media-object img-responsive img-thumbnail">
+                                 </div>
+                                 <div class="media-body">
+                                     <h4 class="media-heading nombre-platillo">{{p.nombre}} <label class="label label-info block-adjust">{{p.precio|currency}}</label></h4>
+                                     <p>{{p.descripcion}}</p>
+                                     <div class="row visible-lg visible-md visible-sm" ng-if="p.abierto" style="margin-bottom:5px;">
+                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                             <div class="input-group">
+                                                 <span class="input-group-addon add-on-style1"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                 <input class="form-control" placeholder="Cantidad que piden" type="number" ng-model="p.cantidad" />
+                                             </div>
+                                         </div>
+                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                             <div class="input-group">
+                                                 <span class="input-group-addon add-on-style1"><i class="fa fa-cutlery" aria-hidden="true"></i></span>
+                                                 <input class="form-control" type="text" placeholder="Comentario" ng-model="p.comentarios" />
+                                             </div>
+                                         </div>
+     
+     
+                                     </div>
+                                     <div class="row visible-lg visible-md visible-sm" ng-if="p.abierto" style="margin-bottom:5px;">
+                                         <div class="col-xs-12">
+                                             <button ng-click="agregarPlatillo(p)" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Aceptar</button>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="media-right">
+                                     <button ng-click="openPlatillo(p)" class="btn btn-success btn-lg"><i class="fa" ng-class="{'fa-undo':p.abierto,'fa-plus':!p.abierto}" aria-hidden="true"></i></button>
+                                 </div>
+                               <div class="row visible-xs" ng-if="p.abierto" style="margin-bottom:5px;">
+                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                   <div class="input-group">
+                                     <span class="input-group-addon add-on-style1"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                     <input class="form-control" placeholder="Cantidad que piden" type="number" ng-model="p.cantidad" />
+                                   </div>
+                                 </div>
+                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                   <div class="input-group">
+                                     <span class="input-group-addon add-on-style1"><i class="fa fa-cutlery" aria-hidden="true"></i></span>
+                                     <input class="form-control" type="text" placeholder="Comentario" ng-model="p.comentarios" />
+                                   </div>
+                                 </div>
+     
+     
+                               </div>
+                               <div class="row visible-xs" ng-if="p.abierto" style="margin-bottom:5px;">
+                                 <div class="col-xs-12">
+                                   <button ng-click="agregarPlatillo(p)" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Aceptar</button>
+                                 </div>
+                               </div>
+     
+                             </div>
+     
+                         </div>
+     
+     
+                     </div>    
+         </div>
+    
+
+
+         </div>
+        
+    
+    <div class="row">
+      <div class="col-xs-12">
+          <h4 class="color-white">Platillos pedidos</h4>
+             <div class="platillos"  >
+                     <div class="platillo" ng-repeat="p in platillosPedidos">
+                         <div class="media">
+                             <div class="media-left">
+                                 <img style="cursor:pointer" ng-click="abrirModal(p,0)" ng-src="../images/{{p.imagepath}}" class="media-object img-responsive img-thumbnail">
+                             </div>
+                             <div class="media-body">
+                                 <h4 class="media-heading nombre-platillo">{{p.nombre}} <label class="label label-info block-adjust">{{p.precio|currency}}</label>  <label class="label-success">x{{p.cantidad}}</label></h4>
+                                 <p>{{p.comentarios}}</p>
+                               
+                                 
+                             </div>
+                             <div class="media-right">
+                                 <button ng-click="restarPlatillo($index)" class="btn btn-warning btn-lg"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                             </div>
+
+ 
+                         </div>
+ 
+                     </div>
+ 
+ 
+                 </div>    
+     </div>    
+    </div>
+    
+    <div class="row" ng-if="platillosPedidos.length>0&&clienteSelected!=null">
+        <div class="col-xs-12">
+            <button ng-click="pedir()" class="btn btn-primary btn-block"><i class="fa fa-check" aria-hidden="true"></i> Terminar</button>
+        </div>
+    </div>
+    
+    
+    
+     </div>      
+
+<!-- Modal -->
+<div id="modalClientes" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+
+   <!-- Modal content-->
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal">&times;</button>
+       <h4 class="modal-title">Agregar Cliente</h4>
+     </div>
+     <div class="modal-body">
+       <div class="form-group">
+           <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i> Nombre</span>
+             <input type="text" class="form-control" ng-model="nuevo.nombre"  />
+           </div>
+       </div>
+       <div class="form-group">
+         <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i> Domicilio</span>
+        <textarea class="form-control" ng-model="nuevo.domicilio"></textarea>   
+
+         </div>
+     </div>
+     <button ng-click="agregarCliente()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Cliente</button>
+
+
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+     </div>
+   </div>
+
+ </div>
+</div>
+
+<script>
+    var modalClientes = null;
+    $(document).ready(function(){
+
+      modalClientes = $("#modalClientes");
+
+    });
+
+
+  </script>

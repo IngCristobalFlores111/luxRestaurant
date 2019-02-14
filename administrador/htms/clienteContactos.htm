@@ -1,0 +1,36 @@
+<label>Contactos del cliente
+    {{$parent.cliente.nombre}}
+    </label>
+<p>Aqui pudes agregar contactos para que el envio de correos electronicos de manera automatica</p>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input class="form-control" type="text" ng-model="contacto.nombre" placeholder="Nombre del contacto" />
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input class="form-control" type="email" ng-model="contacto.email" placeholder="Email del contacto" />
+            </div>
+
+        </div>
+
+    </div>
+   
+
+</div>
+<div class="form-group">
+    <div class="btn-group">
+        <button ng-click="submitContacto()" class="btn btn-primary"><i class="fa" ng-class="{'fa-plus':accion==0,'fa-pencil':accion==1}"></i> {{(accion==0)?'Agregar':'Modificar'}}</button>
+       <button ng-click="eliminarContacto()" ng-if="accion==1" class="btn btn-danger"><i class="fa fa-times"></i> Eliminar</button>
+    </div>
+
+</div>
+
+<ul class="list-group" style="overflow:auto;max-height:300px;">
+    <li ng-class="{'active-li':c.selected}" ng-click="selectContacto($index)" class="list-group-item" ng-repeat="c in contactos">{{c.nombre}} <span class="badge">{{c.email}}</span></li>
+    
+</ul>

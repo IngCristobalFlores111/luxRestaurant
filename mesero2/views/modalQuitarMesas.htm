@@ -1,0 +1,35 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="container ModalContainer">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h1>
+                            Quitar Mesa
+                        </h1>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="button" class="close">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+
+            <!--MUY IMPORANTE PARA LA ANIMACIÓN DE ESPERA-->
+            <img class="CWaiting_Img" src="..\images\loading.gif" alt="modal" style="position:absolute; width:200px; height:200px; opacity:0; z-index:-1;">
+            <!--MUY IMPORANTE PARA LA ANIMACIÓN DE ESPERA-->
+
+            <div class="container ModalContainer" id="QuitarMesa_Body">
+                <ul class="list-group">
+                    <li ng-click="eliminarMesa($index)" ng-repeat="m in mesas" class="list-group-item pending-element">{{m.nombre}} <button class="btn btn-danger pull-right"><i class="fa fa-times" aria-hidden="true"></i></button></li>
+                    
+                </ul>
+            
+            </div>
+        </div>
+        <div class="modal-footer">
+            Powered by Luxline
+        </div>
+    </div>
+</div>

@@ -1,0 +1,230 @@
+﻿<link rel="stylesheet" href="ChartMorris/morris.css">
+<script src="ChartMorris/raphael-min.js"></script>
+<script src="ChartMorris/morris.min.js"></script>
+<div class="row" style="padding-top:15px;">
+  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 menu-item-link">
+    <a href="../mesero2/#!/" class="btn btn-primary btn-block">Ir a Mesero <i class="fa fa-cutlery"></i></a>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 menu-item-link">
+    <a href="../chef2/#!/" class="btn btn-primary btn-block">Ir a Chef <i class="fa fa-lemon-o"></i></a>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 menu-item-link">
+    <a href="../ordenes/#!/" class="btn btn-primary btn-block">Ir Ordenes para llevar <i class="fa fa-hand-paper-o"></i></a>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 menu-item-link">
+    <a href="../menu/" class="btn btn-primary btn-block">Menu en Linea <i class="fa fa-bars"></i></a>
+  </div>
+</div>
+
+    
+   
+    <div class="row">
+        <div style="text-align:center;" class="col-lg-12 panel">
+            
+            <label style="font-size:25px;" id="headingHome"></label>
+            <br />
+            <img src="luxline1.png" />
+
+        </div>
+        
+
+    </div>
+<label style="font-size:25px;">Datos importantes para usted <span class="glyphicon glyphicon-usd"></span></label>
+
+<div class="row">
+    <div class="col-lg-6" id="chart_sales_last_week_container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <label> <span class="glyphicon glyphicon-signal"></span> Total de ventas de esta semana</label> 
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div id="chart_sales_last_week">
+
+ 
+                </div>
+                <h3 id="nodata_last_week">No se han generado datos hasta el momento</h3>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <div class="col-lg-6" id="chart_top_platillos_container">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <label><span class="glyphicon glyphicon-signal"></span> Top 5 de platillos mejor vendidos</label>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div id="chart_top_platillos">
+
+
+                </div>
+                <h3 id="nodata_top_platillos">No se han generado datos hasta el momento</h3>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-12" id="ventas_ultimo_mes_container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <label> <span class="glyphicon glyphicon-signal"></span> Total de ventas de este mes</label>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div id="ventas_ultimo_mes">
+
+
+                </div>
+                <h3 id="nodata_ultimo_mes">No se han generado datos hasta el momento</h3>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<script charset="utf-8">
+$("#nodata_last_week").hide();
+$("#nodata_top_platillos").hide();
+$("#nodata_ultimo_mes").hide();
+
+
+    var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+    var diasSemana = new Array("Domingo", "Lunes", "Martes", "Mi&eacutercoles", "Jueves", "Viernes", "S&aacutebado");
+    var f = new Date();
+    var fecha = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+    var out = " Bienvenido al Administrador de LuxRestaurnat <br> " + fecha;
+    $("#headingHome").html(out);
+    // plot main chart
+
+    $.post("PHP/obtenerEstadisticasHome.php", function (data) {
+      data = data.trim();
+      data = data.replace(/\\n/g, "\\n")
+        .replace(/\\'/g, "\\'")
+        .replace(/\\"/g, '\\"')
+        .replace(/\\&/g, "\\&")
+        .replace(/\\r/g, "\\r")
+        .replace(/\\t/g, "\\t")
+        .replace(/\\b/g, "\\b")
+        .replace(/\\f/g, "\\f");
+      // remove non-printable and other non-valid JSON chars
+      data = data.replace(/[\u0000-\u0019]+/g, "");
+      data = data.trim();
+      var obj = JSON.parse(data);
+      
+        var ventas_semana = obj.ventas_semana || 0;
+
+        var i = 0;
+        var plot_data1 = [];
+        
+        if (ventas_semana != 0) {
+          var len = ventas_semana.length;
+            for (i; i < len; i++) {
+                plot_data1.push({
+                    x: ventas_semana[i].fecha,
+                    y: ventas_semana[i].total
+                });
+            }
+        }
+        var top_platillos = obj.top5_platillos;
+        len = top_platillos.length;
+        i = 0;
+        var plot_data2 = [];
+        for (i; i < len; i++)
+        {
+            plot_data2.push({
+                label: top_platillos[i].platillo,
+                value: top_platillos[i].cantidad
+
+            });
+
+        }
+
+        var ventas_mes = obj.ventas_mes || 0;
+        i = 0;
+
+        var plot_data3 = [];
+        if (ventas_mes != 0) {
+            len = ventas_mes.length;
+
+            for (i; i < len; i++) {
+                plot_data3.push({
+                    x: ventas_mes[i].fecha,
+                    total: ventas_mes[i].total,
+                    costo: ventas_mes[i].costo,
+                    ganancia: ventas_mes[i].ganancia
+
+                });
+            }
+        }
+
+        if(plot_data3.length>0){
+        Morris.Area({
+            element: 'ventas_ultimo_mes',
+            data: plot_data3,
+            xkey: 'x',
+            ykeys: ['total', 'costo','ganancia'],
+            labels: ['Total $', 'Costos $', 'Ganancia $'],
+            resize: true
+        });
+        }else{
+        $("#nodata_ultimo_mes").show();
+        }
+
+
+      if(plot_data2.length>0){
+        Morris.Donut({
+            element: 'chart_top_platillos',
+            data: plot_data2,
+            resize: true
+        });
+      }else{
+$("#nodata_top_platillos").show();
+      }
+
+
+
+
+
+   if(plot_data1.length>0){
+        new Morris.Line({
+            element: 'chart_sales_last_week',
+           
+            data: plot_data1,
+
+            xkey: 'x',
+            ykeys: ['y'],
+            
+            labels: ['Total $ por dia'],
+            resize:true
+        });
+   }else{
+       $("#nodata_last_week").show();
+   }
+
+
+
+    });
+
+
+   
+
+</script>

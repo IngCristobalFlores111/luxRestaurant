@@ -1,0 +1,213 @@
+
+#nav li.dropdown{
+cursor: pointer;
+}
+#nav li.dropdown a{
+    
+}
+#nav li.dropdown a i{
+    margin-left: -15px;
+    
+}
+
+.dropdown-nav-restaurante{
+    position: relative !important; 
+        top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: inherit;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: none;
+    border-radius: 0;
+        -webkit-box-shadow: none;
+    box-shadow: 0;
+
+}
+.active-category{
+    background-color: #e74c3c;
+}
+
+.dropdown-nav-restaurante li{
+
+}
+.dropdown-nav-restaurante li a{
+
+}
+.ui-select-bootstrap .ui-select-match-text{
+    margin-top: -5px !important;
+}
+.stars-rating-wraper{
+    margin-left: 11px;
+    margin-top: 3px;
+}
+.stars-wraper{
+    height: 28px;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+}
+
+.star-rating {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+  }
+  .star-rating .star {
+    padding: 1px;
+    color: #ddd;
+    font-size: 20px;
+    text-shadow: .05em .05em #aaa;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .star-rating .star.filled {
+    color: #fd0;
+  }
+  .star-rating.readonly .star.filled {
+    color: #666;
+  } 
+.stars-td i{
+    color: #f1c40f;
+}
+@media only screen and (max-width: 500px) {
+    .menu-item-link a{
+        margin-top: 11px;
+        }
+}
+.promos li{
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.list-productos{
+overflow: auto;
+max-height: 250px;
+
+
+}
+.list-productos li{
+    overflow: hidden;
+cursor: pointer;
+}
+
+
+.depleted {
+    background-color: #e74c3c !important;
+    color:white !important;
+}
+h1, h2, h3, h4, h5, h6, h7 {
+    font-family: 'Dosis',sans-serif;
+    font-weight: bold;
+}
+.sidebar-nav {
+    font-family: 'Dosis',sans-serif;
+    font-weight:bolder !important;
+    letter-spacing:1px;
+}
+label {
+    font-family: 'Dosis',sans-serif;
+    font-size:16px;
+}
+th {
+    font-family: 'Dosis',sans-serif;
+    font-size:17px;
+}
+.input-group {
+    font-family: 'Dosis',sans-serif;
+    font-weight:bolder !important;
+}
+.input-group-addon {
+    font-weight: bolder !important;
+    letter-spacing:1px;
+}
+.btn {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+.checks-addon {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.hide{
+    display:none;
+}
+.check-container{
+        background-color: white;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.active-li{
+        background-color:#3498db;
+        color:white;
+}
+.active-page{
+    background-color:#e74c3c;
+
+}
+.header-admin{
+    border-bottom: solid thin #95a5a6;
+    padding:11px;
+
+}
+.usr-container{
+    float: right;
+    border: solid thin #ecf0f1;
+    padding: 6px;
+}
+.platillos-resultados{
+        padding: 11px;
+    max-height: 300px;
+    overflow: auto;
+    background-color: white;
+    margin-top: 11px;
+}
+.addon-search{
+    background-color:#3498db;
+    color:white;
+    cursor: pointer;
+}
+.platillo-media{
+    cursor: pointer;
+    background-color: #ecf0f1;
+    padding-top: 0;
+}
+.platillo-selected{
+        background-color: #3498db;
+    color: white;
+
+}
+.container-recetas{
+
+    overflow:hidden;
+    height:auto;
+}
+
+.table-recetas-container{
+    background-color:white;
+}
+.paginate_button.current{
+            background-color: #3498db !important;
+
+}
+.insumos-search-container{
+
+}
+.insumo-li{
+    cursor:pointer;
+}

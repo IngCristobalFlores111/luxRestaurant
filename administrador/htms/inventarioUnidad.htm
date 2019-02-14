@@ -1,0 +1,126 @@
+<h3>Inventario de Productos por Unidad </h3>
+<p>Aqui se dan de alta los productos en inventario que son por unidad</p>
+<p>Por ejemplo bebidas,postres,etc.</p>
+<div class="well">
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="form-group">      
+          <div class="input-group">        
+            <span style="cursor:pointer" ng-click="buscarPlatillo()" class="input-group-addon addon-search"><i class="fa fa-search"></i> Platillo</span>
+              <input placeholder="Busca Un Platillo" class="form-control" ng-model="busqueda.platillo"  />
+          </div>
+        </div> 
+     
+     <ul class="list-group list-productos">
+       <li ng-click="selectPlatillo($index)" ng-class="{'platillo-selected':p.selected}" class="list-group-item platillo" ng-repeat="p in platillos" value="{{p.id}}">{{p.nombre}} <span class="badge">{{p.precio | currency}}</span></li>
+       <li ng-if="selected!=null" class="platillo-selected list-group-item platillo">{{selected.nombre}}  <span class="badge">{{selected.precio | currency}}</span></li>
+      </ul>
+     
+
+      </div>
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <div class="form-group">      
+      <div class="input-group">        
+        <span class="input-group-addon"><i class="fa fa-lemon-o"></i> Cantidad</span>
+          <input class="form-control" ng-model="producto.cantidad"  />
+      </div>
+    </div>
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="form-group">      
+    <div class="input-group">        
+      <span class="input-group-addon"><i class="fa fa-truck"></i> Proveedor</span>
+       <select id="selectProveedores" class="form-control" ng-model="producto.idProveedor">
+      <option ng-repeat="p in proveedores" value="{{p.id}}">{{p.nombre}}</option>
+      </select>
+
+    </div>
+  </div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="form-group">      
+        <div class="input-group">        
+          <span class="input-group-addon"><i class="fa fa-building"></i> Almacen</span>
+           <select id="selectAlmacenes" class="form-control" ng-model="producto.idAlmacen">
+          <option ng-repeat="p in almacenes" value="{{p.id}}">{{p.nombre}}</option>
+          </select>
+    
+        </div>
+      </div>
+  </div>
+
+
+</div>
+
+
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="form-group">
+  <div class="input-group">
+<span class="input-group-addon"><i class="fa fa-power-off"></i> Activo</span>
+   <div class="check-container"><input ng-model="producto.actual" type="checkbox"/></div>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <button ng-click="agregarProducto()" type="button" class="btn btn-primary btn-block"><i class="fa fa-check" aria-hidden="true"></i>Aceptar</button>
+        
+</div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+   <p>*Utiliza el checkbox "descontar" para establecer que al vender se descontara de ese producto(almacen,proveedor)</p>
+<div class="table-responsive">
+  <table class="table table-hover table-bordered" id="tableProds" datatable="ng">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Proveedor</th>
+        <th>Almacen</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="i in inventario">
+        <td>{{i.nombre}}</td>
+        <td>{{i.cantidad}}</td>
+        <td>{{i.proveedor}}</td>
+        <td>{{i.almacen}}</td>
+        <td class="text-center">
+        <div class="btn-group">
+        <button ng-click="actualizarCantiad(i)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+        </div>
+        Descontar  <input ng-model="i.actual" ng-checked="i.actual!='0'" ng-click="descontar(i)" type="checkbox" />
+        
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+  </div>
+</div>
+<script>
+  var selectProveedores = null;
+  var selectAlmacenes = null;
+  var list_productos = null;
+$(document).ready(function(){
+  selectProveedores = $("#selectProveedores");
+  selectAlmacenes = $("#selectAlmacenes");
+
+});
+
+</script>

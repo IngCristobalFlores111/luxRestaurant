@@ -1,0 +1,53 @@
+<h3>Mis Clientes</h3>
+<div class="well">
+    <h4>{{headerForm}}</h4>
+    <ul class="nav nav-pills" style="padding-bottom: 5px;">
+        <li ng-click="setTab(1)" ng-class="{'active':tab==1}"><a>Cliente</a></li>
+        <li ng-click="setTab(2)" ng-class="{'active':tab==2,'hide':accion==0}"><a>Contactos</a></li>
+       
+    </ul>
+    <div ng-show="tab==1" ng-include="'htms/formCliente2.htm'"></div>
+    <div ng-show="tab==2" ng-include="'htms/clienteContactos.htm'" ng-controller="ctrlContactos"></div>
+
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre <i class="fa fa-usr" aria-hidden="true"></i></th>
+                        <th>RFC <i class="fa fa-qrcode" aria-hidden="true"></i></th>
+                        <th>Email <i class="fa fa-envelope" aria-hidden="true"></i></th>
+                        <th>Domicilio <i class="fa fa-home" aria-hidden="true"></i></th>
+                        <th># de facturas <i class="fa fa-book" aria-hidden="true"></i></th>
+                        <th>Opciones <i class="fa fa-cogs" aria-hidden="true"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in clientes">
+                        <td>{{c.nombre}}</td>
+                        <td>{{c.RFC}}</td>
+                        <td>{{c.email}}</td>
+                        <td>{{c.domicilio}}</td>
+                        <td>{{c.cantidad}}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button ng-click="modificarCliente($index)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                                <button ng-click="eliminarCliente($index)" ng-if="c.cantidad==0" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr ng-if="clientes.length==0"><td colspan="6">No ha clientes todavia, agrega uno aqui arriba =)</td></tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

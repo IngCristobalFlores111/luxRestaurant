@@ -1,0 +1,50 @@
+﻿<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include("LoginVerificator.php");
+
+?>
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <title>Pedidos Restaurante</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="author" content="LuxLine 2017" />
+    <meta name="description" content="Aplicaciones integral de control de restaurante interfaz de chef" />
+     <script src="JS/jquery.js" charset="utf-8"></script>
+
+    <link rel="stylesheet"   href="CSS/bootstrap.min.css">
+    <link rel="stylesheet"  href="CSS/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+
+    <script src="JS/bootstrap.min.js" charset="utf-8"></script>
+    <script src="https://use.fontawesome.com/8e34bbf9b4.js"></script>    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.4/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+    <script src="JS/bootbox.min.js" charset="utf-8"></script>
+    <script>
+        var usr =JSON.parse('<?=json_encode($_SESSION['usr'],JSON_UNESCAPED_UNICODE|JSON_HEX_APOS|JSON_HEX_QUOT);?>');
+    </script>
+    <script src="JS/controllers/ctrPedidos.js"></script>
+    
+<script src="JS/app.js"></script>
+</head>
+<body ng-app="app" ng-cloak>
+    <div class="gradiente"></div><!-- /gradiente -->
+
+
+    <div class="container-fluid">
+        <div ng-view></div>
+       
+             
+    </div>
+
+    
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+
+<!-- Modal -->
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tickets por mesa</h4>
+        </div>
+        <div class="modal-body">
+          
+          <ul class="list-group mesas-tickets" ng-if="mesaSelected==null" >
+            <li ng-click="abrirMesa(m)" ng-class="{'mesa-activa':m.ocupado==1,'mesa-desactivada':m.ocupado==0}" class="list-group-item" ng-repeat="m in mesas">{{m.nombre}}</li>
+           
+          </ul>
+          <div ng-if="mesaSelected!=null">
+            <h4>{{mesaSelected.nombre}}</h4>
+            <div class="btn-group">
+              <button ng-click="regresar()" class="btn btn-primary"><i class="fa fa-undo"></i> Regresar</button>
+            </div>
+            <label class="label label-success">Comensales:{{mesaSelected.comensales}}</label>
+            <label class="label label-info">Pedidos:{{mesaSelected.pedidos}}</label>
+            <div class="form-group" ng-if="tickets.length>0">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-search"></i></span>
+                <input type="text" class="form-control" ng-model="q" />
+              </div>
+            </div>
+            <ul class="list-group mesas-tickets" style:"margin-top:11px;">
+              <li class="list-group-item" ng-repeat="t in tickets | filter:q">
+                <span class="badge">{{t.total | currency}}</span>
+                <span class="badge" ng-if="t.descuento>0">{{t.descuento | currency}}</span>
+                
+                {{t.fecha}} <label class="label label-info">{{t.metodoPago}}</label>
+                <label ng-if="t.llevar==1"><i class="fa fa-truck"></i> Para llevar</label>
+                <label ng-if="t.llevar==0"><i class="fa fa-home"></i> En Restaurante</label>
+                <button ng-click="imprimirTicket(t)" class="btn btn-success"><i class="fa fa-print"></i></button>
+              </li>
+              
+            </ul>
+            <h4 ng-if="tickets.length==0">No hay tickets disponibles todavia</h4>
+            
+          </div>
+          
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  

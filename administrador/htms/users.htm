@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1> <span class="glyphicon glyphicon-user"></span> Administrador de usuarios del Restaurante</h1>
+    </div>
+</div>
+
+<ul class="nav nav-pills" style="margin-bottom:22px;">
+    <li ng-click="setTab(1)" ng-class="{'active':tab==1}"><a>Usuarios</a></li>
+    <li ng-click="setTab(2)" ng-class="{'active':tab==2}"><a>Sesiones</a></li>
+    
+  </ul>
+<div id="adminUsrs" ng-include="'htms/adminUsers.htm'" ng-show="tab==1">
+
+
+</div>
+<div id="sesiones" ng-include="'htms/sesionesUsuario.htm'" ng-controller="ctrlSesiones" ng-show="tab==2">
+    
+    
+    </div>  

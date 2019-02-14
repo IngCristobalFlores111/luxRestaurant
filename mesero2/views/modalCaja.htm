@@ -1,0 +1,91 @@
+<div id="modalCaja" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Caja <i class="fa fa-money"></i></h4>
+        </div>
+        <div class="modal-body">
+        <div ng-if="opcion==0">
+           <h4>Escoge una caja para empezar</h4>
+           
+           <ul class="list-group">
+               <li style="color:black;cursor:pointer;overflow:hidden" ng-click="selectCaja(c)" ng-if="cajaSelected==null" class="list-group-item" ng-repeat="c in cajas">{{c.nombre}}</li>
+               <li ng-click="deselectCaja()" style="overflow:hidden" ng-if="cajaSelected!=null" class="list-group-item active-li">{{cajaSelected.nombre}} <i style="font-size:16px;color:#2ecc71" class="fa fa-check" aria-hidden="true"></i></li>
+              
+           </ul>
+           <div class="row" ng-if="cajaSelected!=null">
+               <div class="col-xs-12">
+           <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-money"></i> Total de dinero en inicio</span>
+                <input type="number" class="form-control" ng-model="cajaSelected.total_inicio" />
+            </div>
+           </div>
+           <div class="btn-group">
+        <button ng-click="iniciarCaja()" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>   
+        </div>
+        </div>
+
+        
+        </div>
+
+      </div>
+      <div ng-if="opcion==1">
+        <h4>{{cajaSelected.nombre}}</h4>
+        <h4>Fecha de Inicio: {{cajaSelected.fecha_inicio | date:'medium'}}</h4>
+        <div class="row">
+         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Total en Inicio</span>
+                       <input class="form-control" readonly ng-model="cajaSelected.total_inicio" type="number" />
+                </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon add-on-style1"><i class="fa fa-usd"></i> Total en Ahora</span>
+                       <input class="form-control"  ng-model="cajaSelected.total_fin" type="number" />
+                </div>
+        </div>
+    </div>
+
+
+      </div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<button ng-click="actualizarActual()" class="btn btn-primary btn-block"> <i class="fa fa-check"></i> Actualizar Cantidad actual</button>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <button ng-click="corteCaja()" class="btn btn-primary btn-block"> <i class="fa fa-money"></i> Corte de Caja</button>
+                </div>
+</div>
+
+
+    </div>
+         
+        
+    </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  <script>
+  var modalCaja = null;
+  $(document).ready(function(){
+
+    modalCaja = $("#modalCaja");
+
+  });
+  
+  </script>

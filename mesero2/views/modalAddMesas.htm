@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="container ModalContainer">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h1>
+                            Agregar Mesa
+                        </h1>
+                    </div>
+                    <div class="col-xs-4">
+                        <button data-dismiss="modal" type="button" class="close">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="container ModalContainer">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label>Numero de Mesa</label>
+                    </div>
+                    <div class="col-xs-8">
+                        <input ng-model="mesa.nombre" type="text" class="form-control" placeholder="Escribe el nombre de la mesa" id="MesaId" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12" style="padding-top:10px;">
+                        <button ng-click="agregarMesa()" class="btn btn-success"><i class="fa fa-plus"></i>Agregar Mesa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            Powered by Luxline
+        </div>
+    </div>
+</div>

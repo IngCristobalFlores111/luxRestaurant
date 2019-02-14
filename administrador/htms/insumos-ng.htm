@@ -1,0 +1,122 @@
+﻿
+
+<ul class="nav nav-pills" style="margin-top:22px;">
+    <li ng-class="{'active':tab==1}" ng-click="setTab(1)" ><a >Insumos</a></li>
+    <li ng-class="{'active':tab==2}" ng-click="setTab(2)"><a >Insumos Compuestos</a></li>
+  
+  </ul>
+  
+  <div class="tab-content">
+    <div id="home" ng-show="tab==1" >
+   
+<h1>Insumos</h1>
+<div class="well" >
+<h4 id="headerForm">{{headerText}}</h4>
+    <form id="formInsumo">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label for="insumoNombre">Nombre</label>
+                    <input ng-model="nuevo.nombre" required name="nombre" id="insumoNombre" type="text" class="form-control" />
+
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Unidad</label>
+                    <select ng-model="nuevo.idUnidad" name="unidad" class="form-control" id="insumoUnidades">
+                        <option ng-repeat="unidad in unidades" value="{{unidad.idUnidad}}">{{unidad.nombre}}</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label for="insumoDesc">Descripci&oacuten</label>
+                    <textarea ng-model="nuevo.descripcion" required name="descripcion" id="insumoDesc" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label for="insumoCosto">Costo</label>
+                    <input ng-model="nuevo.costo" required min="0" name="costo" id="insumoCosto" type="number" class="form-control" />
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <label>Proveedores</label>
+                    <ui-select multiple ng-model="selectProveedores.proveedores" theme="bootstrap" ng-disabled="disabled" close-on-select="false" title="Selecciona los proveedores de este insumo">
+                        <ui-select-match placeholder="Selecciona un proveedor...">{{$item.nombre}}</ui-select-match>
+                        <ui-select-choices repeat="proveedor in proveedores | propsFilter: {nombre: $select.search}">
+                            <div ng-bind-html="proveedor.nombre | highlight: $select.search"></div>
+                            <small>
+                                {{proveedor.RFC}}
+                            </small>
+                        </ui-select-choices>
+                    </ui-select>
+
+                </div>
+            </div>
+            
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <button ng-click="submitInsumo()" id="btnAgregarInsumo" class="btn btn-block btn-primary"><i class="fa" ng-class="{'fa-plus':accion=='Agregar','fa-cog':accion=='Modificar'}" aria-hidden="true"></i> 
+                    {{accion}}
+                    </button>
+                </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <button ng-click="undoInsumo()" class="btn btn-block btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Deshacer</button>
+
+              </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<h4>Insumos existentes <i class="fa fa-cutlery" aria-hidden="true"></i></h4>
+<div class="btn-group">
+    <button ng-click="exporarExcel()" class="btn btn-success"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excel</button>
+</div>
+<div class="table-responsive">
+
+<table class="table table-bordered table-striped" id="tableInsumosDt" datatable="ng">
+<thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Descripci&oacuten</th>
+        <th>Unidad</th>
+        <th>Costo</th>
+        <th>Opciones</th>
+    </tr>
+</thead>
+<tbody>
+    <tr ng-repeat="insumo in insumos">
+        <td>{{insumo.nombre}}</td>
+        <td>{{insumo.descripcion}}</td>
+        <td>{{insumo.unidad}}</td>
+        <td>{{insumo.costo | currency}}</td>
+        <td><div class="btn-group">
+            <button ng-click="modificarInsumo(insumo)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+        <button ng-click="eliminarInsumo(insumo)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                </div>
+        </td>
+
+
+    </tr>
+</tbody>
+
+</table>
+</div>
+    </div>
+    <div id="menu1" ng-show="tab==2" ng-include="'htms/insumoscompuestos.htm'" ng-controller="ctrlInsumosCompuestos">
+     
+    </div>
+   
+  </div>

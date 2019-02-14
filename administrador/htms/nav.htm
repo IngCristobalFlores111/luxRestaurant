@@ -1,0 +1,127 @@
+        
+        <div id="sidebar-wrapper" ng-init="getCurrentTab($route.current.activetab)">
+            <ul class="sidebar-nav" id="nav">
+                <li class="sidebar-brand" ng-class="{'active-page':$route.current.activetab == 'home'}">
+                    <a style='cursor:pointer' href="index-ng.html#!/">
+                        Administrador  <img height="40" src="luxline1.png" />
+
+                    </a>
+                </li>
+
+                <li ng-class="{'open':currentCategory==0}"  class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-line-chart" aria-hidden="true"></i> Estadisticas</a>
+                        <ul  class="dropdown-menu dropdown-nav-restaurante">
+                                <li ng-click="setCategory(0)" ng-class="{'active-page':$route.current.activetab == 'statistics'}">
+                                        <a href="index-ng.html#!/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i> Historial                                        </a>
+                                </li>
+                                <li ng-click="setCategory(0)" ng-class="{'active-page':$route.current.activetab == 'topsale'}">
+                                        
+                                        <a href="index-ng.html#!/topsale" ><i class="fa fa-pie-chart" aria-hidden="true"></i> Lo mas vendido</a>
+                                </li>
+                        </ul>
+                      </li>
+
+                      <li ng-class="{'open':currentCategory==1}"  class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-exchange" aria-hidden="true"></i> Ingresos y Egresos</a>
+                            <ul  class="dropdown-menu dropdown-nav-restaurante">
+                                    <li ng-class="{'active-page':$route.current.activetab == 'pagos'}">
+                                            <a  ng-click="setCategory(1)"  href="index-ng.html#!/pagos"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Ingresos</a>
+                                    </li>
+                                    <li ng-class="{'active-page':$route.current.activetab == 'gastos'}">
+                                            <a  ng-click="setCategory(1)"  href="index-ng.html#!/gastos"><i class="fa fa-long-arrow-right"></i> Gastos</a>
+                                    </li>
+                                    <li ng-class="{'active-page':$route.current.activetab == 'cajas'}">
+                                            <a ng-click="setCategory(1)"  href="index-ng.html#!/cajas"><i class="fa fa-money"></i> Cajas</a>
+                                    </li>
+                                    <li ng-class="{'active-page':$route.current.activetab == 'tickets'}">
+                                            <a ng-click="setCategory(1)"  href="index-ng.html#!/tickets"><i class="fa fa-sticky-note"></i> Tickets</a>
+                                    </li>
+                            </ul>
+                          </li>
+
+                          <li ng-class="{'open':currentCategory==2}"  class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-list-alt" aria-hidden="true"></i> Control de Inventario</a>
+                                <ul  class="dropdown-menu dropdown-nav-restaurante">
+                                        <li ng-class="{'active-page':$route.current.activetab == 'insumos'}">
+                                                <a  ng-click="setCategory(2)" href="index-ng.html#!/insumos"><i class="fa fa-lemon-o"></i> Insumos</a>
+                            
+                                        </li>
+
+                                        <li ng-class="{'active-page':$route.current.activetab == 'recetas'}" >
+                                                <a  ng-click="setCategory(2)" href="index-ng.html#!/recetas"><i class="fa fa-cutlery"></i> Recetas</a>
+                            
+                                        </li>
+
+                                        <li ng-class="{'active-page':$route.current.activetab == 'inventario'}" >
+                                                <a ng-click="setCategory(2)" href="index-ng.html#!/inventario"><i class="fa fa-list-ol"></i> Inventario</a>
+                            
+                                            </li>
+                                        
+                                </ul>
+                              </li>
+                 
+                              <li ng-class="{'open':currentCategory==3}"  class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-cutlery" aria-hidden="true"></i> Mis Platillos</a>
+                                    <ul  class="dropdown-menu dropdown-nav-restaurante">
+                                            <li ng-class="{'active-page':$route.current.activetab == 'platillos'}">
+                                                    <a  ng-click="setCategory(3)" href="index-ng.html#!/platillos"><i class="fa fa-cutlery"></i> Platillos</a>
+                                
+                                            </li>
+
+                                            <li ng-class="{'active-page':$route.current.activetab == 'promociones'}">
+                                                    <a ng-click="setCategory(3)" href="index-ng.html#!/promos"><i class="fa fa-product-hunt"></i> Promociones</a>
+                                            </li>
+    
+                  
+                                            
+                                    </ul>
+                                  </li>
+
+
+                           
+              
+                                  <li ng-class="{'open':currentCategory==4}"  class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-cogs" aria-hidden="true"></i> Configuración</a>
+                                        <ul  class="dropdown-menu dropdown-nav-restaurante">
+                                                <li ng-class="{'active-page':$route.current.activetab == 'users'}">
+                                                        <a ng-click="setCategory(4)"  href="index-ng.html#!/usuarios"><i class="fa fa-users"></i> Usuarios</a>
+                                    
+                                    
+                                                </li>
+                                                <li ng-class="{'active-page':$route.current.activetab == 'categorias'}">
+                                                        <a ng-click="setCategory(4)"  href="index-ng.html#!/categorias"><i class="fa fa-list"></i> Categorias & Unidades</a>
+                                    
+                                    
+                                                </li>
+        
+                      
+                                                
+                                        </ul>
+                                      </li>
+         
+
+
+                                      <li   class="dropdown">
+                                            <a class="dropdown-toggle" href="index-ng.html#!/ratings" ><i class="fa fa-star" aria-hidden="true"></i> Reseñas</a>
+                     
+                                          </li>
+           
+                                          <li   class="dropdown">
+                                                <a class="dropdown-toggle" href="index-ng.html#!/facturacion" ><i class="fa fa-files-o" aria-hidden="true"></i> Facturación Electrónica</a>
+                         
+                                              </li>
+
+
+               
+
+
+
+                
+            
+       
+        
+
+            </ul>
+        </div>
+
+   

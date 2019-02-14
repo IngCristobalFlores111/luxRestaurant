@@ -1,0 +1,225 @@
+
+
+<div class='well' style="text-align:center;background-color: #337AB7;color:white"><h4><span class="glyphicon glyphicon-stats"></span> Obtener graficas</h4></div>
+
+<div  class="well">
+    <div class="row">
+        <div class="col-md-12">
+          
+                <h4 style="text-align:center;"><span class="glyphicon glyphicon-filter"></span>Filtros</h4>
+            
+            
+
+        </div>
+
+    </div>
+    <hr />
+<div class="row">
+   
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-lemon-o"></i> Por platillo</span>
+          <div class="check-container">
+            <input type="checkbox" id="chPlatillo" ng-model="filtros.porPlatillo" />
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Rango</span>
+            <select ng-model="filtros.rango" class="form-control" style="color:black;" id='filterSelect' onchange='changeInputs(this)'>
+              <option  value="date">Por dia</option>
+              <option value="month">Por mes</option>
+            </select>
+          </div>
+
+        </div>
+      
+    </div>
+
+</div>
+    <hr />
+<div style="padding-top:15px;" class="row">
+
+
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Desde</span>
+          <input ng-if="filtros.rango=='date'" ng-model="filtros.fechaInicio" class="form-control" style="color:black;" type="date" id="dateFrom" />
+          <input ng-if="filtros.rango=='month'" ng-model="filtros.fechaInicio" class="form-control" style="color:black;" type="month" id="dateFrom" />
+          
+        </div>
+
+      </div>
+
+        
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon addon-search"><i class="fa fa-calendar"></i> Hasta</span>
+          <input ng-if="filtros.rango=='date'" ng-model="filtros.fechaFin"  class="form-control" style="color:black;" type="date" id="dateTo" />
+          <input ng-if="filtros.rango=='month'" ng-model="filtros.fechaFin"  class="form-control" style="color:black;" type="month" id="dateTo" />
+          
+        </div>
+
+      </div>
+    </div>
+   
+
+</div>
+<div class="row">
+  <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+
+<div class="form-group" id="platillosSelect" ng-show="filtros.porPlatillo">
+
+  <div class="input-group">
+    <span class="input-group-addon addon-search"><i class="fa fa-cutlery" aria-hidden="true"></i> Platillos</span>
+    <select ng-model="filtros.platillo"  class="form-control" id="selectPlatillo">
+    <option value="{{p.id}}" ng-repeat="p in platillos">{{p.nombre}}</option>
+
+    </select>
+
+  </div>
+</div>
+
+  </div>
+ 
+
+</div>
+    <hr />
+<div style="padding-top:22px;" class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <button id="calculete_btn" class="btn btn-success btn-block" ng-click="plotResult()" ><span class="glyphicon glyphicon-triangle-right"></span>Graficar</button>
+    
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <button id="repeat_button" ng-click="clearFrom()" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-repeat"></span>Deshacer</button>
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <button ng-click="exportarExcel()" class="btn btn-success btn-block"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar a Excel</button>
+            
+    </div>
+</div>
+</div>
+<div  id="whole_data_thing" ng-if="bardata.length>0" >
+    <div style="padding-top:15px;" class="row" id="content">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label ><span class="glyphicon glyphicon-signal"></span> Grafica</label>
+                </div>
+                <div style="text-align:center" class="panel-body">
+                        <div bar-chart bar-data='bardata' bar-x='y' bar-y='["a","b","c","d"]' bar-labels='["Cantidad","Total","Costos","Ganancias"]'>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div  style="text-align:center" class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Datos</label>
+                </div>
+                <div id="data_header" style="text-align:center" class="panel-body">
+                {{descripcion}}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Total vendido</label>
+                </div>
+                <div id="total_vendido" class="panel-body">
+                  
+                  <div class="table-responsive">
+                      <table class="table table-hover table-bordered table-striped">
+                          <thead>
+                              <tr>
+                                  <th>Total</th>
+                                  <th>Costo</th>
+                                  <th>Ganancia</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <td>{{totales.total | currency}}</td>
+                                  <td>{{totales.gastos | currency}}</td>
+                                  <td>{{totales.ganancias | currency}}</td>
+                                  
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label>Promedio por dia</label>
+                </div>
+                <div id="promedio_dia" class="panel-body">
+                        <div class="table-responsive">
+                                <table class="table table-hover table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th>Costo</th>
+                                            <th>Ganancia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{promedios.promedio_total | currency}}</td>
+                                            <td>{{promedios.promedio_gastos | currency}}</td>
+                                            <td>{{promedios.promedio_ganancias | currency}}</td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Graficas Finales-->
+    <div class="row">
+ 
+        <div id="panel_graph2" class="col-xs-12">
+            <div class="panel panel-primary">
+                <div id="dheader2" class="panel-heading">
+                    Top 5 Platillos
+                </div>
+                <div style="text-align:center" class="panel-body">
+                        <div
+                        donut-chart
+                        donut-data="topDonut"
+                        >
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

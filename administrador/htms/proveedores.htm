@@ -1,0 +1,96 @@
+﻿    <h3>Proveedores</h3>
+<div class="well" style="overflow:hidden">
+    <h4>{{headerText}}</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input ng-model="proveedor.nombre" placeholder="Nombre del proveedor" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-qrcode" aria-hidden="true"></i></span>
+                    <input ng-model="proveedor.RFC" type="text" class="form-control" placeholder="RFC" />
+                </div>
+            </div>
+
+        </div>
+    
+
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                    <input ng-model="proveedor.email" type="email" class="form-control" placeholder="Correo electronico" />
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>
+                    <input ng-model="proveedor.domicilio" type="text" class="form-control" placeholder="Domicilio" />
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6">
+                <button ng-click="submitProveedor()" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Aceptar</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" datatable="ng">
+                <thead>
+                    <tr>
+                        <th class="col-xs-1">Id <i class="fa fa-id-badge" aria-hidden="true"></i></th>
+                        <th class="col-xs-1">Nombre <i class="fa fa-user" aria-hidden="true"></i></th>
+                        <th class="col-xs-2">RFC <i class="fa fa-qrcode" aria-hidden="true"></i></th>
+                        <th class="col-xs-2">Email <i class="fa fa-envelope" aria-hidden="true"></i></th>
+                        <th class="col-xs-2">Domicilio <i class="fa fa-home" aria-hidden="true"></i></th>
+                        <th class="col-xs-1"># de productos</th>
+                        <th class="col-xs-3">Opciones <i class="fa fa-cogs" aria-hidden="true"></i></th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    <tr ng-repeat="p in proveedores">
+                        <td>{{p.id}}</td>
+                        <td>{{p.nombre}}</td>
+                        <td>{{p.RFC}}</td>
+                        <td>{{p.email}}</td>
+                        <td>{{p.domicilio}}</td>
+                        <td>{{p.cantidad}}</td>
+                        <td style="text-align:center">
+                            <div class="btn-group">
+                                <button ng-click="modificar(p)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                                <button ng-if="p.cantidad==0" ng-click="eliminar(p)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+                
+            </table>
+              
+        </div>
+
+
+    </div>
+
+
+</div>

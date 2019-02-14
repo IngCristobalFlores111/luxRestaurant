@@ -1,0 +1,166 @@
+
+<div>
+    <h4>Datos de la Factura</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-id-badge"></i> Folio</span>
+                    <input class="form-control" type="text" ng-model="factura.factura.folio" readonly />
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i> Fecha</span>
+                    <input class="form-control" type="text" ng-model="factura.factura.fecha" readonly />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map-marker"></i> Lugar de Expedici&oacuten</span>
+                    <input class="form-control" type="text" ng-model="factura.factura.lugar" readonly />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-credit-card"></i> Metodo de Pago</span>
+                    <input readonly type="text" class="form-control" ng-model="factura.factura.metodoPago" />
+
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-money"></i> Forma de Pago</span>
+                    <input readonly type="text" class="form-control" ng-model="factura.factura.formaPago" />
+
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-credit-card-alt"></i> N&uacutemero de Cuenta Pago</span>
+                    <input readonly type="text" class="form-control" ng-model="factura.factura.numeroCtaPago" />
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="btn-group">
+            <button ng-click="abrirPdf()" role="button" title="Ver PDF factura {{factura.factura.folio}}" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Ver PDF</button>
+            <button ng-click="abrirXML()" role="button" title="Ver XML de factura {{factura.factura.folio}}" class="btn btn-success"><i class="fa fa-file-text"></i> Ver XML</button>
+            <button ng-click="abrirPNG()" role="button" title="Ver Código QR de factura {{factura.factura.folio}}" class="btn btn-warning"><i class="fa fa-qrcode"></i> Ver C&oacutedigo QR</button>
+
+        </div>
+
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <img ng-src="Facturacion/timbrados/cfdi_{{factura.factura.folio}}.png" />
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h4>Conceptos</h4>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Descripci&oacuten <i class="fa fa-book"></i></th>
+                        <th>C&oacutedigo <i class="fa fa-code"></i></th>
+                        <th>Unidad <i class="fa fa-thermometer-half"></i></th>
+                        <th>Precio <i class="fa fa-usd"></i></th>
+                        <th>Cantidad <i class="fa fa-pie-chart"></i></th>
+                        <th>Importe <i class="fa fa-usd"></i></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in conceptos">
+                        <td>{{c.Descripcion}}</td>
+                        <td>{{c.Codigo}}</td>
+                        <td>{{c.Unidad}}</td>
+                        <td>${{c.ValorUnitario}}</td>
+                        <td>{{c.Cantidad}}</td>
+                        <td>${{c.Importe}}</td>
+
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Moneda <i class="fa fa-money"></i></th>
+                    <th>Tipo de Cambio <i class="fa fa-exchange"></i></th>
+                    <th>Tipo de Comprobante <i class="fa fa-file"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{factura.moneda}}</td>
+                    <td>{{factura.tc}}</td>
+                    <td>{{factura.tipoComprobante}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Subtotal <i class="fa fa-usd"></i></th>
+                    <th>Descuento <i class="fa fa-usd"></i></th>
+                    <th>IVA <i class="fa fa-usd"></i> </th>
+                    <th>Total <i class="fa fa-usd"></i></th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <td>${{totales.subtotal}}</td>
+                    <td>${{totales.descuento}}</td>
+                    <td>${{totales.iva}}</td>
+                    <td>${{totales.total}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<div class="row" ng-if="factura.factura.estatus==1">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <button ng-click="cancelarFactura()" class="btn btn-danger btn-block"><i class="fa fa-times"></i> Cancelar Factura</button>
+    </div>
+    <div class="col-xs-4"></div>
+
+</div>

@@ -1,0 +1,1143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inventario LuxRestaurant</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/validate_forms.js"></script>
+
+    <link rel="stylesheet" href="ChartMorris/morris.css">
+    <script src="ChartMorris/raphael-min.js"></script>
+    <script src="ChartMorris/morris.min.js"></script>
+</head>
+<body>
+    <style>
+        .section_grid [class*="col-"] {
+  padding: 15px;
+  
+  border: 1px solid #D8D8D8;
+  height:166px;
+}
+
+
+    </style>
+
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1>Sistema de Inventario  <img src="luxline1.png" /></h1>
+            <p>LuxRestaurant© Administrador de inventario <?php echo date("Y/m/d") ;  ?></p>
+           
+        </div>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#home"><h4> <span class="glyphicon glyphicon-list-alt"></span> Mi Inventario</h4> </a></li>
+            <li><a onclick="setTimeout(get_caducar_info, 500);" href="#menu1"><h4><span class="glyphicon glyphicon-shopping-cart"></span> Mis Productos</h4></a></li>
+            <li><a href="#menu2"><h4><span class="glyphicon glyphicon-user"></span> Mis Proveedores</h4></a></li>
+            <!--<li><a href="#menu3">Something more here</a></li>--->
+        </ul>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <!--Mostrar inventario-->
+                <h3>Inventario General</h3>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <label for="search_ingrediente">Buscar</label>
+                        <input placeholder="Buscar por nombre" style="width:250px;" class="form-control" type="text" id="search_ingrediente"/>
+
+
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <label for="mostrar_almacen_check">Inventario en almacen</label>
+                        <input id="mostrar_almacen_check" type="checkbox" class="form-control" />
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button id="btn-calcular-total" class="btn btn-success">Calcular total</button>
+
+                        <p>*Calcula el total de dinero invertido en el inventario dado de alta hasta ahora</p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive" id="results_table_div" hidden>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color:rgb(57,108,153);color:white">
+                                        <th>Total</th>
+                                        <th>Subtotal</th>
+                                        <th>IVA</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="total_results_table">
+                                    
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style="padding-top:10px;" class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color:rgb(57,108,153);color:white">
+                                        <th class="col-xs-3">Nombre</th>
+                                        <th class="col-xs-1">Cantidad en almacen</th>
+                                        <th class="col-xs-2">Unidad</th>
+                                        <th class="col-xs-1">Costo</th>
+                                        <th class="col-xs-3">Proveedor</th>
+                                        <th class="col-sm-2">Opciones</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="table_inventario_general"></tbody>
+
+
+                            </table>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+              
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <!--Agregar nuevos ingredientes-->
+                <h3>Productos</h3>
+                <div style="padding-top:10px;" class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-lg-12 ">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-plus"></span> Agregar ingredientes</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="ing_nombre">Nombre</label>
+                                        <input class="form-control" type="text" id="ing_nombre" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="ing_cantidad">Cantidad</label>
+                                        <input class="form-control" type="number" id="ing_cantidad" />
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="ing_unidad">Unidad</label>
+                                        <input class="form-control" type="text" id="ing_unidad" />
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="ing_costo">Costo/unidad</label>
+                                        <input class="form-control" type="text" id="ing_costo" />
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="fecha_caducidad_date">Fecha de caducidad</label>
+                                        <input class="form-control" type="date" id="fecha_caducidad_date" />
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="in_almacen">En almacen</label>
+                                        <input checked id="in_almacen" class="form-control" type="checkbox" />
+                                    </div>
+                                   
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="proveedor_select">Proveedor</label>
+                                        <select class="form-control" id="proveedor_select">
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                                
+                                <div style="text-align:center;" class="row">
+                                    <div class="col-sm-12">
+                                        <h4 id="msg_agregar_productos" hidden>Producto se ha agregado<br />Exitosamente</h4>
+
+                                    </div>
+
+                                </div>
+                                <div style="padding-top:5px;" class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <button id="agregar_btn" class="btn btn-primary btn-block">Agregar</button>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <button onclick="clearIngredientesForm()" id="btn_deshacer" class="btn btn-danger btn-block">Deshacer</button>
+
+                                    </div>
+
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-lg-12 ">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading"><span class="glyphicon glyphicon-ok"></span> Ingredientes agregados recientemente</div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr style="color:white;background-color:rgb(51,122,183)">
+                                                <th>Nombre</th>
+                                                <th>Cantidad</th>
+                                                <th>Unidad</th>
+                                                <th>Costo</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="table_ingredientes"></tbody>
+
+                                    </table>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row"> <!--Working here-->
+
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><span class="glyphicon glyphicon-ice-lolly-tasted"></span> Productos pedecederos</div>
+                        <div id="caducar_info" class="panel-body"> 
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+                </div>
+               
+            </div>
+            <div id="menu2" class="tab-pane fade"> <!--Proveedores-->
+            <h3>Administrar Proveedores</h3>    
+        
+
+            <div  class="row">
+                <div class="col-lg-3">
+                    <label for="buscar_provedor"><span class="glyphicon glyphicon-search"></span>Buscar</label>
+                    <input placeholder="Nombre,RFC,Email..." id="buscar_provedor" type="text" class="form-control" />
+
+                </div>
+                <div class="col-lg-3">
+                    <button id="add_proveedor_btn" class="btn btn-block btn-primary">Agregar Proveedor</button>
+
+                </div>
+
+                </div>
+
+
+            <div style="padding-top:10px;" class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><span class="glyphicon glyphicon-globe"></span> Proveedores</div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="background-color:rgb(57,108,153);color:white">
+                                            <th class="col-xs-4">Nombre</th>
+                                            <th class="col-xs-2">RFC</th>
+                                            <th class="col-xs-2">Telefono</th>
+                                            <th class="col-xs-1">Email</th>
+                                            <th class="col-xs-3">Opciones</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="proveedores_table_main"></tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    
+
+
+
+
+
+                </div>
+
+                <div class="col-lg-4" >
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><span class="glyphicon glyphicon-tags"></span>  Productos del proveedor</div>
+                        <div id="pannel_provedor_productos" class="panel-body" hidden>
+                            <h3 id="provedor_header"></h3>
+                            <hr />
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="background-color:rgb(57,108,153);color:white">
+                                            <th>Nombre</th>
+                                            <th>Cantidad</th>
+                                            <th>Unidad</th>
+                                            <th>Costo</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="selected_prov_productos"></tbody>
+
+
+                                </table>
+
+                                
+
+                               
+
+
+                            </div>
+                            <script>
+
+                                var mostrar_almacen_check_DOM = $("#mostrar_almacen_check");
+                                var selected_prov_productos_DOM = $("#selected_prov_productos");
+                                var provedor_header_DOM = $("#provedor_header");
+
+                                mostrar_almacen_check_DOM.click(function () {
+
+                                   
+                                    actualizar_table_inventario_general(null);
+
+                                });
+
+
+                                $(document).on("click", "#proveedores_table_main tr", function () {
+                                    $("#pannel_provedor_productos").show();
+                                    $("#proveedores_table_main tr").removeClass("success");
+
+                                    $(this).toggleClass("success");
+                                    // datos proveedor- ingrediente
+                                    var id_provedor = $(this).attr("id").replace("prov_id_", "");
+                                    var nombre_proveedor = $(this).find("td").first().html();
+                                    provedor_header_DOM.html(nombre_proveedor);
+
+                                    selected_prov_productos_DOM.load("PHP/get_productos_proveedor.php", { id_proveedor: id_provedor });
+
+
+                                });
+
+                             
+
+
+                            </script>
+
+                            <p><button class="btn btn-default" id="btn_calcular_costos_provedor">Calcular Costo</button>
+<label id="results_calcular_costo"></label></p>
+                            <script>
+
+
+                                $("#btn_calcular_costos_provedor").click(function () {
+                                    var costos = [];
+                                    var cantidades = [];
+                                    $("#selected_prov_productos tr td.cant_prov").each(function (i, element) {
+                                        cantidades.push($(element).html());
+
+                                    });
+                                    $("#selected_prov_productos tr td.costo_prov").each(function (i, element) {
+                                        costos.push($(element).html());
+
+                                    });
+
+                                    var total = 0;
+                                    var len = costos.length; var i = 0;
+                                    for (; i < len; i++) {
+                                        total += parseFloat(costos[i]) * parseFloat(cantidades[i]);
+                                    }
+                                    $("#results_calcular_costo").html("$"+total.toFixed(3));
+
+
+                                });
+
+                                
+
+
+                            </script>
+
+
+                        </div>
+                    </div>
+
+                       
+
+
+                  
+
+
+                </div>
+
+
+            </div>
+
+
+
+            </div>
+            <div id="menu3" class="tab-pane fade">
+            <div class="row">
+
+
+            </div>
+
+               
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal ingrediente -->
+    <!-- Modal -->
+    <div class="modal fade" id="modal_act_ing" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modal_act_nombre" class="modal-title">Actualizar Platillo</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="padding-bottom:10px;" class="row">
+                        <div class="col-lg-6">
+                            <label for="actualizar_platillo_nombre">Nombre</label>
+                            <input class="form-control" type="text" id="actualizar_platillo_nombre" placeholder="Nombre del platillo" />
+                        </div>
+                        <div class="col-lg-6">
+
+                        </div>
+                    </div>
+
+
+                    <div class="row section_grid">
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                            <label for="modal_actualizar_cantidad">Cantidad Total</label>
+                            <input class="form-control" id="modal_actualizar_cantidad" type="number">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                            <label for="modal_actualizar_unidad">Unidad</label>
+                            <input class="form-control" id="modal_actualizar_unidad" type="text">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                            <label for="modal_actualizar_costo">Costo$</label>
+                            <input class="form-control" id="modal_actualizar_costo" type="number">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <p>
+                                <label for="act_modal_provedores">Proveedores:</label>
+                                <select class="form-control" id="act_modal_provedores">
+                                    <option>A</option>
+                                    <option>B</option>
+                                </select>
+                                <br />
+
+                                <button id="btn_agregar_proveedor_moal_act" class="btn btn-default">Agregar</button>
+                                <button id="buscar_proveedor_modal" class="btn btn-default"> Buscar</button>
+                            </p>
+                        </div>
+                            
+                       
+                            
+                           
+
+                        
+
+                    
+                    </div>
+                    <div style="padding-top:15px;" class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                            <h3>Proveedores</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead><tr><th>Proveedor</th>
+                                        <th>Opciones</th>
+                                        </tr></thead>
+                                    <tbody id="result_add_proveedores"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="datos_proveedor_tmp"  class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+
+                            <div class="row">
+                                <div style="text-align:center;" class="col-xs-6">
+                                    <div class="checkbox">
+
+                                        <label><input id="mod_en_almacen_check" type="checkbox" />   En almacen</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="date_mod_fecha_caducidad">Fecha de caducidad</label>
+                                    <input type="date" class="form-control" id="date_mod_fecha_caducidad" />
+                                </div>
+                            </div>
+                           
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label for="cant_almacen_actualizar">Cantidad en Almacen</label><input type="number" class="form-control" id="cant_almacen_actualizar" />
+
+
+                                </div>
+                                <div class="col-xs-6">
+                                    <label for="cant_cocina_actualizar">Cantidad en Cocina</label><input type="number" class="form-control" id="cant_cocina_actualizar" />
+
+                                </div>
+                            </div>
+
+                        
+                        </div>
+
+                    </div>
+                    <div style="padding-top:11px;" class="row">
+                        <div class="col-xs-12">
+                            <button id="btn_actualizar_proveedores_ing" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span>Actualizar</button>
+
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <h4>LuxRestaurant©</h4>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_proveedores_actualizar" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="proveedor_modal_header" class="modal-title">Actualizar datos del Proveedor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <label>Nombre</label>
+                            <input id="provedor_nombre_actualizar" class="form-control" type="text" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label>RFC</label>
+                            <input id="provedor_RFC_actualizar"  max="13" class="form-control" type="text" />
+
+                        </div>
+
+
+
+                    </div>
+                    <div  class="row">
+                        <div class="col-xs-6">
+                            <label>Telefono</label>
+                            <input id="provedor_telefono_actualizar" class="form-control" type="text" />
+
+                        </div>
+                        <div class="col-xs-6">
+                            <label>Mail</label>
+                            <input id="provedor_mail_actualizar" class="form-control" type="email" />
+                        </div>
+
+                    </div>
+                    <div style="padding-top:11px;" class="row">
+                        <div class="col-xs-6">
+                            <button id="btn_actualizar_proveedor" class="btn btn-success btn-block"><span class="glyphicon glyphicon-ok"></span>Actualizar</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button onclick="clear_form_proveedor_actualizar()" class="btn btn-success btn-block btn-warning"><span class="glyphicon glyphicon-repeat"></span>Deshacer</button>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        var en_almacen_dom = $("#in_almacen");
+        var table_ingredientes_DOM = $("#table_ingredientes");
+        var fecha_caducidad_date_DOM = $("#fecha_caducidad_date");
+        var ing_nombre_DOM = $("#ing_nombre");
+        var ing_cantidad_DOM = $("#ing_cantidad");
+        var ing_unidad_DOM = $("#ing_unidad");
+        var ing_costo_DOM = $("#ing_costo");
+        var table_inventario_general_DOM = $("#table_inventario_general");
+        var tmp_provedores = [];
+        var table_proveedores_DOM = $("#result_add_proveedores");
+        var  select_proovedores_modal_DOM =  $("#act_modal_provedores")
+        var proveedores_table_main_DIV = $("#proveedores_table_main");
+        var flag_agregar = false;  // controla si se agrega o se actualizar proveedor
+
+
+        function eliminar_ingrediente(id_ingrediente)
+        {
+
+            if(confirm("Seguro que deseas eliminar este ingrediente?"))
+            {
+                $.post("PHP/eliminar_ingrediente.php", { id_ing: id_ingrediente }, function (data) {
+                    alert("El ingrediente ha sido eliminado");
+                    location.reload();
+                });
+
+            }
+
+        }
+
+
+        $("#add_proveedor_btn").click(function () {
+            clear_form_proveedor_actualizar();
+            $("#proveedor_modal_header").html("Agregar nuevo proveedor");
+            $("#modal_proveedores_actualizar").modal();
+            flag_agregar = true;
+
+        });
+
+
+        $("#buscar_provedor").on("input", function () {
+
+            var query = $(this).val();
+            actualizar_table_proveedores(query);
+        });
+
+
+        function clear_form_proveedor_actualizar()
+        {
+           $("#provedor_nombre_actualizar").val('');
+            $("#provedor_RFC_actualizar").val('');
+           $("#provedor_telefono_actualizar").val('');
+           $("#provedor_mail_actualizar").val('');
+
+        }
+
+        $("#btn_actualizar_proveedor").click(function () {
+
+            var nombre = $("#provedor_nombre_actualizar").val();
+            var RFC = $("#provedor_RFC_actualizar").val();
+            var telefono = $("#provedor_telefono_actualizar").val();
+            var mail = $("#provedor_mail_actualizar").val();
+                
+            if (nombre.trim() != '' && RFC.trim() != '' && telefono.trim() != '' && mail.trim() != '') {
+
+                if (flag_agregar) {  // agregar nuevo
+                    $.post("PHP/actualizar_proveedor.php", { nombre: nombre, RFC: RFC, telefono: telefono, email: mail, id_provedor: g_provedor_selected_actualizar, agregar: '1' }, function (data) {
+                        clear_form_proveedor_actualizar();
+
+                        flag_agregar = false;
+                        $("#modal_proveedores_actualizar").modal("hide");
+                        actualizar_table_proveedores(null);
+                        
+                    });
+
+
+                }
+                else {  // modificar
+
+
+                    $.post("PHP/actualizar_proveedor.php", { nombre: nombre, RFC: RFC, telefono: telefono, email: mail, id_provedor: g_provedor_selected_actualizar }, function (data) {
+                        clear_form_proveedor_actualizar();
+                        $("#modal_proveedores_actualizar").modal("hide");
+                        actualizar_table_proveedores(null);
+
+                    });
+                }
+            }
+            else
+            {
+                alert("Introduce todos los datos");
+            }
+        });
+
+        var g_provedor_selected_actualizar = 0;
+        function actualizar_proveedor_info(id_provedor)
+        {
+            $.post("PHP/get_provedor_info_by_id.php", { id_prov: id_provedor }, function (data) {
+
+                var obj = JSON.parse(data);
+                obj = obj.result[0];
+                $("#provedor_nombre_actualizar").val(obj.nombre);
+                $("#provedor_RFC_actualizar").val(obj.RFC);
+                $("#provedor_telefono_actualizar").val(obj.telefono);
+                $("#provedor_mail_actualizar").val(obj.email);
+                $("#proveedor_modal_header").html("Actualizar proveedor");
+                $("#modal_proveedores_actualizar").modal();
+                g_provedor_selected_actualizar = id_provedor;
+
+
+            });
+
+
+
+        }
+
+
+        function actualizar_table_proveedores(query)
+        {
+           
+            if(query==null)
+            {//cargar_proveedores_table_main.php
+
+                proveedores_table_main_DIV.load("PHP/cargar_proveedores_table_main.php", function (data) {
+                });
+            }
+            else
+            {
+                proveedores_table_main_DIV.load("PHP/cargar_proveedores_table_main.php", { query:query });
+
+            }
+
+
+
+        }
+
+
+
+
+
+        $("#btn-calcular-total").click(function () {
+            $.post("PHP/obtener_total_inventario.php", function (data) {
+                var json = JSON.parse(data);
+                var result = json.result[0];
+                var total = result.total;
+                var subtotal = result.subtotal;
+                var iva = result.iva;
+                var out = '<tr>';
+                out += "<td><label>$" + total + "</label></td>";
+                out += "<td><label>$" + subtotal + "</label></td>";
+                out += "<td><label>$" + iva + "</label></td></tr>";
+
+                var table = $("#total_results_table");
+                table.html(out);
+                $("#results_table_div").fadeIn();
+
+
+            });
+
+        });
+
+
+
+        $("#buscar_proveedor_modal").click(function () {
+
+            var query = prompt("Proovedor a buscar");
+            select_proovedores_modal_DOM.load("PHP/get_proveedores_select.php", { search: query, select: '1', id_ing:g_selected_ingrediente });
+
+
+        });
+
+
+        $("#btn_actualizar_proveedores_ing").click(function () {
+
+
+            var cantidad = $("#modal_actualizar_cantidad").val();
+            var unidad = $("#modal_actualizar_unidad").val();
+            var costo = $("#modal_actualizar_costo").val();
+            var check_en_almacen = $("#mod_en_almacen_check");
+
+
+            var cantidad_cocina = $("#cant_cocina_actualizar").val();
+            var cantidad_almacen = $("#cant_almacen_actualizar").val();
+
+            var nombre_nuevo = $("#actualizar_platillo_nombre").val();
+
+            var en_almacen = '';
+            if (check_en_almacen.is(":checked"))
+            {
+                en_almacen = '1';
+            } else { en_almacen = '0';}
+            var fecha_caducidad = $("#date_mod_fecha_caducidad").val();
+
+            if (parseFloat(cantidad) == (parseFloat(cantidad_cocina) + parseFloat(cantidad_almacen))) {
+
+
+
+                $.post("PHP/actualizar_ingrediente.php", {nuevo_nombre:nombre_nuevo, cantidad_almacen: cantidad_almacen, cantidad_cocina: cantidad_cocina, fecha_caducidad: fecha_caducidad, en_almacen: en_almacen, idingrediente: g_selected_ingrediente, cantidad: cantidad, unidad: unidad, costo: costo, provedores: tmp_provedores.join(":") }, function (data) {
+
+                    location.reload();
+
+
+                });
+            }
+            else
+            {
+                alert("Cantidad total debe ser igual a la suma de cantidad en almacen mas la cantidad en cocina");
+            }
+
+
+
+        });
+
+
+        function eliminar_proveedor(index)
+        {
+            $("#tmp_" + index).remove();
+            tmp_provedores = [];
+            $("#result_add_proveedores tr td").each(function (i,element) {
+                if (i % 2 == 0) {
+                    tmp_provedores.push($(element).html());
+
+                }
+
+            });
+
+
+
+        }
+
+
+        $("#modal_act_ing").on('hidden.bs.modal', function () {
+
+            tmp_provedores = [];
+            table_proveedores_DOM.html("");
+        });
+
+
+        $("#btn_agregar_proveedor_moal_act").click(function () {
+            var proveedor_selected = $("#act_modal_provedores").val();
+            if (proveedor_selected.trim() != '')
+                {
+
+
+                var index = $("#act_modal_provedores")[0].selectedIndex;
+            $($("#act_modal_provedores option")[index]).remove();
+            tmp_provedores.push(proveedor_selected);
+            var len = tmp_provedores.length; var i = 0;
+            var output = "";
+           
+            for(;i<len;i++)
+            {
+                output += "<tr id='tmp_"+i+"'><td>" + tmp_provedores[i] + "</td>";
+                output += "<td><button class='btn btn-danger' onclick='eliminar_proveedor("+i+")'>Eliminar</button></td>";
+                output += "</tr>";
+
+
+            }
+            output += "</tbody></table></div>";
+            table_proveedores_DOM.html(output);
+
+        }
+             
+            
+            
+        });
+
+
+        var g_selected_ingrediente = 0;
+        function act_modal(idingrediente)
+        {
+
+
+            $.post("PHP/get_ingrediente_selected.php", { idIng: idingrediente }, function (data) {
+                var obj = JSON.parse(data).result[0];
+                var nombre = obj.nombre;
+                $("#actualizar_platillo_nombre").val(nombre);
+               
+                var cantidad = obj.cantidad;
+                var unidad = obj.unidad;
+                var costo = obj.costo;
+                var fecha_caducidad = obj.fecha_caducidad;
+                var en_almacen = obj.en_almacen;
+                var cantidad_cocina = obj.cantidad_cocina;
+                var cantidad_almacen = obj.cantidad_almacen;
+
+                    $("#cant_cocina_actualizar").val(cantidad_cocina);
+                    $("#cant_almacen_actualizar").val(cantidad_almacen);
+
+                $("#modal_actualizar_cantidad").val(cantidad);
+                $("#modal_actualizar_unidad").val(unidad);
+                $("#modal_actualizar_costo").val(costo);
+                $("#modal_act_nombre").html("Actualizar " + nombre);
+                $("#modal_act_ing").modal();
+                if (en_almacen == '1')
+                    $("#mod_en_almacen_check").prop("checked", true);
+                else {
+                    $("#mod_en_almacen_check").prop("checked", false);
+                }
+                $("#date_mod_fecha_caducidad").val(fecha_caducidad);
+
+            });
+            /*
+            var nombre = $($("#table_inventario_general #ing_inventario_" + idingrediente + " td")[0]).html()
+
+            var cantidad = $($("#table_inventario_general #ing_inventario_"+idingrediente+" td")[1]).html()
+            var unidad = $($("#table_inventario_general #ing_inventario_" + idingrediente + " td")[2]).html()
+            var costo = $($("#table_inventario_general #ing_inventario_" + idingrediente + " td")[3]).html()
+            costo = costo.replace("$", "");
+            */              
+
+            g_selected_ingrediente = idingrediente;
+
+            $("#act_modal_provedores").load("PHP/get_proveedores_select.php", { select: '1',id_ing:idingrediente });
+
+            // obtener tabla de modal con proveedores actuales
+            var x = $("#table_inventario_general tr #provedores_ing_"+idingrediente+" option");
+            x.each(function (i, element) {
+
+                tmp_provedores.push($(element).html());
+            });
+            var len = tmp_provedores.length; var i = 0;
+            var tmp_output = '';
+            for (; i < len; i++)
+            {
+                tmp_output += "<tr id='tmp_"+i+"'><td>" + tmp_provedores[i] + "</td>";
+                tmp_output += "<td><button class='btn btn-danger' onclick='eliminar_proveedor("+i+")'>Eliminar</button></td></tr>";
+
+            }
+            
+
+            table_proveedores_DOM.html(tmp_output);
+
+
+          
+         
+           
+
+        }
+
+
+        function clearIngredientesForm() {
+            ing_nombre_DOM.val('');
+            ing_cantidad_DOM.val('');
+            ing_unidad_DOM.val('');
+            ing_costo_DOM.val('');
+            fecha_caducidad_date_DOM.val('');
+        }
+        function actualizarIngredientes(ingrediente)  //id de ing. if(ingrediente==null){mostrar_todo();}
+        {
+            var obj = null;
+            if (ingrediente != null) {
+                $.post("PHP/load_ingredientes.php", { id_ing: ingrediente }, function (data) {
+                    obj = JSON.parse(data);
+                    obj = obj.result;
+                    var len = obj.length; var i = 0; var output = '';
+                    for (; i < len; i++) {
+                        var ingrediente = obj[i];
+                        var id_ingrediente = ingrediente.id_ingrediente;
+                        output += "<tr id='ing_" + id_ingrediente + "'>";
+                        output += "<td>" + ingrediente.nombre + "</td>";
+                        output += "<td class='cant_ing'>" + ingrediente.cantidad + "</td>";
+                        output += "<td>" + ingrediente.unidad + "</td>";
+                        output += "<td>" + ingrediente.costo + "</td></tr>";
+
+                    }
+                    table_ingredientes_DOM.html(output);
+
+
+
+
+
+
+
+                });
+
+
+
+            } else {
+                $.post("PHP/load_ingredientes.php", function (data) {
+                    obj = JSON.parse(data);
+                    obj = obj.result;
+                    var len = obj.length; var i = 0; var output = '';
+                    for (; i < len; i++) {
+                        var ingrediente = obj[i];
+                        var id_ingrediente = ingrediente.id_ingrediente;
+                        output += "<tr id='ing_" + id_ingrediente + "'>";
+                        output += "<td>" + ingrediente.nombre + "</td>";
+                        output += "<td class='cant_ing'>" + ingrediente.cantidad + "</td>";
+                        output += "<td>" + ingrediente.unidad + "</td>";
+                        output += "<td>" + ingrediente.costo + "</td></tr>";
+
+                    }
+                    table_ingredientes_DOM.html(output);
+
+
+                });
+
+
+
+            }
+
+
+
+        }
+
+        function actualizar_proveedores_select()
+        {
+            $("#proveedor_select").load("PHP/obtener_proveedores_select.php");
+
+        }
+
+            $(document).on("click", "#table_ingredientes tr", function () {  // cuando se haga click en el td de cantidad 
+             
+
+
+        });
+
+            function actualizar_table_inventario_general(query)  // if(query)==null; mostrar todos los registros 
+            {
+
+                var mostrar_almacen = '';
+                
+                if (mostrar_almacen_check_DOM.is(":checked"))
+                {
+                    mostrar_almacen = '1';
+                } else { mostrar_almacen = '0';}
+
+
+                if(query==null)
+                {
+                    $("#table_inventario_general").load("PHP/get_table_inventario_general.php", { en_almacen: mostrar_almacen });
+
+
+                } else {
+                    //get_table_inventario_general.php
+                    console.log(mostrar_almacen);
+
+                    $("#table_inventario_general").load("PHP/get_table_inventario_general.php", { query: query, en_almacen:mostrar_almacen });
+
+
+
+                }
+
+
+
+
+
+            }
+
+
+
+            $("#search_ingrediente").on("input", function () {
+
+                var query = $(this).val();
+                actualizar_table_inventario_general(query);
+            });
+
+            function get_caducar_info()
+            {
+                $("#caducar_info").load("htms/caducar.htm");
+                
+            }
+
+        $(document).ready(function () {
+
+
+
+
+            get_caducar_info();
+         
+
+            actualizar_table_proveedores(null);
+
+            actualizar_table_inventario_general(null);
+
+            actualizar_proveedores_select();
+            actualizarIngredientes(null);
+            $("#agregar_btn").click(function () {
+
+                var provedor = $("#proveedor_select").val();
+               
+                var nombre = ing_nombre_DOM.val();
+                var cantidad = ing_cantidad_DOM.val();
+                var unidad = ing_unidad_DOM.val();
+                var costo_unitario = ing_costo_DOM.val();
+                var costo = parseFloat(costo_unitario) * parseFloat(cantidad);
+                var fecha = fecha_caducidad_date_DOM.val();
+                var message = validate_ingredient_form(nombre, cantidad, unidad, costo, fecha);
+                var en_almacen ='';
+                if(en_almacen_dom.is(":checked")){en_almacen='1'}else{en_almacen='0'}
+
+
+                if (message == 'true') {
+
+                    $.post("PHP/agregar_ingrediente.php", { nombre: nombre, cantidad: cantidad, unidad: unidad, costo: costo, id_proveedor: provedor, fecha_caducidad: fecha, en_almacen: en_almacen }, function (data) {
+
+                        actualizarIngredientes(null);
+                        clearIngredientesForm();
+
+
+                        $("#msg_agregar_productos").fadeIn(1111).fadeOut(555);
+
+                        
+                    });
+                }
+                else
+                {
+                    alert(message);
+
+
+                }
+
+             
+
+
+
+            });
+
+
+
+
+
+
+    $(".nav-tabs a").click(function(){
+        $(this).tab('show');
+    });
+    $('.nav-tabs a').on('shown.bs.tab', function(event){
+        var x = $(event.target).text();         // active tab
+        var y = $(event.relatedTarget).text();  // previous tab
+        $(".act span").text(x);
+        $(".prev span").text(y);
+    });
+});
+    </script>
+
+</body>
+</html>

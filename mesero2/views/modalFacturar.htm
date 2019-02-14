@@ -1,0 +1,276 @@
+﻿<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Facturar Cuenta</h4>
+    </div>
+    <div class="modal-body">
+     <h3>Generar Factura</h3>
+      <div class="container-params">
+        <h4>Datos de la factura</h4>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span ng-click="buscarCliente()" class="input-group-addon addon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+                <input placeholder="Selecciona un cliente" class="form-control" type="text" ng-model="busqueda.cliente" />
+
+              </div>
+              <div style="overflow:auto;padding:8px;max-height:220px;" ng-if="clientes.length!=0">
+                <ul class="list-group">
+                  <li ng-class="{'active-li':c.active}" style="color:#34495e;overflow:hidden" ng-click="selectCliente($index)" class="list-group-item" ng-repeat="c in clientes">{{c.nombre}} <span class="badge">{{c.RFC}}</span></li>
+
+                </ul>
+
+              </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-credit-card" aria-hidden="true"></i> M&eacutetodo de pago</span>
+                <select class="form-control" ng-model="factura.idMetodoPago">
+                  <option ng-repeat="m in metodosPago" value="{{m.id}}">{{m.nombre}}</option>
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-money" aria-hidden="true"></i> Forma de Pago</span>
+                <select class="form-control" ng-model="factura.idFormaPago">
+                  <option ng-repeat="f in formasPago" value="{{f.id}}">{{f.nombre}}</option>
+                </select>
+
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> N&uacutemero de Cuenta</span>
+                <input type="text" class="form-control" ng-model="factura.numeroCtaPago" />
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-money"></i> Tipo de combrobante</span>
+                <div class="check-container">
+                  <label class="radio-inline"><input ng-model="factura.tipoComprobante" value="1" type="radio" name="optradio">Ingreso</label>
+                  <label class="radio-inline"><input ng-model="factura.tipoComprobante" value="0" type="radio" name="optradio">Egreso</label>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-map-marker"></i> Lugar de Expedici&oacuten</span>
+                <select class="form-control" ng-model="factura.idLugarExpedicion">
+                  <option ng-repeat="l in lugaresExpedicion" value="{{l.id}}">{{l.municipio}},{{l.estado}}</option>
+
+                </select>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-qrcode"></i> Serie</span>
+                <select ng-change="asignarFolio()" class="form-control" ng-model="factura.serie">
+                  <option ng-repeat="s in series" value="{{s.serie}}">{{s.serie}}</option>
+
+                </select>
+              </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-address-card" aria-hidden="true"></i> Folio</span>
+                <input class="form-control" ng-model="factura.folio" type="text" readonly />
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-xs-8">
+              <h4>Selecciona una configuraci&oacuten</h4>
+              <ul class="list-group">
+                <li style="color:#34495e;overflow:hidden" ng-click="configSelected($index)" ng-class="{'active-li':c.selected}" ng-repeat="c in configs" class="list-group-item">{{c.nombre}} <span class="badge">Moneda:{{c.moneda}} T.C {{c.tipoCambio}}</span></li>
+
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <h4>{{(opcion==0)?'Agregar Concepto':'Modificar Concepto'}}</h4>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-lemon-o"></i>Descripción</span>
+              <textarea class="form-control" ng-model="concepto.descripcion"></textarea>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-thermometer-full" aria-hidden="true"></i> Unidad</span>
+               <select ng-model="concepto.unidad" class="form-control">
+                 <option ng-repeat="u in unidades" value="{{u.id}}">{{u.nombre}}</option>
+
+               </select>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-lemon-o"></i> Precio</span>
+              <input type="number" class="form-control" ng-model="concepto.precio" />
+            </div>
+
+          </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-lemon-o"></i>Cantidad</span>
+              <input type="number" class="form-control" ng-model="concepto.cantidad"/>
+            </div>
+
+          </div>
+
+        </div>
+
+        
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon add-on-style1"><i class="fa fa-id-badge" aria-hidden="true"></i> Identificador</span>
+              <input type="text" class="form-control" ng-model="concepto.codigo" />
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <button ng-click="submitConcepto()" class="btn btn-block btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <button ng-click="undoConcepto()"class="btn btn-block btn-warning"><i class="fa fa-undo"></i> Deshacer</button>
+        </div>
+      </div>
+
+      <h4>Conceptos</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Unidad</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Importe</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="c in conceptos">
+              <td>{{c.descripcion}}</td>
+              <td>{{c.unidad_nombre}}</td>
+              <td>{{c.precio}}</td>
+              <td>{{c.cantidad}}</td>
+              <td>{{c.importe}}</td>
+              <td>
+                <div class="btn-group">
+                  <button ng-click="modConcepto($index)" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+                  <button ng-click="eliminarConcepto($index)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+
+                </div>
+              </td>
+
+
+
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Subtotal</th>
+              <th>IVA</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{subtotal | currency}}</td>
+              <td>{{iva | currency}}</td>
+              <td>{{total | currency}}</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button ng-click="facturar()" class="btn btn-block btn-success"><i class="fa fa-file" aria-hidden="true"></i>Facturar</button>
+        </div>
+
+      </div>
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+

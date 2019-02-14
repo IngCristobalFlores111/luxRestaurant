@@ -1,0 +1,67 @@
+
+<h1>Insumos</h1>
+    <div class="well" >
+    <h4 id="headerForm">Agregar insumo</h4>
+        <form id="formInsumo">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="insumoNombre">Nombre</label>
+                        <input required name="nombre" id="insumoNombre" type="text" class="form-control" />
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label>Unidad</label>
+                        <select name="unidad" class="form-control" id="insumoUnidades"></select>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="insumoDesc">Descripci&oacuten</label>
+                        <textarea required name="descripcion" id="insumoDesc" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="insumoCosto">Costo</label>
+                        <input required min="0" name="costo" id="insumoCosto" type="number" class="form-control" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button id="btnAgregarInsumo" class="btn btn-block btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-block btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Deshacer</button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+<h4>Insumos existentes <i class="fa fa-cutlery" aria-hidden="true"></i></h4>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-striped" id="tableInsumosDt">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripci&oacuten</th>
+            <th>Unidad</th>
+            <th>Costo</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody id="tableInsumos">
+
+    </tbody>
+
+</table>
+</div>

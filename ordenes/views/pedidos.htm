@@ -1,0 +1,123 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+<h2 class="color-white">Pedidos para llevar <a href="#!/" class="btn btn-warning"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Regresar</a> </h2>
+<button ng-if="pedidos.length==0"class="btn btn-block btn-danger">No hay pedidos por el momento =)</button>
+<div class="btn-group btn-group-justified">
+    <div class="btn-group" ng-repeat="p in pedidos">
+      <button ng-click="selectPedido($index)" ng-class="{'btn-selected':p.selected}" type="button" class="btn btn-primary">{{p.pedido.nombrCliente}}</button>
+    </div>  
+  </div>
+  <div class="domicilio" ng-if="pedidos.length>0">
+      <h3 class="color-white">Favor de entregar a la siguiente direcci&oacute;n</h3>
+      <h4 class="color-white">{{pedidos[index].pedido.domicilio}}</h4>
+
+  </div>
+</div>
+</div>
+        <div class="platillos"  >
+            <div class="row" style="margin-top:22px;">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="p in pedidos[index].platillos">
+                <div class="platillo" >
+                    <div class="media">
+                        <div class="media-left">
+                            <img style="cursor:pointer" ng-click="abrirModal(p,0)" ng-src="../images/{{p.imagepath}}" class="media-object img-responsive img-thumbnail">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading nombre-platillo">{{p.nombre}} <label class="label label-info block-adjust">{{p.precio|currency}}</label>  <label class="label-success">x{{p.cantidad}}</label></h4>
+                            <p>{{p.comentarios}}</p>
+                          
+                            
+                        </div>
+                       
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            </div> 
+        </div>    
+                    <button style="margin-top:22px;" ng-if="pedidos[index].platillos.length>0" ng-click="cobrar()"  class="btn btn-success btn-block"><i class="fa fa-check" aria-hidden="true"></i> Cobrar</button>
+                    
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+<div id="modalCobrar" class="modal fade" role="dialog" ng-controller="ctrlCobrar">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Cobrar Cliente</h4>
+            </div>
+            <div class="modal-body">
+                     <h4>Cliente: {{cliente.nombrCliente}} </h4>
+                    <h4>Domicilio: {{cliente.domicilio}}</h4>
+                     <h4>Total a Pagar : {{total | currency}} </h4>
+                     <h4 ng-if="descuento>0">Descuento:{{descuento | currency}}</h4>
+                     <ul class="list-group">
+                         <li style="color:white;background-color:#3498db" class="list-group-item" ng-repeat="p in platillos">{{p.nombre}} <span class="badge">x{{p.cantidad}}</span></li>
+                        
+                     </ul>
+
+                     <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i> Recibido</span>
+                                <input ng-change="calcularCambio()" class="form-control" ng-model="pago.recibido" ?>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i> Cambio</span>
+                                    <input readonly class="form-control" ng-model="pago.cambio" ?>
+                                </div>
+                            </div>
+                        </div> 
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i> Método de Pago</span>
+                                     <select class="form-control" ng-model="pago.metodoPago">
+                                         <option value="{{m.id}}" ng-repeat="m in metodosPago">{{m.nombre}}</option>
+                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button ng-show="show.btnTotal" ng-if="pago.recibido>=total" ng-click="pagar()" class="btn btn-success btn-block"><i class="fa fa-money" aria-hidden="true"></i> Pagar</button>
+                    <button ng-show="show.btnTerminar" ng-click="terminar()" class="btn btn-warning btn-block"><i class="fa fa-check" aria-hidden="true"></i> Terminar (quitar platillos en meseo y chef)</button>
+                    
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <script>
+      var modalCobrar = null;
+
+$(document).ready(function(){
+    modalCobrar = $("#modalCobrar");
+
+});
+
+      </script>

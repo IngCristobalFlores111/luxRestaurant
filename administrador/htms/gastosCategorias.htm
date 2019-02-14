@@ -1,0 +1,43 @@
+<h4>Categorias de Gastos</h4>
+<div class="row well">
+        <h4>Agregar nueva categoria de Gastos</h4>
+        
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-table"></i></span>
+            <input placeholder="Nombre de nueva categoria de gastos" class="form-control" ng-model="categoria.nombre" type="text">
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <button ng-click="agregarCategoria()" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar Categoria</button>
+      </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID <i class="fa fa-id-badge" aria-hidden="true"></i></th>
+                <th>Nombre <i class="fa fa-cubes"></i></th>
+                <th>Opciones <i class="fa fa-cogs"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="c in categorias">
+                <td>{{c.id}}</td>
+                <td>{{c.nombre}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button ng-click="modificar(c)" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+                       <button ng-click="eliminar(c)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+
+                    </div>
+
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>

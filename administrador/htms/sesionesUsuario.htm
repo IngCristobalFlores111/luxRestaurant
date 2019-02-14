@@ -1,0 +1,83 @@
+<h4>Sesiones de los usuarios</h4>
+
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon addon-search"><i class="fa fa-calendar" aria-hidden="true"></i> Inicio</span>
+<input class="form-control" type="date" ng-model="filtros.inicio"/>
+
+</div>
+</div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+        <div class="input-group">
+        <span class="input-group-addon addon-search"><i class="fa fa-calendar" aria-hidden="true"></i> Fin</span>
+        <input class="form-control" type="date" ng-model="filtros.fin"/>
+        
+        </div>
+        </div>
+        </div>
+
+
+</div>
+
+<div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                        <div class="input-group">
+                        <span class="input-group-addon addon-search"><i class="fa fa-user" aria-hidden="true"></i> Usuario</span>
+                     <select class="form-control" ng-model="filtros.usr">
+                         <option value="{{us.id}}" ng-repeat="us in filtrosUsers">{{us.nombre}}</option>
+                     </select>                        
+                        </div>
+                        </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div class="btn-group">
+      <button ng-click="aplicarFiltros()" class="btn btn-primary"><i class="fa fa-check"></i> Aplicar </button>
+      <button ng-click="quitarFiltros()" class="btn btn-warning"><i class="fa fa-times"></i> Quitar</button>
+      
+    </div>
+        </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped" datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Rol</th>
+                        <th>Inicio se sesi&oacute;n</th>
+                        <th>Fin de sesi&oacute;n</th>
+                        <th>Duraci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="u in usuarios">
+                        <td>{{u.usuario}}</td>
+                        <td>{{u.nombre}}</td>
+                        <td>{{u.rol}}</td>
+                        <td>{{u.inicio | date:'medium'}}</td>
+                        <td ng-if="u.fin!=null">{{u.fin | date:'medium'}}</td>
+                        <td ng-if="u.duracion!=null">{{u.duracion}}</td>
+                        <td class="text-center" ng-if="u.fin==null">Usuario en linea</td>                       
+                        <td style="display: none;" ng-if="u.fin==null"></td>
+                    </tr>
+                    <tr ng-if="usuarios.length==0"><td colspan="6">No hay Usuarios</td></tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        
+    </div>
+</div>

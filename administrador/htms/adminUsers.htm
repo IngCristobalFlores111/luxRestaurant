@@ -1,0 +1,347 @@
+<script src = "https://plus.google.com/js/client:platform.js"></script>
+
+<div class="row">
+    
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon addon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input placeholder="Busca un Usuario..." ng-model="qPlatillo" class="form-control" />
+
+        </div>
+    
+    
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="btn-group" id="gConnect">
+                <button ng-click="abrirModalUsr()" type="button" class="btn btn-block btn-primary"><span class="glyphicon glyphicon-plus"></span> Agregar nuevo usuario</button>
+                <button id="abrirGUsr" class="btn btn-primary btn-block g-signin"
+                data-scope="email"
+                data-clientid="278724594393-k0lh1sgcbj2p4i481f171ir2n3tgr737.apps.googleusercontent.com"
+                data-callback="onSignInCallback"
+                data-theme="dark"
+                data-authuser=0
+                data-cookiepolicy="single_host_origin">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+                Agregar Usuarios G+                
+            </button>  
+            <button style="display:none" id="simpleG" class="btn btn-primary btn-block g-signin"
+            data-scope="email"
+            data-clientid="278724594393-k0lh1sgcbj2p4i481f171ir2n3tgr737.apps.googleusercontent.com"
+            data-callback="simpleGAuth"
+            data-theme="dark"
+            data-authuser=0
+            data-cookiepolicy="single_host_origin">
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+            Agregar Usuarios G+                
+        </button>               
+        </div>
+
+    </div>
+
+
+    
+</div>
+
+
+<div class="row">
+    
+    <div class="col-xs-12" style="padding-top:15px;">
+        <div class="table-responsive">
+            <table  id='usersTable' class="table table-bordered table-striped" datatable="ng">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Rol</th>
+                        <th>Opciones</th>
+                    </tr>
+
+                </thead>
+                <tr ng-repeat="u in usrs | filter:qPlatillo">
+                    <td>{{u.id}}</td>
+                    <td>{{u.nombre}}</td>
+                    <td>{{u.user}}</td>
+                    <td>{{u.rol}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button ng-click="modificarUsr(u)" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button>
+                            <button ng-click="eliminarUsr(u)" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <button ng-click="productividadUsr(u)" class="btn btn-warning"><i class="fa fa-book" aria-hidden="true"></i></button>
+                            
+                        </div>
+
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+
+        </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalUsr" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><i class="fa fa-user-circle" aria-hidden="true"></i> {{headerModal}}</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="usrNombre"><i class="fa fa-user" aria-hidden="true"></i> Nombre</label>
+                        <input ng-model="usr.nombre" type="text" class="form-control" id="usrNombre" placeholder="Nombre del usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr"><i class="fa fa-address-card" aria-hidden="true"></i> Usuario</label>
+                        <input ng-model="usr.user" type="text" class="form-control" id="usr" placeholder="Usuario">
+                    </div>
+                         <div class="form-group">
+                        <label for="psw"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Contrase&ntildea</label>
+                        <input ng-model="usr.pass" type="password" class="form-control" id="psw" placeholder="Contrasena personal del usuario">
+                             <div class="checkbox">
+                                 <label><input type="checkbox" id="chckPass">Mostrar contrase&ntildea </label>
+                             </div>
+                         </div>
+                    <div class="form-group">
+                        <label>Rol del usuario</label>
+                        <select class="form-control" ng-model="usr.idTipo">
+                            <option ng-repeat="tipo in tipos" value="{{tipo.id}}">{{tipo.nombre}}</option>
+
+                        </select>
+                    </div>
+
+                    <button ng-click="submitUsr()" class="btn btn-success btn-block"><i class="fa fa-check" aria-hidden="true"></i> Aceptar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button  type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Cancelar</button>
+             
+            </div>
+        </div>
+
+    </div>
+</div> 
+
+<!-- Modal -->
+<div id="modalNewUserGplus" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Agregar Usuario de Google</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-xs-12">
+                        <div class="media">
+                                <div class="media-left">
+                                  <img id="imgUsr" class="media-object" style="width:60px">
+                                </div>
+                                <div class="media-body">
+                                  <h4 class="media-heading" id="nombreUsr"></h4>
+                                  <p id="correoUsr"></p>
+                                </div>
+                              </div>
+                              
+                  </div>
+              </div>
+              <div class="row" style="margin-top:22px;">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                      <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-user"></i> Rol de Usuario</span>
+                          <select  class="form-control" id="tiposUsrs">
+
+                          </select>
+                         </div>
+                  </div>
+                  </div>
+              </div>
+              <div class="row" style="margin-top:22px;">
+                  <div class="col-xs-12">
+                        <div class="btn-group">
+                                <button id="btnAgregarUsuario" class="btn btn-success"><i class="fa fa-plus"></i> Agregar Usuario</button>
+                            </div>
+                  </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+<script>
+var loggedOut = false;
+
+
+
+function logout(){
+    var wnd = window.open("https://accounts.google.com/Logout");
+    setTimeout(function() {
+      wnd.close();
+       loggedOut = true;
+
+    }, 400);
+}
+function simpleGAuth(resp){
+    gapi.client.load('plus', 'v1', apiClientLoadedSimple);
+
+}
+function onSignInCallback(resp) {
+    gapi.client.load('plus', 'v1', apiClientLoaded);
+  }
+
+
+  /**
+   * Sets up an API call after the Google API client loads.
+   */
+   function apiClientLoadedSimple() {
+    gapi.client.plus.people.get({
+   'userId': 'me'
+ }).execute(handleSimpreResponse);
+  }
+  function handleSimpreResponse(resp){
+
+  }
+  function apiClientLoaded() {
+    gapi.client.plus.people.get({
+   'userId': 'me'
+ }).execute(handleEmailResponse);
+  }
+  function handleUsuarioActual(resp){
+localStorage.setItem("usrActual",resp.id);
+  }
+  function getActualUsr(){
+    gapi.client.plus.people.get({
+   'userId': 'me'
+ }).execute(handleUsuarioActual);
+  }
+
+
+  /**
+   * Response callback for when the API client receives a response.
+   *
+   * @param resp The API response object with the user email and profile information.
+   */
+   var once = true;
+  function handleEmailResponse(resp) {
+   if(once){
+    localStorage.setItem("usrActual",resp.id);
+    once= false;
+   }
+    if(resp.displayName && resp.id.toString()!=localStorage.getItem("usrActual")){
+    $.get("PHP/new/gAuth/accionGauth.php",{accion:"checkUsr",g_id:resp.id},function(data){
+    data = JSON.parse(data);
+    switch(data.status){
+        case 2:  // usuario nuevo y valido
+        imgUsr.prop("src",resp.image.url);
+        nombreUsr.html(resp.displayName);
+        correoUsr.html(resp.emails[0].value);
+        modalNewUsr.modal("show");
+        localStorage.setItem("newUsr",JSON.stringify(resp));
+        break;
+        case 1:  // usuario ya existe en bd
+        toastr.info("El usuario ya esta dado de alta");
+          
+        break;
+
+    }
+
+    });
+ 
+
+}
+
+}
+</script>
+
+<script>
+
+
+    var modalUsr = null;
+    var chckPass = null;
+    var psw = null;
+
+    var imgUsr = null;
+    var nombreUsr = null;
+    var correoUsr = null;
+    var btnAgregarUsuario = null;
+    var modalNewUsr = null;
+var tiposUsrs = null;
+    $(document).ready(function () {
+        tiposUsrs =$("#tiposUsrs")
+        var len = tipos_usuarios.length; var i = 0;
+var html_tipos = ""
+        for(;i<len;i++){
+            var t = tipos_usuarios[i];
+html_tipos+="<option value='"+t.id+"'>"+t.nombre+"</option>";
+        }
+        tiposUsrs.html(html_tipos);
+
+ $("#abrirGUsr").click(function(){
+    logout();
+
+
+ });
+    modalNewUsr = $("#modalNewUserGplus");
+     imgUsr = $("#imgUsr");
+     nombreUsr = $("#nombreUsr");
+     correoUsr =  $("#correoUsr");
+     btnAgregarUsuario =  $("#btnAgregarUsuario");
+    btnAgregarUsuario.click(function(){
+    var strUsr = localStorage.getItem("newUsr");
+    if(strUsr==null){
+        toastr.info("No se ha iniciado sesion correctamente");
+    }else{
+        var usr = JSON.parse(strUsr);
+        usr.idTipo = tiposUsrs.val();
+
+  $.post("PHP/new/gAuth/accionGauth.php?accion=registrarUsuario",{usr:usr},function(data){
+     var response = JSON.parse(data);
+     if(response.exito){
+        bootbox.confirm({
+    title: "Usuario dado de alta exitosamente",
+    message: "Ahora solo debes de iniciar sesión de nuevo",
+    buttons: {
+      
+        confirm: {
+            label: '<i class="fa fa-check"></i> Confirmar'
+        }
+    },
+    callback: function (result) {
+        logout();
+        $("#simpleG").trigger("click");
+        modalNewUsr.modal("hide");
+    }
+});
+     }
+});
+    }
+
+    });
+
+        modalUsr = $("#modalUsr");
+        chckPass = $("#chckPass");
+        psw = $("#psw");
+        chckPass.on("change", function () {
+            if (chckPass.is(":checked")) {
+                psw.attr("type", "text");
+            } else {
+                psw.attr("type", "password");
+
+            }
+        });
+
+    });
+
+</script>

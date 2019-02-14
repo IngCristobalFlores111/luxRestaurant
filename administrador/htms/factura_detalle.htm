@@ -1,0 +1,29 @@
+<h3>Detalles de Factura <label class="label label-primary">{{factura.factura.folio}}</label>  <label class="label" ng-class="{'label-success':factura.factura.estatus==1,'label-danger':factura.factura.estatus==0}">{{(factura.factura.estatus==1)?'Timbrada':'Cancelada'}} </label></h3>
+<div ng-include="'htms/formCliente.htm'"></div>
+
+<ul class="nav nav-pills">
+    <li ng-click="setTab(1)" ng-class="{'active':tab==1}"><a >Factura</a></li>
+    <li ng-click="setTab(2)" ng-class="{'active':tab==2}"><a >Envio de Correos</a></li>
+   
+</ul>
+<div class="tab-content">
+    <div ng-show="tab==1" id="factura" ng-include="'htms/facturaForm.htm'">
+    </div>
+    <div ng-show="tab==2" id="correos" ng-include="'htms/envioCorreos.htm'" ng-controller="ctrlEnvioCorreos"></div>
+
+</div>
+
+
+
+<script charset="utf-8">
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+</script>

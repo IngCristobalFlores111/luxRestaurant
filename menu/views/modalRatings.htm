@@ -1,0 +1,49 @@
+
+      <!-- Modal content -->
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <span ng-click="closeModal()" class="close" id="closeModalRating">&times;</span>
+		  <h2>Reseñar Menu</h2>
+		</div>
+		<div class="modal-body">
+          <h4>Ingresa tu número de Ticket</h4>
+          <div class="input-group">
+         <span class="input-group-addon addon-ticket"><i class="fa fa-ticket"></i> Numero de ticket</span>
+         <input type="number" ng-model="ticket.id" class="form-control" />
+          </div>
+          <button ng-click="buscarTicket()" class="btn-buscar-ticket"><i class="fa fa-search"></i> Buscar</button>
+          <div class="media" ng-repeat="p in ticket.platillos">
+            <div class="media-left">
+              <img ng-src="../images/{{p.img}}" class="media-object img-platillo">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{p.nombre}} <span class="badge">{{p.precio | currency}}</span></h4>
+              <p>{{p.descripcion}}</p>
+              <button ng-if="!p.open" ng-click="abrirRatingPlatillo(p)"  class="btn-rate"><i class="fa fa-star"></i> Reseñar</button>
+            <div ng-if="p.open && !p.rated" class="visible-lg">
+
+                <div star-rating ng-model="p.rating" max="5" on-rating-select="ratingPlatillo(rating)">
+                </div>
+                <h4 class="media-heading">Comentario</h4>
+               <textarea rows="4" cols="4" ng-model="p.comentario" class="form-control"></textarea>
+                <button ng-click="aceptarRate(p)" style="margin-top:11px;" class="btn-rate"><i class="fa fa-star"></i> Aceptar Reseña</button>
+            </div>
+
+            </div>
+            <div class="visible-xs" ng-if="p.open&&!p.rated">
+              <div star-rating ng-model="p.rating" max="5" on-rating-select="ratingPlatillo(rating)">
+              </div>
+              <h4 class="media-heading">Comentario</h4>
+             <textarea rows="4" cols="4" ng-model="p.comentario" class="form-control"></textarea>
+              <button ng-click="aceptarRate(p)" style="margin-top:11px;" class="btn-rate"><i class="fa fa-star"></i> Aceptar Reseña</button>
+            </div>
+            <div class="rated" ng-if="p.rated">
+            <h4>Se ha ingresado tu reseña,¡Muchas gracias por tu retroalimentación!</h4>
+            </div>
+          </div>
+        
+		</div>
+		<div class="modal-footer">
+		  <h3>Tu opinion es muy importante para nosotros</h3>
+		</div>
+      </div>

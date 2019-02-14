@@ -1,0 +1,321 @@
+﻿<h3>Generar Nueva Factura</h3>
+<div class="well">
+    <h4>Datos de la factura</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span ng-click="buscarCliente()" class="input-group-addon addon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    <input placeholder="Selecciona un cliente" class="form-control" type="text" ng-model="busqueda.cliente" />
+
+                </div>
+                <div style="overflow:auto;padding:8px;max-height:220px;" ng-if="clientes.length!=0">
+                    <ul class="list-group">
+                        <li ng-click="selectCliente($index)" class="list-group-item" ng-repeat="c in clientes">{{c.nombre}} <span class="badge">{{c.RFC}}</span></li>
+                        
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-credit-card" aria-hidden="true"></i> M&eacutetodo de pago</span>
+                    <select class="form-control" ng-model="factura.idMetodoPago">
+                        <option ng-repeat="m in metodosPago" value="{{m.id}}">{{m.nombre}}</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-money" aria-hidden="true"></i> Forma de Pago</span>
+                    <select class="form-control" ng-model="factura.idFormaPago">
+                        <option ng-repeat="f in formasPago" value="{{f.id}}">{{f.nombre}}</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <span class="input-group-addon addon-search"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> N&uacutemero de Cuenta</span>
+                <input type="text" class="form-control" ng-model="factura.numeroCtaPago" />
+
+            </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-money"></i> Tipo de combrobante</span>
+                    <div class="check-container">
+                        <label class="radio-inline"><input ng-model="factura.tipoComprobante" value="1" type="radio" name="optradio">Ingreso</label>
+                        <label class="radio-inline"><input ng-model="factura.tipoComprobante" value="0" type="radio" name="optradio">Egreso</label>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+               <div class="input-group">
+                   <span class="input-group-addon addon-search"><i class="fa fa-map-marker"></i> Lugar de Expedici&oacuten</span>
+                   <select class="form-control" ng-model="factura.idLugarExpedicion">
+                       <option ng-repeat="l in lugaresExpedicion" value="{{l.id}}">{{l.municipio}},{{l.estado}}</option>
+
+                   </select>
+               </div>
+            
+
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-qrcode"></i> Serie</span>
+                    <select ng-change="asignarFolio()" class="form-control" ng-model="factura.serie">
+                        <option ng-repeat="s in series" value="{{s.serie}}">{{s.serie}}</option>
+
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-address-card" aria-hidden="true"></i> Folio</span>
+                    <input  class="form-control" ng-model="factura.folio" type="text" readonly />
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>Selecciona una configuraci&oacuten</h4>
+                <ul class="list-group">
+                    <li style="overflow:hidden" ng-click="configSelected($index)" ng-class="{'active-li':c.selected}"  ng-repeat="c in configs" class="list-group-item">{{c.nombre}} <span class="badge">Moneda:{{c.moneda}} T.C {{c.tipoCambio}}</span></li>
+                    
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="well" ng-if="factura.cliente!=null" ng-include="'htms/formCliente.htm'">
+</div>
+<div class="well">
+    <h4>Agregar conceptos de base de datos</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+             <div class="input-group">
+                 <span ng-click="buscarProducto()" class="input-group-addon addon-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+                 <input placeholder="Busca un producto" class="form-control" ng-model="busqueda.producto" />
+             </div>
+             <div style="max-height:220px;overflow:auto;padding:8px;" ng-if="productos.length!=0">
+                 <ul class="list-group">
+                     <li ng-click="selectProducto($index)" class="list-group-item" ng-repeat="p in productos">{{p.nombre}} <span class="badge">${{p.precio}}</span></li>
+                     
+                 </ul>
+
+             </div>
+            </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+              <span class="input-group-addon addon-search"><i class="fa fa-pie-chart" aria-hidden="true"></i> Cantidad</span>
+              <input class="form-control" type="number" ng-model="conceptos_params.cantidad" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="well">
+    <h4>Agregar concepto libre</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-cube"></i> Nombre</span>
+                    <input type="text" placeholder="Nombre" class="form-control" ng-model="concepto.nombre" />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-code"></i> C&oacutedigo</span>
+                    <input placeholder="Codigo" type="text" class="form-control" ng-model="concepto.codigo" />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-book"></i></span>
+                    <textarea placeholder="Descripcion" type="text" class="form-control" ng-model="concepto.descripcion"></textarea>
+                </div>
+            </div>
+        </div>
+    
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-thermometer-three-quarters"></i> Unidad</span>
+                    <select class="form-control" ng-model="concepto.unidad">
+                        <option ng-repeat="u in unidades" value="{{u.nombre}}">{{u.nombre}}</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-pie-chart"></i> Cantidad</span>
+                    <input type="number" class="form-control" ng-model="concepto.cantidad" />
+
+                </div>
+             
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-usd"></i> Precio</span>
+                    <input type="number" class="form-control" ng-model="concepto.precio" />
+
+                </div>
+             
+
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-6">
+                <button ng-click="agregarConcepto()" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar Concepto</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-if="factura.conceptos.length!=0">
+    <h4>Conceptos de la Factura</h4>
+
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" datatable="ng">
+                <thead><tr>
+                    <th class="col-xs-2">Nombre <i class="fa fa-cube"></i></th>
+                    <th class="col-xs-1">Codigo <i class="fa fa-code"></i></th>
+                    <th class="col-xs-2">Descripcion <i class="fa fa-book"></i></th>
+                    <th class="col-xs-1">Unidad <i class="fa fa-thermometer-three-quarters"></i></th>
+                    <th class="col-xs-2">Cantidad <i class="fa fa-pie-chart"></i></th>
+                     <th class="col-xs-2">Precio <i class="fa fa-usd"></i></th>
+                    <th class="col-xs-1">Importe <i class="fa fa-usd"></i></th>
+                    <th class="col-xs-1">Opciones <i class="fa fa-cogs"></i></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="c in factura.conceptos">
+                        <td>{{c.nombre}}</td>
+                        <td>{{c.codigo}}</td>
+                        <td>{{c.descripcion}}</td>
+                        <td>{{c.unidad}}</td>
+                        <td><input ng-change="calularImporte(c)" class="form-control" type="number" ng-model="c.cantidad" /></td>
+                        <td><input ng-change="calularImporte(c)"  type="number" class="form-control" ng-model="c.precio"/> </td>
+                        <td>${{c.importe}}</td>
+                         <td style="text-align:center;">
+                            <div class="btn-group">
+                                <button ng-click="eliminarConcepto($index)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+            
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="well" ng-if="totales.subtotal!=0">
+    <h4>Aplicar descuento</h4>
+    <p>Ingresa un descuento sobre el subtotal de la factura</p>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon addon-search"><i class="fa fa-money"></i> Descuento</span>
+                    <input class="form-control" ng-model="factura.descuento" type="number" />
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <button ng-click="aplicarDescuento()" class="btn btn-primary"><i class="fa fa-check"></i> Aplicar Descuento</button>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <button ng-click="quitarDescuento()" class="btn btn-default"><i class="fa fa-undo"></i> Quitar descuento</button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="row" ng-if="totales.subtotal!=0">
+    <div class="col-xs-12">
+        <table class="table table-bordered table-striped table-hover">
+            <thead><tr>
+                <th>Subtotal <i class="fa fa-usd"></i></th>
+                <th ng-if="factura.descuento!=0">Descuento <i class="fa fa-usd"></i></th>
+                <th>IVA (16%) <i class="fa fa-usd"></i></th>
+                <th>Total <i class="fa fa-usd"></i></th>
+
+                </tr></thead>
+            <tbody>
+                <tr>
+                    <td>${{totales.subtotal}}</td>
+                    <td ng-if="factura.descuento!=0">${{factura.descuento}}</td>
+                    <td>${{totales.iva}}</td>
+                    <td>${{totales.total}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<div class="row" ng-if="totales.subtotal!=0">
+    <div class="col-xs-12">
+        <button ng-click="facturar()" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Timbrar Factura</button>
+    </div>
+
+</div>

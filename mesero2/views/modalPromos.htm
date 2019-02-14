@@ -1,0 +1,76 @@
+<!-- Modal -->
+<div id="modalPromos" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Promociones</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-xs-12">
+                      
+                      <ul class="list-group">
+                          <li class="list-group-item promo" ng-repeat="p in promos">
+                         
+                         <div class="media">
+                             <div class="media-left" >
+                                 <img class="media-object" ng-src="../images/{{p.imagepath}}" alt="Image pormos">
+                             </div>
+                             <div class="media-body">
+                                 <h4 class="media-heading">{{p.descripcion}}
+                                     <small style="color:white">{{p.nombre}}</small>
+                                     <label class="label-promo label-success label">{{p.precio | currency}}</label>
+                                 </h4>
+                                 <p>
+                                     <div class="btn-group pull-right" ng-if="p.activo==1">
+                                         <button ng-click="abrirPrompt(p)" class="btn btn-success"><i class="fa" ng-class="{'fa-plus':!p.abierto,'fa-undo':p.abierto}"></i></button>
+                                     </div>
+                                     <label class="label-promo label-primary label">x{{p.cantidad}}</label>
+                                     <label class="label-promo label-info label">%{{p.descuento}}</label>
+                                     <p ng-if="p.idFrecuencia==1">Promoción cada {{p.nombre_dia}}</p>
+                                     <p ng-if="p.idFrecuencia==2">Promoción cada {{p.dia_mes_promo}} de cada mes</p>
+                                     
+                                    </p>
+                                    <div ng-show="p.abierto">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group">
+                                                            <div class="input-group">
+                                                            <span class="input-group-addon add-on-style1"><i class="fa fa-plus"></i></span>
+                                                            <input placeholder="Cantidad de Promociones" ng-model="p.cantidad_pedido"  type="number" class="form-control">
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                                    <div class="form-group">
+                                                            <div class="input-group">
+                                                            <span class="input-group-addon add-on-style1"><i class="fa fa-pencil"></i></span>
+                                                            <input placeholder="Comentarios" ng-model="p.comentarios"  type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                        </div>
+                                
+                                    <button ng-click="agregarPromo(p)" class="btn btn-primary"><i class="fa fa-check"></i> Aceptar</button>
+                                </div>
+                             </div>
+                         </div>
+                         
+
+                          </li>
+                        
+                      </ul>
+                      
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
